@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logan Clinic AI Voice Agent Workflow</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e6e6e6;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #0f3460, #16213e);
+            padding: 30px 40px;
+            text-align: center;
+            border-bottom: 3px solid #00d9ff;
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: #00d9ff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+
+        .header p {
+            color: #a0a0a0;
+            font-size: 1rem;
+        }
+
+        .nav {
+            background: rgba(15, 52, 96, 0.8);
+            padding: 15px 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 217, 255, 0.3);
+        }
+
+        .nav a {
+            color: #00d9ff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav a:hover {
+            background: rgba(0, 217, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .diagram-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .diagram-section h2 {
+            color: #00d9ff;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0, 217, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .diagram-section h2 .icon {
+            font-size: 1.5rem;
+        }
+
+        .mermaid {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(0, 217, 255, 0.05));
+            border-left: 4px solid #00d9ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box h3 {
+            color: #00d9ff;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            padding-left: 20px;
+        }
+
+        .info-box li {
+            margin: 8px 0;
+            color: #c0c0c0;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legend-item .emoji {
+            font-size: 1.5rem;
+        }
+
+        .legend-item .text {
+            font-size: 0.9rem;
+        }
+
+        .legend-item .text strong {
+            color: #00d9ff;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 107, 107, 0.1));
+            border-left: 4px solid #ff6b6b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .warning-box h3 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(0, 217, 255, 0.2);
+            color: #00d9ff;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(0, 217, 255, 0.05);
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #00d9ff, #0099cc);
+            color: #1a1a2e;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.5);
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .nav,
+            .print-btn {
+                display: none;
+            }
+
+            .diagram-section {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>🏥 Logan Clinic AI Voice Agent Workflow</h1>
+        <p>First Choice Imaging — Inbound Call Handling System</p>
+    </div>
+
+    <nav class="nav">
+        <a href="#master-workflow">Master Workflow</a>
+        <a href="#caller-types">Caller Types</a>
+        <a href="#medical-records">Medical Records</a>
+        <a href="#billing">Billing</a>
+        <a href="#scheduling">Scheduling</a>
+        <a href="#post-call">Post-Call Actions</a>
+        <a href="#live-operator">Live Operator</a>
+        <a href="#sms-templates">SMS Templates</a>
+        <a href="#cross-reference">Locations</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Master Workflow -->
+        <section id="master-workflow" class="diagram-section">
+            <h2><span class="icon">📞</span> Master Workflow (Multi-Intent Support)</h2>
+            <div class="mermaid">
+                flowchart TD
+                subgraph ENTRY["📞 CALL ENTRY"]
+                A[/"Inbound Call Received"/] --> B["Greet & Verify Location"]
+                B --> C{"Correct Location?"}
+                C -->|No| D["Provide Correct Number"]
+                D --> E{"Transfer?"}
+                E -->|Yes| F["Execute Transfer"]
+                E -->|No| G["End Call"]
+                C -->|Yes| H["Collect Name"]
+                end
+
+                subgraph PRIORITY["🎯 PRIORITY DATA"]
+                H --> I["Collect Phone"]
+                I --> J["Confirm Phone"]
+                J --> K["Ask Reason"]
+                end
+
+                subgraph INTENT["📋 INTENT ROUTING"]
+                K --> L{"Caller Intent?"}
+                L -->|"FAQ"| M["General Info"]
+                L -->|"Schedule"| N["⚡ IMMEDIATE Transfer"]
+                L -->|"Records"| O["Med Records Workflow"]
+                L -->|"Billing"| P["Billing Workflow"]
+                L -->|"Other/Unclear"| R["Clarify & Assist"]
+                end
+
+                subgraph MULTIINTENT["🔄 MULTI-INTENT LOOP"]
+                M --> M1["Answer from Knowledge Base"]
+                O --> O1["Collect records_* Variables"]
+                P --> P1["Collect billing_* Variables"]
+                M1 --> LOOP["'Anything else I can help with?'"]
+                O1 --> LOOP
+                P1 --> LOOP
+                LOOP --> |"Yes"| K
+                LOOP --> |"No"| CLOSE["Collect Email & Close"]
+                end
+
+                subgraph FALLBACK["🧑‍💼 LIVE OPERATOR (LAST RESORT)"]
+                R --> R1{"Can Assist?"}
+                R1 -->|"Yes"| LOOP
+                R1 -->|"No"| R2["Transfer to Receptionist"]
+                end
+
+                N --> N1["Trigger Transfer Tool"]
+            </div>
+
+            <div class="info-box">
+                <h3>🔄 Multi-Intent Handling:</h3>
+                <ul>
+                    <li>Callers can address multiple intents in a single call</li>
+                    <li>Each intent uses prefixed variables to prevent overwrites</li>
+                    <li><code>{{intents_handled}}</code> tracks all completed workflows</li>
+                    <li>Scheduling triggers IMMEDIATE transfer (no data collection)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Caller Types -->
+        <section id="caller-types" class="diagram-section">
+            <h2><span class="icon">👥</span> Caller Type Identification</h2>
+            <div class="mermaid">
+                flowchart TD
+                A["Who is calling?"] --> B{"Caller Type"}
+
+                B -->|"Self"| C["👤 Patient"]
+                B -->|"Parent/Guardian"| C2["👪 Parent/Guardian"]
+                B -->|"Doctor's office with order"| D["🏥 Ordering Provider"]
+                B -->|"Doctor's office NO order"| E["🏥 Non-Ordering Provider"]
+                B -->|"Legal rep"| F["⚖️ Attorney"]
+                B -->|"Other"| G["👥 3rd Party"]
+
+                C --> H["✅ Direct Access"]
+                C2 --> H
+                D --> H
+                E --> I["⚠️ Signed Release Required"]
+                F --> I
+                G --> I
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="emoji">👤</span>
+                    <div class="text"><strong>Patient</strong>The individual who received imaging</div>
+                </div>
+                <div class="legend-item">
+                    <span class="emoji">👪</span>
+                    <div class="text"><strong>Parent/Guardian</strong>Calling on behalf of minor/ward</div>
+                </div>
+                <div class="legend-item">
+                    <span class="emoji">🏥</span>
+                    <div class="text"><strong>Ordering Provider</strong>Doctor's office that supplied original order
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <span class="emoji">🏥</span>
+                    <div class="text"><strong>Non-Ordering Provider</strong>Doctor's office without original order</div>
+                </div>
+                <div class="legend-item">
+                    <span class="emoji">⚖️</span>
+                    <div class="text"><strong>Attorney</strong>Legal representative requesting records</div>
+                </div>
+                <div class="legend-item">
+                    <span class="emoji">👥</span>
+                    <div class="text"><strong>3rd Party</strong>Family, employer, or other party</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Medical Records -->
+        <section id="medical-records" class="diagram-section">
+            <h2><span class="icon">📁</span> Medical Records Workflow (records_* prefix)</h2>
+            <div class="mermaid">
+                flowchart TD
+                subgraph REQUEST["📁 RECORDS REQUEST"]
+                A[/"Medical Records Inquiry"/] --> A1["caller_name - Already collected"]
+                A1 --> A2["caller_phone - Already collected"]
+                A2 --> B{"Identify records_caller_type"}
+                end
+
+                subgraph DIRECT["✅ DIRECT ACCESS"]
+                B -->|"Patient"| C0["records_release_required = 'NO'"]
+                B -->|"Parent/Guardian"| C0
+                B -->|"Ordering Provider"| C0
+                C0 --> C1{"Patient = Caller?"}
+                C1 -->|No| C1A["Collect records_patient_name"]
+                C1 -->|Yes| C1B["Skip"]
+                end
+
+                subgraph RELEASE["⚠️ RELEASE REQUIRED"]
+                B -->|"Non-Ordering"| R0["records_release_required = 'YES'"]
+                B -->|"Attorney"| R0
+                B -->|"3rd Party"| R0
+                R0 --> R1["Inform: Release Needed"]
+                R1 --> R2{"Patient = Caller?"}
+                R2 -->|No| R2A["Collect records_patient_name"]
+                R2 -->|Yes| R2B["Skip"]
+                end
+
+                subgraph COLLECT["📝 DATA COLLECTION"]
+                C1A --> D2["records_patient_dob"]
+                C1B --> D2
+                R2A --> D2
+                R2B --> D2
+                D2 --> D3["records_imaging_service"]
+                D3 --> D4["records_imaging_dos"]
+                D4 --> D5["records_delivery_method + records_delivery_destination"]
+                end
+
+                subgraph LOOP["🔄 MULTI-INTENT"]
+                D5 --> P1["Add 'records' to intents_handled"]
+                P1 --> P2["'Anything else I can help with?'"]
+                P2 -->|"Yes"| P3["Return to Intent Routing"]
+                P2 -->|"No"| P4["Proceed to Close"]
+                end
+            </div>
+
+            <div class="warning-box">
+                <h3>⚠️ Signed Release Required For:</h3>
+                <ul>
+                    <li>Non-Ordering Providers (doctor's office that did not supply the imaging order)</li>
+                    <li>Attorneys</li>
+                    <li>3rd Parties (family, employers, etc.)</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>📝 Medical Records Variables (records_* prefix):</h3>
+                <ul>
+                    <li><code>{{records_patient_name}}</code> — Patient's full name</li>
+                    <li><code>{{records_patient_dob}}</code> — Patient date of birth</li>
+                    <li><code>{{records_imaging_service}}</code> — Type of imaging performed</li>
+                    <li><code>{{records_imaging_dos}}</code> — Date of service</li>
+                    <li><code>{{records_delivery_method}}</code> — "email" or "fax"</li>
+                    <li><code>{{records_delivery_destination}}</code> — Email/fax for delivery</li>
+                    <li><code>{{records_caller_type}}</code> — Relationship to patient</li>
+                    <li style="color: #ff6b6b;"><code>{{records_release_required}}</code> — "YES" or "NO" (string)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Billing -->
+        <section id="billing" class="diagram-section">
+            <h2><span class="icon">💳</span> Billing Inquiry Workflow (billing_* prefix)</h2>
+            <div class="mermaid">
+                flowchart TD
+                subgraph ENTRY["💳 BILLING INQUIRY"]
+                A[/"Billing Question"/] --> B{"Caller Type?"}
+                B -->|"Patient"| C1["Patient Caller"]
+                B -->|"Provider"| C2["Provider Office"]
+                end
+
+                subgraph COLLECT["📝 COLLECT INFO"]
+                C1 --> D0["caller_name - Already collected"]
+                C2 --> D0
+                D0 --> D0A["caller_phone - Already collected"]
+                D0A --> D1{"Patient = Caller?"}
+                D1 -->|No| D1A["Collect billing_patient_name"]
+                D1 -->|Yes| D1B["Skip"]
+                D1A --> D2["Collect billing_patient_dob"]
+                D1B --> D2
+                D2 --> D3["Collect billing_reason"]
+                end
+
+                subgraph LOOP["🔄 MULTI-INTENT"]
+                D3 --> P1["Add 'billing' to intents_handled"]
+                P1 --> P2["'Anything else I can help with?'"]
+                P2 -->|"Yes"| P3["Return to Intent Routing"]
+                P2 -->|"No"| P4["Proceed to Close"]
+                end
+            </div>
+
+            <div class="info-box">
+                <h3>📝 Billing Variables (billing_* prefix):</h3>
+                <ul>
+                    <li><code>{{billing_patient_name}}</code> — Patient's full name</li>
+                    <li><code>{{billing_patient_dob}}</code> — Patient date of birth</li>
+                    <li><code>{{billing_reason}}</code> — Reason for billing inquiry</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Scheduling -->
+        <section id="scheduling" class="diagram-section">
+            <h2><span class="icon">📅</span> Scheduling Transfer Workflow (IMMEDIATE)</h2>
+            <div class="mermaid">
+                flowchart TD
+                subgraph SCHEDULE["📅 SCHEDULING REQUEST"]
+                A[/"Caller Requests Scheduling"/] --> B["Detect Scheduling Intent"]
+                end
+
+                subgraph IMMEDIATE["⚡ IMMEDIATE TRANSFER"]
+                B --> C["Do NOT collect additional data"]
+                C --> D["Trigger Transfer Tool Immediately"]
+                end
+
+                subgraph COMPLETE["✅ TRANSFER COMPLETE"]
+                D --> E[/"Call Transferred to Scheduling Team"/]
+                E --> F["Human Agent Handles Data Collection"]
+                end
+            </div>
+
+            <div class="warning-box">
+                <h3>⚡ IMMEDIATE TRANSFER — No Data Collection:</h3>
+                <ul>
+                    <li>When caller requests scheduling, <strong>immediately trigger the transfer tool</strong></li>
+                    <li>Do NOT collect patient name, DOB, or imaging service</li>
+                    <li>The human scheduling team will gather all required information</li>
+                    <li>Universal variables (caller_name, caller_phone) are already captured in Steps 1-2</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>📝 Variables Already Available (from Steps 1-2):</h3>
+                <ul>
+                    <li><code>{{caller_name}}</code> — Caller's full name</li>
+                    <li><code>{{caller_phone}}</code> — Caller's phone number</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Post-Call Actions -->
+        <section id="post-call" class="diagram-section">
+            <h2><span class="icon">📤</span> Post-Call Actions Summary</h2>
+            <div class="mermaid">
+                flowchart LR
+                subgraph TRIGGERS["🎯 TRIGGERS"]
+                T1["Medical Records"]
+                T2["Billing"]
+                end
+
+                subgraph ACTIONS["📤 AUTOMATED"]
+                A1["📝 Summary"]
+                A2["📄 Transcription"]
+                A3["📧 Webhook Email"]
+                A4["📱 SMS to Caller"]
+                end
+
+                subgraph EMAIL["📬 EMAIL DELIVERY"]
+                E1["Intent-Specific Subject"]
+                E2["Collected Variables"]
+                E3["Call Summary Attached"]
+                end
+
+                T1 --> A1
+                T2 --> A1
+                A1 --> A2 --> A3 --> A4
+                A3 --> E1 --> E2 --> E3
+            </div>
+
+            <div class="info-box">
+                <h3>📬 Email Notifications:</h3>
+                <ul>
+                    <li>Each completed workflow triggers an email notification</li>
+                    <li>Email includes all collected variables for the intent</li>
+                    <li>Call summary and transcription attached</li>
+                    <li>SMS confirmation sent to caller</li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <h3>📧 Email Subject Patterns:</h3>
+                <ul>
+                    <li><strong>[RECORDS]</strong> — Medical record requests</li>
+                    <li><strong>[BILLING]</strong> — Billing inquiries</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Live Operator Transfer -->
+        <section id="live-operator" class="diagram-section">
+            <h2><span class="icon">🧑‍💼</span> Live Operator Transfer (Last Resort)</h2>
+            <div class="warning-box">
+                <h3>⚠️ CRITICAL: Last Resort Only</h3>
+                <ul>
+                    <li>The Live Operator transfer is a <strong>LAST RESORT</strong> option</li>
+                    <li>Agent must exhaust all other options before offering this transfer</li>
+                    <li>Use for: complaints, escalations, complex situations, non-imaging requests</li>
+                </ul>
+            </div>
+
+            <h3 style="color: #00d9ff; margin: 20px 0 15px;">When to Use</h3>
+            <table>
+                <tr>
+                    <th>Scenario</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td>Caller asks for "live person" at start of call</td>
+                    <td style="color: #ff6b6b;">Do NOT transfer — ask what they need and attempt to assist</td>
+                </tr>
+                <tr>
+                    <td>Caller has complaint or escalation</td>
+                    <td>Transfer to <code>Receptionist</code> after attempting to understand</td>
+                </tr>
+                <tr>
+                    <td>Complex situation outside standard workflows</td>
+                    <td>Transfer to <code>Receptionist</code> after clarifying questions</td>
+                </tr>
+                <tr>
+                    <td>Caller confused/frustrated after multiple attempts</td>
+                    <td>Transfer to <code>Receptionist</code></td>
+                </tr>
+                <tr>
+                    <td>Non-imaging request (vendor, job inquiry)</td>
+                    <td>Transfer to <code>Receptionist</code></td>
+                </tr>
+            </table>
+
+            <h3 style="color: #00d9ff; margin: 30px 0 15px;">Anti-Gaming Protocol</h3>
+            <div class="mermaid">
+                flowchart TD
+                A["Caller: 'I want to speak to a real person'"] --> B["Agent: 'I'd be happy to help you directly! What
+                can I assist you with today?'"]
+                B --> C{"Caller States Need"}
+                C -->|"Scheduling"| D["⚡ IMMEDIATE Transfer to Scheduling"]
+                C -->|"Records/Billing/Insurance"| E["Handle via Dashboard Workflow"]
+                C -->|"General Question"| F["Answer from Knowledge Base"]
+                C -->|"Cannot Be Addressed"| G["Transfer to Receptionist (Last Resort)"]
+            </div>
+
+            <div class="info-box">
+                <h3>📝 Transfer Phrase (After Exhausting Options):</h3>
+                <p style="font-style: italic; color: #a0a0a0; margin-top: 10px;">"I want to make sure you get the help
+                    you need. Let me connect you with one of our staff members who can assist further. Just one moment."
+                </p>
+            </div>
+        </section>
+
+        <!-- SMS Follow-Up Templates -->
+        <section id="sms-templates" class="diagram-section">
+            <h2><span class="icon">📱</span> SMS Follow-Up Templates</h2>
+
+            <div class="info-box">
+                <h3>📁 Medical Records SMS:</h3>
+                <p
+                    style="font-family: monospace; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin-top: 10px; line-height: 1.6;">
+                    Hi [Caller Name], thank you for contacting First Choice Imaging regarding your medical records
+                    request.<br>
+                    Your request has been received and will be processed by our team.<br>
+                    We'll be in touch soon.
+                </p>
+            </div>
+
+            <div class="info-box">
+                <h3>💳 Billing SMS:</h3>
+                <p
+                    style="font-family: monospace; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin-top: 10px; line-height: 1.6;">
+                    Hi [Caller Name], thank you for your billing inquiry with First Choice Imaging.<br>
+                    Our billing team has received your information and will follow up shortly.<br>
+
+                </p>
+            </div>
+        </section>
+
+        <!-- Cross-Reference: Other Clinic Locations -->
+        <section id="cross-reference" class="diagram-section">
+            <h2><span class="icon">📍</span> Cross-Reference: Other Clinic Locations</h2>
+            <table>
+                <tr>
+                    <th>Location</th>
+                    <th>Phone Number</th>
+                    <th>Services</th>
+                </tr>
+                <tr>
+                    <td>Logan MRI Clinic</td>
+                    <td>(435) 258-9598</td>
+                    <td>Wide Bore MRI, Arthrograms</td>
+                </tr>
+                <tr>
+                    <td>North Logan CT Clinic</td>
+                    <td>(435) 258-9598</td>
+                    <td>CT Scans, Lung Cancer Screening</td>
+                </tr>
+                <tr>
+                    <td>Tooele Valley Imaging</td>
+                    <td>(435) 882-1674</td>
+                    <td>MRI, CT</td>
+                </tr>
+                <tr>
+                    <td>Sandy (Wasatch Imaging)</td>
+                    <td>(801) 576-1290</td>
+                    <td>MRI, CT</td>
+                </tr>
+                <tr>
+                    <td>St. George</td>
+                    <td>—</td>
+                    <td>MRI, CT</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Multi-Intent Call Example -->
+        <section id="multi-intent-example" class="diagram-section">
+            <h2><span class="icon">🔄</span> Multi-Intent Call Example</h2>
+            <div class="info-box">
+                <h3>Scenario: Caller needs both medical records AND has a billing question</h3>
+                <ol style="padding-left: 20px; margin-top: 15px;">
+                    <li style="margin: 10px 0;"><strong>Records Workflow:</strong> Agent collects <code>records_*</code>
+                        variables</li>
+                    <li style="margin: 10px 0;">Agent asks: <em>"Anything else I can help with?"</em></li>
+                    <li style="margin: 10px 0;">Caller mentions billing question</li>
+                    <li style="margin: 10px 0;"><strong>Billing Workflow:</strong> Agent collects <code>billing_*</code>
+                        variables</li>
+                    <li style="margin: 10px 0;">Agent asks: <em>"Anything else I can help with?"</em></li>
+                    <li style="margin: 10px 0;">Caller says no</li>
+                    <li style="margin: 10px 0;">Agent collects email and closes call</li>
+                </ol>
+            </div>
+            <div class="warning-box">
+                <h3>Final <code>{{intents_handled}}</code>: <span style="color: #00d9ff;">"records, billing"</span></h3>
+                <p style="margin-top: 10px;">This allows downstream webhooks to route emails based on which intents were
+                    handled.</p>
+            </div>
+        </section>
+
+        <!-- Data Requirements Table -->
+        <section class="diagram-section">
+            <h2><span class="icon">📊</span> Data Collection Requirements</h2>
+            <p style="color: #a0a0a0; margin-bottom: 20px;"><strong>Variable Convention:</strong> Intent-specific
+                variables use prefixes (<code style="color: #00d9ff;">records_</code>, <code
+                    style="color: #00d9ff;">billing_</code>) to support
+                multi-intent calls.</p>
+
+            <h3 style="color: #00d9ff; margin: 20px 0 10px;">Universal Variables (All Calls)</h3>
+            <table>
+                <tr>
+                    <th>Variable</th>
+                    <th>Field</th>
+                    <th>Data Type</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td><code>{{caller_name}}</code></td>
+                    <td>Caller Name</td>
+                    <td>string</td>
+                    <td>Full name of person calling (Step 1)</td>
+                </tr>
+                <tr>
+                    <td><code>{{caller_phone}}</code></td>
+                    <td>Caller Phone</td>
+                    <td>string</td>
+                    <td>Best contact number (Step 2)</td>
+                </tr>
+                <tr>
+                    <td><code>{{caller_email}}</code></td>
+                    <td>Caller Email</td>
+                    <td>string</td>
+                    <td>Collected before closing</td>
+                </tr>
+                <tr>
+                    <td><code>{{caller_reason}}</code></td>
+                    <td>Reason for Call</td>
+                    <td>string</td>
+                    <td>Initial stated reason (Step 3)</td>
+                </tr>
+                <tr>
+                    <td style="color: #00d9ff;"><code>{{intents_handled}}</code></td>
+                    <td style="color: #00d9ff;">Intents Handled</td>
+                    <td style="color: #00d9ff;">string (comma-separated)</td>
+                    <td style="color: #00d9ff;">e.g., "records, billing" — tracks completed workflows</td>
+                </tr>
+            </table>
+
+            <h3 style="color: #00d9ff; margin: 30px 0 10px;">Scheduling Request (IMMEDIATE TRANSFER)</h3>
+            <table>
+                <tr>
+                    <th>Variable</th>
+                    <th>Field</th>
+                    <th>Data Type</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: center; color: #ff6b6b; font-weight: bold;">
+                        ⚡ NO ADDITIONAL DATA COLLECTED — Immediate transfer to scheduling team
+                    </td>
+                </tr>
+            </table>
+
+            <h3 style="color: #00d9ff; margin: 30px 0 10px;">Billing Inquiry (billing_* prefix)</h3>
+            <table>
+                <tr>
+                    <th>Variable</th>
+                    <th>Field</th>
+                    <th>Data Type</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td><code>{{billing_patient_name}}</code></td>
+                    <td>Patient Name</td>
+                    <td>string</td>
+                    <td>Only if different from caller</td>
+                </tr>
+                <tr>
+                    <td><code>{{billing_patient_dob}}</code></td>
+                    <td>Patient DOB</td>
+                    <td>string (YYYY-MM-DD)</td>
+                    <td>Patient's date of birth</td>
+                </tr>
+                <tr>
+                    <td><code>{{billing_reason}}</code></td>
+                    <td>Reason for Call</td>
+                    <td>string</td>
+                    <td>Specific billing inquiry details</td>
+                </tr>
+            </table>
+
+            <h3 style="color: #00d9ff; margin: 30px 0 10px;">Medical Records Request (records_* prefix)</h3>
+            <table>
+                <tr>
+                    <th>Variable</th>
+                    <th>Field</th>
+                    <th>Data Type</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td><code>{{records_patient_name}}</code></td>
+                    <td>Patient Name</td>
+                    <td>string</td>
+                    <td>Only if different from caller</td>
+                </tr>
+                <tr>
+                    <td><code>{{records_patient_dob}}</code></td>
+                    <td>Patient DOB</td>
+                    <td>string (YYYY-MM-DD)</td>
+                    <td>Patient's date of birth</td>
+                </tr>
+                <tr>
+                    <td><code>{{records_imaging_service}}</code></td>
+                    <td>Imaging Service</td>
+                    <td>string</td>
+                    <td>Type of imaging performed</td>
+                </tr>
+                <tr>
+                    <td><code>{{records_imaging_dos}}</code></td>
+                    <td>Imaging DOS</td>
+                    <td>string (YYYY-MM-DD)</td>
+                    <td>Date of service</td>
+                </tr>
+                <tr>
+                    <td><code>{{records_delivery_method}}</code></td>
+                    <td>Delivery Method</td>
+                    <td>enum</td>
+                    <td>"email" or "fax"</td>
+                </tr>
+                <tr>
+                    <td><code>{{records_delivery_destination}}</code></td>
+                    <td>Email/Fax</td>
+                    <td>string</td>
+                    <td>Where to send records</td>
+                </tr>
+                <tr>
+                    <td><code>{{records_caller_type}}</code></td>
+                    <td>Caller Type</td>
+                    <td>enum</td>
+                    <td>Relationship to patient</td>
+                </tr>
+                <tr>
+                    <td style="color: #ff6b6b;"><code>{{records_release_required}}</code></td>
+                    <td style="color: #ff6b6b;">Release Required</td>
+                    <td style="color: #ff6b6b;">string</td>
+                    <td style="color: #ff6b6b;">"YES" or "NO" — Auto-set based on caller_type</td>
+                </tr>
+            </table>
+        </section>
+
+    </div>
+
+    <button class="print-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#00d9ff',
+                primaryTextColor: '#1a1a2e',
+                primaryBorderColor: '#0099cc',
+                lineColor: '#0099cc',
+                secondaryColor: '#16213e',
+                tertiaryColor: '#0f3460',
+                background: '#ffffff',
+                mainBkg: '#e8f4f8',
+                nodeBorder: '#0099cc',
+                clusterBkg: '#f0f8ff',
+                clusterBorder: '#00d9ff',
+                titleColor: '#1a1a2e',
+                edgeLabelBackground: '#ffffff'
+            },
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+
+</html>
