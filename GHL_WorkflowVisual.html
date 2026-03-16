@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHL Voice Agent Workflow — First Choice Imaging</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e6e6e6;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #0f3460, #16213e);
+            padding: 30px 40px;
+            text-align: center;
+            border-bottom: 3px solid #00d9ff;
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: #00d9ff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+
+        .header p {
+            color: #a0a0a0;
+            font-size: 1rem;
+        }
+
+        .nav {
+            background: rgba(15, 52, 96, 0.8);
+            padding: 15px 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 217, 255, 0.3);
+        }
+
+        .nav a {
+            color: #00d9ff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav a:hover {
+            background: rgba(0, 217, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .diagram-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .diagram-section h2 {
+            color: #00d9ff;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0, 217, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .diagram-section h2 .icon {
+            font-size: 1.5rem;
+        }
+
+        .mermaid {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(0, 217, 255, 0.05));
+            border-left: 4px solid #00d9ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box h3 {
+            color: #00d9ff;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            padding-left: 20px;
+        }
+
+        .info-box li {
+            margin: 8px 0;
+            color: #c0c0c0;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legend-item .emoji {
+            font-size: 1.5rem;
+        }
+
+        .legend-item .text {
+            font-size: 0.9rem;
+        }
+
+        .legend-item .text strong {
+            color: #00d9ff;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 107, 107, 0.1));
+            border-left: 4px solid #ff6b6b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .warning-box h3 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 255, 136, 0.1));
+            border-left: 4px solid #00ff88;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .success-box h3 {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(0, 217, 255, 0.2);
+            color: #00d9ff;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(0, 217, 255, 0.05);
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #00d9ff, #0099cc);
+            color: #1a1a2e;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.5);
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .nav,
+            .print-btn {
+                display: none;
+            }
+
+            .diagram-section {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>⚡ GHL Voice Agent Workflow</h1>
+        <p>First Choice Imaging — GoHighLevel Automation Integration</p>
+    </div>
+
+    <nav class="nav">
+        <a href="#master-workflow">Master Workflow</a>
+        <a href="#webhook-trigger">Webhook Trigger</a>
+        <a href="#request-routing">Request Routing</a>
+        <a href="#email-actions">Email Actions</a>
+        <a href="#data-flow">Data Flow</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Master Workflow -->
+        <section id="master-workflow" class="diagram-section">
+            <h2><span class="icon">🔄</span> Master GHL Workflow</h2>
+            <div class="mermaid">
+                flowchart TD
+                subgraph TRIGGER["🎯 WORKFLOW TRIGGERS"]
+                T1[/"📞 Voice Agent Call Ends"/] --> W1["Webhook POST to GHL"]
+                T2[/"📝 Transcript Generated"/] --> W1
+                end
+
+                subgraph CONTACT["👤 CONTACT MANAGEMENT"]
+                W1 --> C1{"Contact Exists?"}
+                C1 -->|No| C2["Create New Contact"]
+                C1 -->|Yes| C3["Update Contact"]
+                C2 --> C4["Map Webhook Fields"]
+                C3 --> C4
+                end
+
+                subgraph ROUTING["🔀 REQUEST ROUTING"]
+                C4 --> R1{"Check intents_handled"}
+                R1 -->|"Contains 'records'"| E1["📁 Med Records Email"]
+                R1 -->|"Contains 'billing'"| E2["💳 Billing Email"]
+                R1 -->|"Contains 'lien'"| E3["⚖️ Lien Email"]
+                end
+
+                subgraph ACTIONS["📤 POST-ACTIONS"]
+                E1 --> A1["Send Staff Intake Email"]
+                E2 --> A1
+                E3 --> A1
+                A1 --> A2["Send Caller SMS"]
+                A2 --> A3["Add Tag: AI Voice Inquiry"]
+                A3 --> A4[/"✅ Workflow Complete"/]
+                end
+            </div>
+
+            <div class="info-box">
+                <h3>📋 Workflow Summary</h3>
+                <ul>
+                    <li><strong>Trigger:</strong> Fires when voice agent sends POST webhook after call ends</li>
+                    <li><strong>Contact:</strong> Creates or updates GHL contact with caller data</li>
+                    <li><strong>Routing:</strong> Uses <code>intents_handled</code> field with contains-based routing to support multi-intent calls</li>
+                    <li><strong>Actions:</strong> Sends staff email, caller SMS, and applies tracking tag</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Webhook Trigger -->
+        <section id="webhook-trigger" class="diagram-section">
+            <h2><span class="icon">🔗</span> Webhook Trigger Flow</h2>
+            <div class="mermaid">
+                flowchart LR
+                subgraph VOICE["🎙️ VOICE AGENT"]
+                V1["AI Voice Agent"] --> V2["Call Ends"]
+                V2 --> V3["Generate Summary"]
+                V3 --> V4["POST Webhook"]
+                end
+
+                subgraph PAYLOAD["📦 WEBHOOK PAYLOAD"]
+                V4 --> P1["contact: { }"]
+                V4 --> P2["call: { }"]
+                P1 --> P1A["full_name, phone, email"]
+                P1 --> P1B["patient_name, patient_dob"]
+                P1 --> P1C["intents_handled, sms_consent"]
+                P2 --> P2A["recording_url"]
+                P2 --> P2B["transcript_url"]
+                end
+
+                subgraph GHL["⚡ GHL WEBHOOK"]
+                P1A --> G1["Inbound Webhook Trigger"]
+                P1B --> G1
+                P1C --> G1
+                P2A --> G1
+                P2B --> G1
+                G1 --> G2["Map to Contact Fields"]
+                end
+            </div>
+
+            <div class="success-box">
+                <h3>✅ Required Webhook URL Format</h3>
+                <p><code>https://services.leadconnectorhq.com/hooks/XXXXXX/webhook-trigger/YYYYYY</code></p>
+                <p style="margin-top: 10px;">This URL is generated when you create the Inbound Webhook trigger in GHL
+                    Automations.</p>
+            </div>
+        </section>
+
+        <!-- Request Routing -->
+        <section id="request-routing" class="diagram-section">
+            <h2><span class="icon">🔀</span> Request Type Routing (If/Then/Else)</h2>
+            <div class="mermaid">
+                flowchart TD
+                A["Parse intents_handled"] --> B{"intents_handled contains?"}
+
+                B -->|"Contains 'records'"| C1["📁 MEDICAL RECORDS BRANCH"]
+                B -->|"Contains 'billing'"| C2["💳 BILLING BRANCH"]
+                B -->|"Contains 'lien'"| C4["⚖️ LIEN BRANCH"]
+
+                subgraph MED["Medical Records"]
+                C1 --> M1["Subject: MED RECORDS TRANSFER / RADIOLOGY REPORT"]
+                M1 --> M2["Include: Caller Type, Request Type"]
+                M2 --> M3["Dynamic Subject by Request Type"]
+                end
+
+                subgraph BILL["Billing"]
+                C2 --> B1["Subject: BILLING INQUIRY"]
+                B1 --> B2["Include: Patient, DOB"]
+                B2 --> B3["Include: Reason"]
+                end
+
+                subgraph LIEN["Lien Request"]
+                C4 --> S1["Subject: LIEN REQUEST"]
+                S1 --> S2["Include: Patient, Firm, Paralegal"]
+                S2 --> S3["Include: Callback, Location"]
+                end
+
+                M3 --> SEND["Send to orders@firstchoice-imaging.com"]
+                B3 --> SEND
+                S3 --> SEND
+            </div>
+
+            <div class="warning-box">
+                <h3>⚠️ Critical: intents_handled Field</h3>
+                <p>The <code>intents_handled</code> field must be passed from your voice agent and mapped to the GHL custom
+                    field. This is a comma-separated list for multi-intent calls. The If/Else condition uses a "contains" check to route to the correct email template.</p>
+                <p style="margin-top: 10px;">Valid values: <code>records</code>, <code>billing</code>,
+                    <code>lien</code> (comma-separated for multi-intent)
+                </p>
+            </div>
+        </section>
+
+        <!-- Email Actions -->
+        <section id="email-actions" class="diagram-section">
+            <h2><span class="icon">📧</span> Email & SMS Actions</h2>
+            <div class="mermaid">
+                flowchart TD
+                subgraph EMAIL["📧 STAFF INTAKE EMAIL"]
+                E1["Select Email Template"] --> E2["To: orders@firstchoice-imaging.com"]
+                E2 --> E3["Subject: [TYPE] | Patient | DOB"]
+                E3 --> E4["Body: Structured Data Format"]
+                E4 --> E5["Include: Recording + Transcript URLs"]
+                end
+
+                subgraph SMS["📱 CALLER SMS"]
+                S1["Select SMS Template"] --> S2["To: {{contact.phone}}"]
+                S2 --> S3["'Thank you for contacting...'"]
+                S3 --> S4["'A team member will follow up.'"]
+                end
+
+                subgraph TAG["🏷️ TAGGING"]
+                T1["Add Tag"] --> T2["'AI Voice Agent Inquiry'"]
+                T2 --> T3["Enables Reporting & Filtering"]
+                end
+
+                E5 --> S1
+                S4 --> T1
+            </div>
+
+            <table>
+                <tr>
+                    <th>Request Type</th>
+                    <th>Email Subject Prefix</th>
+                    <th>Key Data Fields</th>
+                </tr>
+                <tr>
+                    <td>Medical Records</td>
+                    <td><code>MED RECORDS TRANSFER / RADIOLOGY REPORT</code></td>
+                    <td>Caller Type, Request Type</td>
+                </tr>
+                <tr>
+                    <td>Billing</td>
+                    <td><code>BILLING INQUIRY</code></td>
+                    <td>Patient, DOB, Reason</td>
+                </tr>
+                <tr>
+                    <td>Lien</td>
+                    <td><code>LIEN REQUEST</code></td>
+                    <td>Patient, Firm, Paralegal, Callback, Location</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Data Flow -->
+        <section id="data-flow" class="diagram-section">
+            <h2><span class="icon">📊</span> Complete Data Flow</h2>
+            <div class="mermaid">
+                flowchart LR
+                subgraph SOURCE["📞 SOURCE"]
+                A1["Caller"] --> A2["AI Voice Agent"]
+                end
+
+                subgraph COLLECT["📝 DATA COLLECTED"]
+                A2 --> B1["Caller Name/Phone/Email"]
+                A2 --> B2["Patient Name/DOB"]
+                A2 --> B3["Intent-Specific Data"]
+                A2 --> B4["Call Recording"]
+                A2 --> B5["Transcript"]
+                end
+
+                subgraph WEBHOOK["🔗 WEBHOOK"]
+                B1 --> C1["JSON Payload"]
+                B2 --> C1
+                B3 --> C1
+                B4 --> C1
+                B5 --> C1
+                C1 --> C2["POST to GHL"]
+                end
+
+                subgraph GHL["⚡ GHL"]
+                C2 --> D1["Create/Update Contact"]
+                D1 --> D2["Map Custom Fields"]
+                D2 --> D3["Route by intents_handled"]
+                D3 --> D4["Send Email"]
+                D3 --> D5["Send SMS"]
+                end
+
+                subgraph DESTINATION["📬 DESTINATION"]
+                D4 --> E1["Staff Inbox"]
+                E1 --> E2["CRM/EHR Entry"]
+                D5 --> E3["Caller Phone"]
+                end
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="emoji">📞</span>
+                    <div class="text"><strong>Voice Agent</strong>Collects caller data during conversation</div>
+                </div>
+                <div class="legend-item">
+                    <span class="emoji">🔗</span>
+                    <div class="text"><strong>Webhook</strong>POST request with JSON payload to GHL</div>
+                </div>
+                <div class="legend-item">
+                    <span class="emoji">⚡</span>
+                    <div class="text"><strong>GHL Workflow</strong>Automation triggered by webhook</div>
+                </div>
+                <div class="legend-item">
+                    <span class="emoji">📧</span>
+                    <div class="text"><strong>Staff Email</strong>Structured data for CRM/EHR intake</div>
+                </div>
+                <div class="legend-item">
+                    <span class="emoji">📱</span>
+                    <div class="text"><strong>Caller SMS</strong>Confirmation message to caller</div>
+                </div>
+                <div class="legend-item">
+                    <span class="emoji">🏷️</span>
+                    <div class="text"><strong>Contact Tag</strong>For reporting and filtering</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GHL Setup Checklist -->
+        <section class="diagram-section">
+            <h2><span class="icon">✅</span> GHL Setup Checklist</h2>
+
+            <table>
+                <tr>
+                    <th>Step</th>
+                    <th>Action</th>
+                    <th>Location in GHL</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Create Custom Contact Fields</td>
+                    <td>Settings → Custom Fields → Contacts</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Create New Workflow</td>
+                    <td>Automations → Create Workflow</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Add Inbound Webhook Trigger</td>
+                    <td>Workflow → Add Trigger → Inbound Webhook</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Copy Webhook URL</td>
+                    <td>Trigger Settings → Copy URL</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Fire Test Webhook</td>
+                    <td>Voice Agent → Send Test POST</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Map Webhook Fields</td>
+                    <td>Trigger → Map Data</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Add Find/Create Contact Action</td>
+                    <td>Workflow → Add Action</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>Add If/Else for intents_handled (use "contains")</td>
+                    <td>Workflow → Add If/Else</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>Add Email Actions (3 branches: records, billing, lien)</td>
+                    <td>Each Branch → Send Email</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>Add SMS Action</td>
+                    <td>Workflow → Send SMS</td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td>Add Tag Action</td>
+                    <td>Workflow → Add Tag</td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td>Publish Workflow</td>
+                    <td>Workflow → Publish</td>
+                </tr>
+            </table>
+        </section>
+
+    </div>
+
+    <button class="print-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#00d9ff',
+                primaryTextColor: '#1a1a2e',
+                primaryBorderColor: '#0099cc',
+                lineColor: '#0099cc',
+                secondaryColor: '#16213e',
+                tertiaryColor: '#0f3460',
+                background: '#ffffff',
+                mainBkg: '#e8f4f8',
+                nodeBorder: '#0099cc',
+                clusterBkg: '#f0f8ff',
+                clusterBorder: '#00d9ff',
+                titleColor: '#1a1a2e',
+                edgeLabelBackground: '#ffffff'
+            },
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+
+</html>

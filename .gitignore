@@ -4,3 +4,5 @@ data/
 A2P-10DLC_RegistrationComplianceTool/
 FirstChoice-Imaging/
 .git/
+.claude/
+.env

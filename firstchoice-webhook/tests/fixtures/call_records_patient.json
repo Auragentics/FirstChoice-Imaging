@@ -1,0 +1,9 @@
+{
+  "caller_name": "Jane Doe",
+  "caller_phone": "435-555-1234",
+  "caller_email": "jane@example.com",
+  "intents_handled": "records",
+  "sms_consent": "YES",
+  "records_caller_type": "patient",
+  "records_request_type": "medical_records"
+}

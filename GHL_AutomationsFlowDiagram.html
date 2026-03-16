@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHL Automations Flow Diagram — First Choice Imaging</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e6e6e6;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #0f3460, #16213e);
+            padding: 30px 40px;
+            text-align: center;
+            border-bottom: 3px solid #00d9ff;
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: #00d9ff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+
+        .header p {
+            color: #a0a0a0;
+            font-size: 1rem;
+        }
+
+        .nav {
+            background: rgba(15, 52, 96, 0.8);
+            padding: 15px 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 217, 255, 0.3);
+        }
+
+        .nav a {
+            color: #00d9ff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav a:hover {
+            background: rgba(0, 217, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .diagram-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .diagram-section h2 {
+            color: #00d9ff;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0, 217, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .diagram-section h2 .icon {
+            font-size: 1.5rem;
+        }
+
+        .diagram-section h3 {
+            color: #00d9ff;
+            margin: 20px 0 15px;
+        }
+
+        .mermaid {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(0, 217, 255, 0.05));
+            border-left: 4px solid #00d9ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box h3 {
+            color: #00d9ff;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            padding-left: 20px;
+        }
+
+        .info-box li {
+            margin: 8px 0;
+            color: #c0c0c0;
+        }
+
+        .info-box p {
+            color: #c0c0c0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 107, 107, 0.1));
+            border-left: 4px solid #ff6b6b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .warning-box h3 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        .warning-box p, .warning-box li {
+            color: #c0c0c0;
+        }
+
+        .warning-box ul {
+            padding-left: 20px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 255, 136, 0.1));
+            border-left: 4px solid #00ff88;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .success-box h3 {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        .success-box p, .success-box li {
+            color: #c0c0c0;
+        }
+
+        .success-box ul {
+            padding-left: 20px;
+        }
+
+        .workflow-label {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .wf1 {
+            background: rgba(0, 217, 255, 0.2);
+            color: #00d9ff;
+            border: 1px solid #00d9ff;
+        }
+
+        .wf2 {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+            border: 1px solid #ffa500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(0, 217, 255, 0.2);
+            color: #00d9ff;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(0, 217, 255, 0.05);
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legend-item .emoji {
+            font-size: 1.5rem;
+        }
+
+        .legend-item .text {
+            font-size: 0.9rem;
+        }
+
+        .legend-item .text strong {
+            color: #00d9ff;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .sms-template {
+            background: rgba(46, 213, 115, 0.1);
+            border: 1px solid rgba(46, 213, 115, 0.3);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #c0c0c0;
+            white-space: pre-wrap;
+        }
+
+        .email-template {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #c0c0c0;
+            white-space: pre-wrap;
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px solid rgba(0, 217, 255, 0.15);
+            margin: 30px 0;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #00d9ff, #0099cc);
+            color: #1a1a2e;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.5);
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .nav,
+            .print-btn {
+                display: none;
+            }
+
+            .diagram-section {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>GHL Automations Flow Diagram</h1>
+        <p>First Choice Imaging &mdash; Two-Workflow GHL Automation System &bull; v1.0 &bull; March 4, 2026</p>
+    </div>
+
+    <nav class="nav">
+        <a href="#overview">Overview</a>
+        <a href="#wf1-master">WF1: Contact Update</a>
+        <a href="#wf1-field-mapping">WF1: Field Mapping</a>
+        <a href="#wf2-master">WF2: Master Flow</a>
+        <a href="#wf2-records-sms">WF2: Records SMS</a>
+        <a href="#wf2-billing-email">WF2: Billing Email</a>
+        <a href="#wf2-lien-email">WF2: Lien Email</a>
+        <a href="#wf2-confirmation-sms">WF2: Confirmation SMS</a>
+        <a href="#sms-templates">SMS Templates</a>
+        <a href="#email-templates">Email Templates</a>
+        <a href="#scenarios">Scenarios</a>
+        <a href="#ghl-setup">GHL Setup</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- ========== OVERVIEW ========== -->
+        <section id="overview" class="diagram-section">
+            <h2><span class="icon">🏗️</span> System Overview</h2>
+
+            <div class="mermaid">
+                flowchart LR
+                subgraph RETELL["RETELL AI"]
+                R1["Voice Agent Call Ends"] --> R2["Post-Call Analysis"]
+                R2 --> R3["Extract 16 Variables"]
+                R3 --> R4["Generate Transcript"]
+                end
+
+                subgraph GHL["GHL AUTOMATIONS"]
+                R3 -->|"Webhook POST"| W1["WORKFLOW 1:<br/>Contact DB Update"]
+                R4 -->|"Triggers"| W2["WORKFLOW 2:<br/>Post-Transcript Actions"]
+                end
+
+                subgraph OUTPUTS["OUTPUTS"]
+                W1 --> O1["Contact Created/Updated"]
+                W2 --> O2["Staff Emails"]
+                W2 --> O3["Caller SMS"]
+                W2 --> O4["Contact Tagged"]
+                end
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="emoji">1️⃣</span>
+                    <div class="text"><strong>Workflow 1: Contact DB Update</strong>Webhook-triggered. Creates/updates contact with all 16 extracted variables. Fires immediately when call ends.</div>
+                </div>
+                <div class="legend-item">
+                    <span class="emoji">2️⃣</span>
+                    <div class="text"><strong>Workflow 2: Post-Transcript Actions</strong>Triggered by Generate Transcript. Routes by intents_handled. Sends staff emails + caller SMS based on intent, caller type, and request type.</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h3>Why Two Workflows?</h3>
+                <ul>
+                    <li><strong>Workflow 1</strong> fires on the webhook POST and handles only contact data &mdash; fast, reliable, no dependencies</li>
+                    <li><strong>Workflow 2</strong> fires after the transcript is generated and uses the contact variables to route SMS and emails &mdash; ensures transcript is available for staff email attachments</li>
+                    <li>Separation keeps each workflow focused and easier to debug</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ========== WORKFLOW 1: MASTER ========== -->
+        <section id="wf1-master" class="diagram-section">
+            <h2><span class="icon">1️⃣</span> Workflow 1: Contact Database Update <span class="workflow-label wf1">WEBHOOK TRIGGER</span></h2>
+
+            <div class="mermaid">
+                flowchart TD
+                subgraph TRIGGER["TRIGGER"]
+                T1[/"Inbound Webhook POST<br/>(Retell AI call ends)"/]
+                end
+
+                subgraph CONTACT["CONTACT MANAGEMENT"]
+                T1 --> C1["Create or Update Contact"]
+                C1 --> C2["Lookup by caller_phone"]
+                C2 --> C3{"Contact Exists?"}
+                C3 -->|"No"| C4["Create New Contact"]
+                C3 -->|"Yes"| C5["Update Existing Contact"]
+                C4 --> C6["Map All 16 Webhook Fields"]
+                C5 --> C6
+                end
+
+                subgraph FIELDS["FIELD MAPPING"]
+                C6 --> F1["Universal: caller_name, caller_phone,<br/>caller_email, intents_handled, sms_consent"]
+                C6 --> F2["Records: records_caller_type,<br/>records_request_type"]
+                C6 --> F3["Billing: billing_patient_name,<br/>billing_patient_dob, billing_reason"]
+                C6 --> F4["Lien: lien_patient_name, lien_patient_dob,<br/>lien_firm_name, lien_paralegal_name,<br/>lien_callback_phone, lien_clinic_location"]
+                end
+
+                subgraph TAG["TAGGING"]
+                F1 --> T2["Add Tag: AI Voice Agent Inquiry"]
+                F2 --> T2
+                F3 --> T2
+                F4 --> T2
+                T2 --> DONE[/"Workflow 1 Complete"/]
+                end
+            </div>
+
+            <div class="success-box">
+                <h3>Workflow 1 Summary</h3>
+                <ul>
+                    <li><strong>Trigger:</strong> Inbound Webhook (POST from Retell AI)</li>
+                    <li><strong>Action 1:</strong> Create or Update Contact &mdash; lookup by phone number</li>
+                    <li><strong>Action 2:</strong> Map all 16 webhook fields to GHL custom contact fields</li>
+                    <li><strong>Action 3:</strong> Add tag "AI Voice Agent Inquiry" for reporting/filtering</li>
+                    <li><strong>No conditional logic</strong> &mdash; every field is mapped regardless of intent</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ========== WORKFLOW 1: FIELD MAPPING ========== -->
+        <section id="wf1-field-mapping" class="diagram-section">
+            <h2><span class="icon">📋</span> Workflow 1: Webhook Field Mapping <span class="workflow-label wf1">WF1</span></h2>
+
+            <h3>Universal Fields (All Calls)</h3>
+            <table>
+                <tr>
+                    <th>Webhook Field</th>
+                    <th>GHL Custom Field</th>
+                    <th>Type</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td><code>contact.caller_name</code></td>
+                    <td>Full Name (built-in)</td>
+                    <td>Text</td>
+                    <td>Maps to GHL contact name</td>
+                </tr>
+                <tr>
+                    <td><code>contact.caller_phone</code></td>
+                    <td>Phone (built-in)</td>
+                    <td>Phone</td>
+                    <td>Primary lookup key</td>
+                </tr>
+                <tr>
+                    <td><code>contact.caller_email</code></td>
+                    <td>Email (built-in)</td>
+                    <td>Email</td>
+                    <td>Optional &mdash; may be empty</td>
+                </tr>
+                <tr>
+                    <td><code>contact.intents_handled</code></td>
+                    <td>Intents Handled (custom)</td>
+                    <td>Text</td>
+                    <td>Comma-separated: "records", "billing", "lien"</td>
+                </tr>
+                <tr>
+                    <td><code>contact.sms_consent</code></td>
+                    <td>SMS Consent (custom)</td>
+                    <td>Dropdown</td>
+                    <td>"YES" or "NO"</td>
+                </tr>
+            </table>
+
+            <h3>Medical Records Fields</h3>
+            <table>
+                <tr>
+                    <th>Webhook Field</th>
+                    <th>GHL Custom Field</th>
+                    <th>Type</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td><code>contact.records_caller_type</code></td>
+                    <td>Records Caller Type (custom)</td>
+                    <td>Dropdown</td>
+                    <td>"patient", "provider", or "attorney"</td>
+                </tr>
+                <tr>
+                    <td><code>contact.records_request_type</code></td>
+                    <td>Records Request Type (custom)</td>
+                    <td>Dropdown</td>
+                    <td>"medical_records" or "radiology_report"</td>
+                </tr>
+            </table>
+
+            <h3>Billing Fields</h3>
+            <table>
+                <tr>
+                    <th>Webhook Field</th>
+                    <th>GHL Custom Field</th>
+                    <th>Type</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td><code>contact.billing_patient_name</code></td>
+                    <td>Billing Patient Name (custom)</td>
+                    <td>Text</td>
+                    <td>May equal caller_name if self</td>
+                </tr>
+                <tr>
+                    <td><code>contact.billing_patient_dob</code></td>
+                    <td>Billing Patient DOB (custom)</td>
+                    <td>Text</td>
+                    <td>YYYY-MM-DD format</td>
+                </tr>
+                <tr>
+                    <td><code>contact.billing_reason</code></td>
+                    <td>Billing Reason (custom)</td>
+                    <td>Text</td>
+                    <td>Free text description</td>
+                </tr>
+            </table>
+
+            <h3>Lien Fields</h3>
+            <table>
+                <tr>
+                    <th>Webhook Field</th>
+                    <th>GHL Custom Field</th>
+                    <th>Type</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td><code>contact.lien_patient_name</code></td>
+                    <td>Lien Patient Name (custom)</td>
+                    <td>Text</td>
+                    <td>Client/patient full name</td>
+                </tr>
+                <tr>
+                    <td><code>contact.lien_patient_dob</code></td>
+                    <td>Lien Patient DOB (custom)</td>
+                    <td>Text</td>
+                    <td>YYYY-MM-DD format</td>
+                </tr>
+                <tr>
+                    <td><code>contact.lien_firm_name</code></td>
+                    <td>Lien Firm Name (custom)</td>
+                    <td>Text</td>
+                    <td>Law firm name</td>
+                </tr>
+                <tr>
+                    <td><code>contact.lien_paralegal_name</code></td>
+                    <td>Lien Paralegal Name (custom)</td>
+                    <td>Text</td>
+                    <td>Paralegal or point of contact</td>
+                </tr>
+                <tr>
+                    <td><code>contact.lien_callback_phone</code></td>
+                    <td>Lien Callback Phone (custom)</td>
+                    <td>Phone</td>
+                    <td>Best callback number for firm</td>
+                </tr>
+                <tr>
+                    <td><code>contact.lien_clinic_location</code></td>
+                    <td>Lien Clinic Location (custom)</td>
+                    <td>Text</td>
+                    <td>Clinic where patient was seen</td>
+                </tr>
+            </table>
+
+            <div class="warning-box">
+                <h3>GHL Custom Fields Setup</h3>
+                <p>All custom fields must be created in GHL <strong>before</strong> mapping: Settings &rarr; Custom Fields &rarr; Contacts. Use the exact field names above so webhook mapping is consistent.</p>
+            </div>
+        </section>
+
+        <!-- ========== WORKFLOW 2: MASTER ========== -->
+        <section id="wf2-master" class="diagram-section">
+            <h2><span class="icon">2️⃣</span> Workflow 2: Post-Transcript Actions <span class="workflow-label wf2">TRANSCRIPT TRIGGER</span></h2>
+
+            <div class="mermaid">
+                flowchart TD
+                subgraph TRIGGER["TRIGGER"]
+                T1[/"Generate Transcript Action Completes"/]
+                end
+
+                subgraph GATE["GATE CHECK"]
+                T1 --> G1{"intents_handled is NOT empty?"}
+                G1 -->|"Empty"| G2[/"No action needed<br/>(scheduling/FAQ only)"/]
+                G1 -->|"Not empty"| R1["Proceed to Intent Routing"]
+                end
+
+                subgraph RECORDS["BRANCH 1: RECORDS"]
+                R1 --> B1{"intents_handled<br/>CONTAINS 'records'?"}
+                B1 -->|"Yes"| B1A["Send Records Staff Email"]
+                B1A --> B1B{"sms_consent = YES?"}
+                B1B -->|"Yes"| B1C["Send Records SMS<br/>(link based on caller_type + request_type)"]
+                B1B -->|"No"| B1D["Skip SMS"]
+                end
+
+                subgraph BILLING["BRANCH 2: BILLING"]
+                R1 --> B2{"intents_handled<br/>CONTAINS 'billing'?"}
+                B2 -->|"Yes"| B2A["Send Billing Staff Email"]
+                B2A --> B2B{"sms_consent = YES?"}
+                B2B -->|"Yes"| B2C["Send Billing Confirmation SMS"]
+                B2B -->|"No"| B2D["Skip SMS"]
+                end
+
+                subgraph LIEN["BRANCH 3: LIEN"]
+                R1 --> B3{"intents_handled<br/>CONTAINS 'lien'?"}
+                B3 -->|"Yes"| B3A["Send Lien Staff Email"]
+                B3A --> B3B{"sms_consent = YES?"}
+                B3B -->|"Yes"| B3C["Send Lien Confirmation SMS"]
+                B3B -->|"No"| B3D["Skip SMS"]
+                end
+
+                subgraph COMPLETE["FINISH"]
+                B1C --> DONE[/"Workflow 2 Complete"/]
+                B1D --> DONE
+                B2C --> DONE
+                B2D --> DONE
+                B3C --> DONE
+                B3D --> DONE
+                end
+            </div>
+
+            <div class="warning-box">
+                <h3>Critical: Use "Contains" (Not "Equals")</h3>
+                <ul>
+                    <li>Multi-intent calls produce comma-separated values like <code>"records,billing"</code></li>
+                    <li>Each If/Else branch checks if <code>intents_handled</code> <strong>contains</strong> the value</li>
+                    <li>This means a call with <code>"records,billing"</code> triggers BOTH Branch 1 and Branch 2</li>
+                    <li>All 3 branches are evaluated independently &mdash; they are NOT mutually exclusive</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>Workflow 2 Summary</h3>
+                <ul>
+                    <li><strong>Trigger:</strong> Generate Transcript action completes</li>
+                    <li><strong>Gate:</strong> Skip if intents_handled is empty (scheduling/FAQ calls)</li>
+                    <li><strong>Branch 1 (Records):</strong> Staff email + SMS with form link (varies by caller_type &amp; request_type)</li>
+                    <li><strong>Branch 2 (Billing):</strong> Staff email + confirmation SMS</li>
+                    <li><strong>Branch 3 (Lien):</strong> Staff email + confirmation SMS</li>
+                    <li><strong>SMS Gate:</strong> Every SMS is gated by <code>sms_consent = YES</code></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ========== WORKFLOW 2: RECORDS SMS ROUTING ========== -->
+        <section id="wf2-records-sms" class="diagram-section">
+            <h2><span class="icon">📱</span> Workflow 2: Records SMS Routing <span class="workflow-label wf2">WF2 BRANCH 1</span></h2>
+
+            <div class="mermaid">
+                flowchart TD
+                subgraph ENTRY["RECORDS SMS ENTRY"]
+                A[/"intents_handled CONTAINS 'records'<br/>AND sms_consent = YES"/]
+                end
+
+                subgraph CALLERTYPE["CALLER TYPE CHECK"]
+                A --> CT{"records_caller_type?"}
+                CT -->|"patient"| PT["Patient / Representative"]
+                CT -->|"provider"| PR["Healthcare Provider"]
+                CT -->|"attorney"| AT["Attorney"]
+                end
+
+                subgraph PATIENT["PATIENT SMS ROUTING"]
+                PT --> RT1{"records_request_type?"}
+                RT1 -->|"medical_records"| SMS1["SMS: Medical Records Release Form Link"]
+                RT1 -->|"radiology_report"| SMS2["SMS: Radiology Report Request Form Link"]
+                end
+
+                subgraph PROVIDER["PROVIDER SMS ROUTING"]
+                PR --> RT2{"records_request_type?"}
+                RT2 -->|"medical_records"| SMS3["SMS: Provider Records Transfer Form Link"]
+                RT2 -->|"radiology_report"| SMS4["SMS: Provider Radiology Report Form Link"]
+                end
+
+                subgraph ATTORNEY_SMS["ATTORNEY SMS"]
+                AT --> SMS5["SMS: Records Request Confirmation<br/>(no form link — staff will follow up)"]
+                end
+
+                subgraph DONE["CONTINUE"]
+                SMS1 --> NEXT[/"Continue to next branch"/]
+                SMS2 --> NEXT
+                SMS3 --> NEXT
+                SMS4 --> NEXT
+                SMS5 --> NEXT
+                end
+            </div>
+
+            <h3>Records SMS Decision Matrix</h3>
+            <table>
+                <tr>
+                    <th>Caller Type</th>
+                    <th>Request Type</th>
+                    <th>SMS Content</th>
+                    <th>Form Link?</th>
+                </tr>
+                <tr>
+                    <td>patient</td>
+                    <td>medical_records</td>
+                    <td>Medical records release form link</td>
+                    <td style="color: #00ff88;">Yes</td>
+                </tr>
+                <tr>
+                    <td>patient</td>
+                    <td>radiology_report</td>
+                    <td>Radiology report request form link</td>
+                    <td style="color: #00ff88;">Yes</td>
+                </tr>
+                <tr>
+                    <td>provider</td>
+                    <td>medical_records</td>
+                    <td>Provider records transfer form link</td>
+                    <td style="color: #00ff88;">Yes</td>
+                </tr>
+                <tr>
+                    <td>provider</td>
+                    <td>radiology_report</td>
+                    <td>Provider radiology report form link</td>
+                    <td style="color: #00ff88;">Yes</td>
+                </tr>
+                <tr>
+                    <td>attorney</td>
+                    <td>medical_records</td>
+                    <td>Confirmation only &mdash; staff will follow up</td>
+                    <td style="color: #ff6b6b;">No</td>
+                </tr>
+            </table>
+
+            <div class="info-box">
+                <h3>GHL Implementation: Nested If/Else</h3>
+                <ul>
+                    <li><strong>Outer If/Else:</strong> Check <code>records_caller_type</code> (patient vs provider vs attorney)</li>
+                    <li><strong>Inner If/Else (patient branch):</strong> Check <code>records_request_type</code> (medical_records vs radiology_report)</li>
+                    <li><strong>Inner If/Else (provider branch):</strong> Check <code>records_request_type</code> (medical_records vs radiology_report)</li>
+                    <li><strong>Attorney branch:</strong> No nested check &mdash; always sends confirmation-only SMS</li>
+                    <li>Each leaf node uses a different SMS template with the appropriate form link</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ========== WORKFLOW 2: BILLING EMAIL ========== -->
+        <section id="wf2-billing-email" class="diagram-section">
+            <h2><span class="icon">💳</span> Workflow 2: Billing Staff Email <span class="workflow-label wf2">WF2 BRANCH 2</span></h2>
+
+            <div class="mermaid">
+                flowchart TD
+                subgraph ENTRY["BILLING BRANCH ENTRY"]
+                A[/"intents_handled CONTAINS 'billing'"/]
+                end
+
+                subgraph EMAIL["STAFF EMAIL"]
+                A --> E1["Send Email Action"]
+                E1 --> E2["To: billing@firstchoice-imaging.com"]
+                E2 --> E3["Subject: BILLING INQUIRY | {{contact.billing_patient_name}}"]
+                E3 --> E4["Body: All billing variables + call summary"]
+                end
+
+                subgraph BODY["EMAIL BODY CONTENT"]
+                E4 --> B1["Caller: {{contact.caller_name}}"]
+                E4 --> B2["Caller Phone: {{contact.caller_phone}}"]
+                E4 --> B3["Patient: {{contact.billing_patient_name}}"]
+                E4 --> B4["Patient DOB: {{contact.billing_patient_dob}}"]
+                E4 --> B5["Reason: {{contact.billing_reason}}"]
+                E4 --> B6["Call Transcript (attached or linked)"]
+                end
+
+                subgraph SMS_CHECK["CALLER SMS"]
+                B1 --> SC{"sms_consent = YES?"}
+                B2 --> SC
+                B3 --> SC
+                B4 --> SC
+                B5 --> SC
+                B6 --> SC
+                SC -->|"Yes"| SMS["Send Billing Confirmation SMS"]
+                SC -->|"No"| SKIP["Skip SMS"]
+                end
+            </div>
+
+            <div class="info-box">
+                <h3>Billing Email Details</h3>
+                <ul>
+                    <li><strong>Recipient:</strong> billing@firstchoice-imaging.com (or configured billing department email)</li>
+                    <li><strong>Subject:</strong> <code>BILLING INQUIRY | {{contact.billing_patient_name}}</code></li>
+                    <li><strong>Body includes:</strong> Caller info, patient name, DOB, billing reason, call transcript</li>
+                    <li><strong>Purpose:</strong> Billing team receives a structured intake email to process the inquiry</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ========== WORKFLOW 2: LIEN EMAIL ========== -->
+        <section id="wf2-lien-email" class="diagram-section">
+            <h2><span class="icon">⚖️</span> Workflow 2: Lien Staff Email <span class="workflow-label wf2">WF2 BRANCH 3</span></h2>
+
+            <div class="mermaid">
+                flowchart TD
+                subgraph ENTRY["LIEN BRANCH ENTRY"]
+                A[/"intents_handled CONTAINS 'lien'"/]
+                end
+
+                subgraph EMAIL["STAFF EMAIL"]
+                A --> E1["Send Email Action"]
+                E1 --> E2["To: orders@firstchoice-imaging.com"]
+                E2 --> E3["Subject: LIEN REQUEST | {{contact.lien_patient_name}}"]
+                E3 --> E4["Body: All lien variables + call summary"]
+                end
+
+                subgraph BODY["EMAIL BODY CONTENT"]
+                E4 --> B1["Caller: {{contact.caller_name}}"]
+                E4 --> B2["Caller Phone: {{contact.caller_phone}}"]
+                E4 --> B3["Patient: {{contact.lien_patient_name}}"]
+                E4 --> B4["Patient DOB: {{contact.lien_patient_dob}}"]
+                E4 --> B5["Law Firm: {{contact.lien_firm_name}}"]
+                E4 --> B6["Paralegal: {{contact.lien_paralegal_name}}"]
+                E4 --> B7["Callback: {{contact.lien_callback_phone}}"]
+                E4 --> B8["Clinic: {{contact.lien_clinic_location}}"]
+                E4 --> B9["Call Transcript (attached or linked)"]
+                end
+
+                subgraph SMS_CHECK["CALLER SMS"]
+                B1 --> SC{"sms_consent = YES?"}
+                B3 --> SC
+                B5 --> SC
+                B7 --> SC
+                B9 --> SC
+                SC -->|"Yes"| SMS["Send Lien Confirmation SMS"]
+                SC -->|"No"| SKIP["Skip SMS"]
+                end
+            </div>
+
+            <div class="info-box">
+                <h3>Lien Email Details</h3>
+                <ul>
+                    <li><strong>Recipient:</strong> orders@firstchoice-imaging.com (or configured records/legal department email)</li>
+                    <li><strong>Subject:</strong> <code>LIEN REQUEST | {{contact.lien_patient_name}}</code></li>
+                    <li><strong>Body includes:</strong> All 6 lien variables + caller info + call transcript</li>
+                    <li><strong>Purpose:</strong> Staff receives structured lien request for immediate processing</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ========== WORKFLOW 2: CONFIRMATION SMS ========== -->
+        <section id="wf2-confirmation-sms" class="diagram-section">
+            <h2><span class="icon">📱</span> Workflow 2: SMS Consent Gate &amp; Confirmation Logic <span class="workflow-label wf2">WF2</span></h2>
+
+            <div class="mermaid">
+                flowchart TD
+                subgraph GATE["SMS CONSENT GATE"]
+                A["Any intent completed"] --> G{"sms_consent = YES?"}
+                G -->|"NO"| STOP[/"No SMS sent — workflow continues"/]
+                G -->|"YES"| ROUTE["Route SMS by intent"]
+                end
+
+                subgraph RECORDS_SMS["RECORDS SMS"]
+                ROUTE --> RS{"intents_handled<br/>CONTAINS 'records'?"}
+                RS -->|"Yes"| RS1{"records_caller_type?"}
+                RS1 -->|"patient"| RS2{"records_request_type?"}
+                RS2 -->|"medical_records"| RS3["SMS: Med records form link"]
+                RS2 -->|"radiology_report"| RS4["SMS: Radiology report form link"]
+                RS1 -->|"provider"| RS5{"records_request_type?"}
+                RS5 -->|"medical_records"| RS6["SMS: Provider records form link"]
+                RS5 -->|"radiology_report"| RS7["SMS: Provider radiology form link"]
+                RS1 -->|"attorney"| RS8["SMS: Records confirmation only"]
+                end
+
+                subgraph BILLING_SMS["BILLING SMS"]
+                ROUTE --> BS{"intents_handled<br/>CONTAINS 'billing'?"}
+                BS -->|"Yes"| BS1["SMS: Billing inquiry received,<br/>team will follow up"]
+                end
+
+                subgraph LIEN_SMS["LIEN SMS"]
+                ROUTE --> LS{"intents_handled<br/>CONTAINS 'lien'?"}
+                LS -->|"Yes"| LS1["SMS: Lien request received,<br/>team will follow up"]
+                end
+            </div>
+
+            <div class="warning-box">
+                <h3>SMS Consent is REQUIRED</h3>
+                <ul>
+                    <li><code>sms_consent</code> must equal <code>"YES"</code> for ANY SMS to be sent</li>
+                    <li>If <code>sms_consent = "NO"</code>, the entire SMS branch is skipped</li>
+                    <li>Staff emails are ALWAYS sent regardless of SMS consent</li>
+                    <li>This ensures A2P 10DLC compliance &mdash; no unsolicited texts</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>Multi-Intent SMS Example</h3>
+                <p>A caller with <code>intents_handled = "records,billing"</code> and <code>sms_consent = YES</code> receives:</p>
+                <ul>
+                    <li><strong>SMS 1:</strong> Records form link (based on their caller_type + request_type)</li>
+                    <li><strong>SMS 2:</strong> Billing confirmation ("Your billing inquiry has been received...")</li>
+                </ul>
+                <p style="margin-top: 10px;">These can be sent as separate messages or combined into a single SMS depending on your GHL SMS action configuration.</p>
+            </div>
+        </section>
+
+        <!-- ========== SMS TEMPLATES ========== -->
+        <section id="sms-templates" class="diagram-section">
+            <h2><span class="icon">💬</span> SMS Templates</h2>
+
+            <h3>Records: Patient &mdash; Medical Records Transfer</h3>
+            <div class="sms-template">Hi {{contact.caller_name}}, thank you for contacting First Choice Imaging about your medical records request. To get started, please complete our Medical Records Release Form here: [MEDICAL_RECORDS_FORM_LINK]
+
+Our team will follow up once your request is processed. Reply STOP to opt out.</div>
+
+            <h3>Records: Patient &mdash; Radiology Report</h3>
+            <div class="sms-template">Hi {{contact.caller_name}}, thank you for contacting First Choice Imaging about your radiology report request. To get started, please complete our Radiology Report Request Form here: [RADIOLOGY_REPORT_FORM_LINK]
+
+Our team will follow up once your request is processed. Reply STOP to opt out.</div>
+
+            <h3>Records: Provider &mdash; Medical Records Transfer</h3>
+            <div class="sms-template">Hi {{contact.caller_name}}, thank you for contacting First Choice Imaging. To request a medical records transfer, please have your office complete the Provider Records Request Form here: [PROVIDER_RECORDS_FORM_LINK]
+
+Our records team will process your request promptly. Reply STOP to opt out.</div>
+
+            <h3>Records: Provider &mdash; Radiology Report</h3>
+            <div class="sms-template">Hi {{contact.caller_name}}, thank you for contacting First Choice Imaging. To request a radiology report, please have your office complete the Provider Report Request Form here: [PROVIDER_RADIOLOGY_FORM_LINK]
+
+Our records team will process your request promptly. Reply STOP to opt out.</div>
+
+            <h3>Records: Attorney &mdash; Confirmation Only</h3>
+            <div class="sms-template">Hi {{contact.caller_name}}, thank you for contacting First Choice Imaging regarding a medical records request. Our records team has been notified and will follow up with your office shortly.
+
+Reply STOP to opt out.</div>
+
+            <hr class="divider">
+
+            <h3>Billing Confirmation</h3>
+            <div class="sms-template">Hi {{contact.caller_name}}, thank you for contacting First Choice Imaging about your billing inquiry. Our billing team has been notified and will follow up with you shortly regarding {{contact.billing_patient_name}}'s account.
+
+Reply STOP to opt out.</div>
+
+            <h3>Lien Confirmation</h3>
+            <div class="sms-template">Hi {{contact.caller_name}}, thank you for contacting First Choice Imaging. Your lien request for {{contact.lien_patient_name}} has been received. Our team will follow up with your office shortly.
+
+Reply STOP to opt out.</div>
+
+            <div class="warning-box">
+                <h3>A2P 10DLC Compliance</h3>
+                <ul>
+                    <li>All SMS templates include <code>Reply STOP to opt out</code></li>
+                    <li>SMS is only sent when <code>sms_consent = YES</code></li>
+                    <li>Replace <code>[FORM_LINK]</code> placeholders with actual First Choice Imaging form URLs</li>
+                    <li>Ensure your 10DLC campaign is registered for transactional messaging</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ========== EMAIL TEMPLATES ========== -->
+        <section id="email-templates" class="diagram-section">
+            <h2><span class="icon">📧</span> Staff Email Templates</h2>
+
+            <h3>Medical Records Staff Email</h3>
+            <div class="email-template"><strong>To:</strong> orders@firstchoice-imaging.com
+<strong>Subject (if medical_records):</strong> MED RECORDS TRANSFER | {{contact.caller_name}}
+<strong>Subject (if radiology_report):</strong> RADIOLOGY REPORT | {{contact.caller_name}}
+
+<strong>Body:</strong>
+────────────────────────────────
+MEDICAL RECORDS REQUEST
+────────────────────────────────
+Caller Name:     {{contact.caller_name}}
+Caller Phone:    {{contact.caller_phone}}
+Caller Email:    {{contact.caller_email}}
+
+Caller Type:     {{contact.records_caller_type}}
+Request Type:    {{contact.records_request_type}}
+
+SMS Consent:     {{contact.sms_consent}}
+────────────────────────────────
+Call Transcript: [attached or linked]
+────────────────────────────────</div>
+
+            <h3>Billing Staff Email</h3>
+            <div class="email-template"><strong>To:</strong> billing@firstchoice-imaging.com
+<strong>Subject:</strong> BILLING INQUIRY | {{contact.billing_patient_name}}
+
+<strong>Body:</strong>
+────────────────────────────────
+BILLING INQUIRY
+────────────────────────────────
+Caller Name:     {{contact.caller_name}}
+Caller Phone:    {{contact.caller_phone}}
+Caller Email:    {{contact.caller_email}}
+
+Patient Name:    {{contact.billing_patient_name}}
+Patient DOB:     {{contact.billing_patient_dob}}
+Reason:          {{contact.billing_reason}}
+
+SMS Consent:     {{contact.sms_consent}}
+────────────────────────────────
+Call Transcript: [attached or linked]
+────────────────────────────────</div>
+
+            <h3>Lien Staff Email</h3>
+            <div class="email-template"><strong>To:</strong> orders@firstchoice-imaging.com
+<strong>Subject:</strong> LIEN REQUEST | {{contact.lien_patient_name}}
+
+<strong>Body:</strong>
+────────────────────────────────
+LIEN REQUEST
+────────────────────────────────
+Caller Name:     {{contact.caller_name}}
+Caller Phone:    {{contact.caller_phone}}
+Caller Email:    {{contact.caller_email}}
+
+Patient Name:    {{contact.lien_patient_name}}
+Patient DOB:     {{contact.lien_patient_dob}}
+Law Firm:        {{contact.lien_firm_name}}
+Paralegal:       {{contact.lien_paralegal_name}}
+Callback Phone:  {{contact.lien_callback_phone}}
+Clinic Location: {{contact.lien_clinic_location}}
+
+SMS Consent:     {{contact.sms_consent}}
+────────────────────────────────
+Call Transcript: [attached or linked]
+────────────────────────────────</div>
+
+            <div class="info-box">
+                <h3>Email Implementation Notes</h3>
+                <ul>
+                    <li>Use GHL <strong>Send Email</strong> action with custom HTML template for each branch</li>
+                    <li>Reference contact custom fields using <code>{{contact.field_name}}</code> syntax</li>
+                    <li>Medical Records email subject is <strong>dynamic</strong> &mdash; use an If/Else inside Branch 1 to set subject based on <code>records_request_type</code></li>
+                    <li>Attach or link the call transcript using the transcript URL from the webhook payload</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ========== SCENARIOS ========== -->
+        <section id="scenarios" class="diagram-section">
+            <h2><span class="icon">🎯</span> End-to-End Scenarios</h2>
+
+            <h3>Scenario 1: Patient Requests Medical Records (Single Intent)</h3>
+            <div class="mermaid">
+                flowchart LR
+                subgraph CALL["DURING CALL"]
+                A["Patient calls"] --> B["Agent collects:<br/>caller_name, caller_phone"]
+                B --> C["records_caller_type = patient<br/>records_request_type = medical_records"]
+                C --> D["intents_handled = 'records'<br/>sms_consent = YES"]
+                end
+
+                subgraph WF1["WORKFLOW 1"]
+                D --> E["Contact created/updated<br/>All fields mapped"]
+                end
+
+                subgraph WF2["WORKFLOW 2"]
+                E --> F["Branch 1: Records"]
+                F --> G["Staff email sent:<br/>MED RECORDS TRANSFER"]
+                F --> H["SMS sent to patient:<br/>Medical Records Form Link"]
+                end
+            </div>
+
+            <h3>Scenario 2: Attorney Calls with Lien Request (Single Intent)</h3>
+            <div class="mermaid">
+                flowchart LR
+                subgraph CALL["DURING CALL"]
+                A["Attorney calls"] --> B["Agent collects:<br/>caller_name, caller_phone"]
+                B --> C["All lien_* variables collected"]
+                C --> D["intents_handled = 'lien'<br/>sms_consent = YES"]
+                end
+
+                subgraph WF1["WORKFLOW 1"]
+                D --> E["Contact created/updated<br/>All fields mapped"]
+                end
+
+                subgraph WF2["WORKFLOW 2"]
+                E --> F["Branch 3: Lien"]
+                F --> G["Staff email sent:<br/>LIEN REQUEST"]
+                F --> H["SMS sent to attorney:<br/>Lien confirmation"]
+                end
+            </div>
+
+            <h3>Scenario 3: Patient Needs Records + Has Billing Question (Multi-Intent)</h3>
+            <div class="mermaid">
+                flowchart LR
+                subgraph CALL["DURING CALL"]
+                A["Patient calls"] --> B["Agent collects:<br/>caller_name, caller_phone"]
+                B --> C["records_caller_type = patient<br/>records_request_type = radiology_report"]
+                C --> D["billing_patient_name, DOB, reason"]
+                D --> E["intents_handled = 'records,billing'<br/>sms_consent = YES"]
+                end
+
+                subgraph WF1["WORKFLOW 1"]
+                E --> F["Contact created/updated<br/>All fields mapped"]
+                end
+
+                subgraph WF2["WORKFLOW 2"]
+                F --> G["Branch 1: Records"]
+                G --> G1["Staff email:<br/>RADIOLOGY REPORT"]
+                G --> G2["SMS: Radiology form link"]
+                F --> H["Branch 2: Billing"]
+                H --> H1["Staff email:<br/>BILLING INQUIRY"]
+                H --> H2["SMS: Billing confirmation"]
+                end
+            </div>
+
+            <h3>Scenario 4: Scheduling Request (No Workflow 2 Actions)</h3>
+            <div class="mermaid">
+                flowchart LR
+                subgraph CALL["DURING CALL"]
+                A["Caller requests scheduling"] --> B["Immediate transfer<br/>No additional data collected"]
+                B --> C["intents_handled = '' (empty)"]
+                end
+
+                subgraph WF1["WORKFLOW 1"]
+                C --> D["Contact created/updated<br/>caller_name + caller_phone only"]
+                end
+
+                subgraph WF2["WORKFLOW 2"]
+                D --> E{"intents_handled empty?"}
+                E -->|"Yes"| F[/"No actions — workflow exits"/]
+                end
+            </div>
+
+            <h3>Scenario 5: Records Request, SMS Consent Declined</h3>
+            <div class="mermaid">
+                flowchart LR
+                subgraph CALL["DURING CALL"]
+                A["Provider calls for records"] --> B["records_caller_type = provider<br/>records_request_type = medical_records"]
+                B --> C["intents_handled = 'records'<br/>sms_consent = NO"]
+                end
+
+                subgraph WF1["WORKFLOW 1"]
+                C --> D["Contact created/updated"]
+                end
+
+                subgraph WF2["WORKFLOW 2"]
+                D --> E["Branch 1: Records"]
+                E --> F["Staff email sent:<br/>MED RECORDS TRANSFER"]
+                E --> G{"sms_consent = YES?"}
+                G -->|"NO"| H["SMS SKIPPED"]
+                end
+            </div>
+        </section>
+
+        <!-- ========== GHL SETUP CHECKLIST ========== -->
+        <section id="ghl-setup" class="diagram-section">
+            <h2><span class="icon">✅</span> GHL Setup Checklist</h2>
+
+            <h3>Phase 1: Custom Fields (Settings &rarr; Custom Fields &rarr; Contacts)</h3>
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th>Field Name</th>
+                    <th>Field Type</th>
+                    <th>Options (if dropdown)</th>
+                </tr>
+                <tr><td>1</td><td>Intents Handled</td><td>Text</td><td>&mdash;</td></tr>
+                <tr><td>2</td><td>SMS Consent</td><td>Dropdown</td><td>YES, NO</td></tr>
+                <tr><td>3</td><td>Records Caller Type</td><td>Dropdown</td><td>patient, provider, attorney</td></tr>
+                <tr><td>4</td><td>Records Request Type</td><td>Dropdown</td><td>medical_records, radiology_report</td></tr>
+                <tr><td>5</td><td>Billing Patient Name</td><td>Text</td><td>&mdash;</td></tr>
+                <tr><td>6</td><td>Billing Patient DOB</td><td>Text</td><td>&mdash;</td></tr>
+                <tr><td>7</td><td>Billing Reason</td><td>Text (multiline)</td><td>&mdash;</td></tr>
+                <tr><td>8</td><td>Lien Patient Name</td><td>Text</td><td>&mdash;</td></tr>
+                <tr><td>9</td><td>Lien Patient DOB</td><td>Text</td><td>&mdash;</td></tr>
+                <tr><td>10</td><td>Lien Firm Name</td><td>Text</td><td>&mdash;</td></tr>
+                <tr><td>11</td><td>Lien Paralegal Name</td><td>Text</td><td>&mdash;</td></tr>
+                <tr><td>12</td><td>Lien Callback Phone</td><td>Phone</td><td>&mdash;</td></tr>
+                <tr><td>13</td><td>Lien Clinic Location</td><td>Text</td><td>&mdash;</td></tr>
+            </table>
+
+            <h3>Phase 2: Workflow 1 &mdash; Contact Database Update</h3>
+            <table>
+                <tr>
+                    <th>Step</th>
+                    <th>GHL Action</th>
+                    <th>Configuration</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Add Trigger: Inbound Webhook</td>
+                    <td>Copy webhook URL &rarr; configure in Retell AI</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Fire test webhook from Retell</td>
+                    <td>Send sample POST so GHL can detect fields</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Add Action: Create/Update Contact</td>
+                    <td>Lookup by phone. Map all 16 fields (see field mapping table above)</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Add Action: Add Tag</td>
+                    <td>Tag: "AI Voice Agent Inquiry"</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Publish Workflow 1</td>
+                    <td>Toggle to Published</td>
+                </tr>
+            </table>
+
+            <h3>Phase 3: Workflow 2 &mdash; Post-Transcript Actions</h3>
+            <table>
+                <tr>
+                    <th>Step</th>
+                    <th>GHL Action</th>
+                    <th>Configuration</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Add Trigger: Generate Transcript</td>
+                    <td>Fires after transcript is generated</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Add If/Else: intents_handled is not empty</td>
+                    <td>Gate check &mdash; exit if empty (scheduling/FAQ)</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Add If/Else: intents_handled CONTAINS "records"</td>
+                    <td>Branch 1: Records</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>&nbsp;&nbsp;Branch 1 &rarr; If/Else: records_request_type</td>
+                    <td>Dynamic email subject: MED RECORDS TRANSFER vs RADIOLOGY REPORT</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>&nbsp;&nbsp;Branch 1 &rarr; Send Email (records)</td>
+                    <td>To: orders@firstchoice-imaging.com. Include records variables</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>&nbsp;&nbsp;Branch 1 &rarr; If/Else: sms_consent = YES</td>
+                    <td>SMS gate</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;SMS branch &rarr; If/Else: records_caller_type</td>
+                    <td>Patient vs Provider vs Attorney</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Patient &rarr; If/Else: records_request_type</td>
+                    <td>medical_records form link vs radiology_report form link</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provider &rarr; If/Else: records_request_type</td>
+                    <td>Provider records form vs provider radiology form</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Attorney &rarr; Send SMS</td>
+                    <td>Confirmation-only (no form link)</td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td>Add If/Else: intents_handled CONTAINS "billing"</td>
+                    <td>Branch 2: Billing</td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td>&nbsp;&nbsp;Branch 2 &rarr; Send Email (billing)</td>
+                    <td>To: billing@firstchoice-imaging.com. Include billing variables</td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td>&nbsp;&nbsp;Branch 2 &rarr; If/Else: sms_consent = YES</td>
+                    <td>SMS gate</td>
+                </tr>
+                <tr>
+                    <td>14</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;Send SMS (billing confirmation)</td>
+                    <td>Billing confirmation template</td>
+                </tr>
+                <tr>
+                    <td>15</td>
+                    <td>Add If/Else: intents_handled CONTAINS "lien"</td>
+                    <td>Branch 3: Lien</td>
+                </tr>
+                <tr>
+                    <td>16</td>
+                    <td>&nbsp;&nbsp;Branch 3 &rarr; Send Email (lien)</td>
+                    <td>To: orders@firstchoice-imaging.com. Include all lien variables</td>
+                </tr>
+                <tr>
+                    <td>17</td>
+                    <td>&nbsp;&nbsp;Branch 3 &rarr; If/Else: sms_consent = YES</td>
+                    <td>SMS gate</td>
+                </tr>
+                <tr>
+                    <td>18</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;Send SMS (lien confirmation)</td>
+                    <td>Lien confirmation template</td>
+                </tr>
+                <tr>
+                    <td>19</td>
+                    <td>Publish Workflow 2</td>
+                    <td>Toggle to Published</td>
+                </tr>
+            </table>
+
+            <div class="success-box">
+                <h3>Testing Checklist</h3>
+                <ul>
+                    <li>Test single-intent records call (patient + medical_records) &mdash; verify email + SMS with form link</li>
+                    <li>Test single-intent records call (provider + radiology_report) &mdash; verify provider SMS template</li>
+                    <li>Test single-intent billing call &mdash; verify billing email to billing team + confirmation SMS</li>
+                    <li>Test single-intent lien call &mdash; verify lien email + confirmation SMS</li>
+                    <li>Test multi-intent call (records + billing) &mdash; verify both emails + both SMS messages sent</li>
+                    <li>Test sms_consent = NO &mdash; verify NO SMS sent, but emails still sent</li>
+                    <li>Test scheduling call (empty intents_handled) &mdash; verify Workflow 2 exits with no actions</li>
+                    <li>Test attorney records call &mdash; verify confirmation-only SMS (no form link)</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#00d9ff',
+                primaryTextColor: '#1a1a2e',
+                primaryBorderColor: '#0099cc',
+                lineColor: '#0099cc',
+                secondaryColor: '#16213e',
+                tertiaryColor: '#0f3460',
+                background: '#ffffff',
+                mainBkg: '#e8f4f8',
+                nodeBorder: '#0099cc',
+                clusterBkg: '#f0f8ff',
+                clusterBorder: '#00d9ff',
+                titleColor: '#1a1a2e',
+                edgeLabelBackground: '#ffffff'
+            },
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Choice Imaging — Phone System Integration Specification</title>
+    <style>
+        :root {
+            --primary: #1a5276;
+            --primary-light: #2980b9;
+            --accent: #27ae60;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #5d6d7e;
+            --border: #d5dbdb;
+            --highlight: #ebf5fb;
+            --warning-bg: #fef9e7;
+            --warning-border: #f39c12;
+            --code-bg: #eaf2f8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        h1 + h2 {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-weight: 400;
+            margin-bottom: 24px;
+        }
+
+        .purpose-box {
+            background: var(--highlight);
+            border-left: 4px solid var(--primary-light);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 32px;
+            font-size: 0.92rem;
+        }
+
+        .purpose-box p { margin-bottom: 6px; }
+        .purpose-box p:last-child { margin-bottom: 0; }
+
+        section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        section h2 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--highlight);
+        }
+
+        section h3 {
+            font-size: 1.05rem;
+            color: var(--primary-light);
+            margin: 20px 0 10px;
+        }
+
+        p { margin-bottom: 12px; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 0.9rem;
+        }
+
+        thead th {
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        thead th:first-child { border-radius: 6px 0 0 0; }
+        thead th:last-child { border-radius: 0 6px 0 0; }
+
+        tbody td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr:nth-child(even) { background: var(--bg); }
+        tbody tr:hover { background: var(--highlight); }
+
+        .note {
+            background: var(--warning-bg);
+            border-left: 4px solid var(--warning-border);
+            padding: 12px 16px;
+            border-radius: 0 6px 6px 0;
+            margin: 12px 0;
+            font-size: 0.9rem;
+        }
+
+        .note strong { color: var(--warning-border); }
+
+        .tip {
+            background: #eafaf1;
+            border-left: 4px solid var(--accent);
+            padding: 12px 16px;
+            border-radius: 0 6px 6px 0;
+            margin: 12px 0;
+            font-size: 0.9rem;
+        }
+
+        .greeting-example {
+            background: var(--code-bg);
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-style: italic;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+        }
+
+        ol, ul {
+            margin: 10px 0 10px 24px;
+        }
+
+        li { margin-bottom: 6px; }
+
+        code {
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.88rem;
+        }
+
+        .flow-diagram {
+            background: var(--primary);
+            color: #fff;
+            padding: 28px;
+            border-radius: 8px;
+            margin: 12px 0;
+            text-align: center;
+        }
+
+        .flow-diagram .flow-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 8px 0;
+        }
+
+        .flow-box {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            padding: 14px 20px;
+            min-width: 200px;
+            font-size: 0.9rem;
+        }
+
+        .flow-box.highlight {
+            background: rgba(39,174,96,0.3);
+            border-color: var(--accent);
+        }
+
+        .flow-arrow {
+            font-size: 1.4rem;
+            margin: 4px 0;
+            opacity: 0.7;
+        }
+
+        .flow-branches {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 8px;
+        }
+
+        .flow-branch {
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .flow-branch .flow-box {
+            min-width: 140px;
+            padding: 10px 14px;
+        }
+
+        .checklist-status {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            vertical-align: middle;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .badge-verified {
+            background: #eafaf1;
+            color: #1e8449;
+        }
+
+        .badge-pending {
+            background: var(--warning-bg);
+            color: #b7950b;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .contact-bar {
+            background: var(--primary);
+            color: #fff;
+            text-align: center;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+        }
+
+        .contact-bar a { color: #aed6f1; }
+
+        @media (max-width: 640px) {
+            .container { padding: 20px 12px; }
+            section { padding: 18px; }
+            table { font-size: 0.82rem; }
+            thead th, tbody td { padding: 8px 10px; }
+            .flow-branches { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h1>First Choice Imaging — Phone System Integration Specification</h1>
+        <h2>AI Voice Agent Connection &amp; Call Forwarding Guide</h2>
+
+        <div class="purpose-box">
+            <p><strong>Document Purpose:</strong> This specification provides First Choice Imaging technical staff with complete instructions for connecting clinic phone lines to the AI Voice Agent system, including call forwarding configuration, new DID line requirements, and SMS routing details.</p>
+            <p><strong>Change Requests:</strong> Direct all change requests, questions, or issues to <strong>Brian Randall</strong> at <strong>brandall@auragentics.ai</strong></p>
+        </div>
+
+        <!-- Section 1 -->
+        <section>
+            <h2>1. System Overview</h2>
+            <p>Each First Choice Imaging clinic will forward its main phone line to an assigned AI Voice Agent. The AI agent answers inbound calls, handles caller inquiries, and transfers callers to the appropriate department when needed. Transfers to <strong>Scheduling</strong> and <strong>Live Operator</strong> are routed to new dedicated DID lines provisioned per clinic.</p>
+        </section>
+
+        <!-- Section 2 -->
+        <section>
+            <h2>2. AI Voice Agent Directory</h2>
+            <p>Each clinic is assigned a dedicated AI Voice Agent with a unique inbound phone number. All inbound AI numbers are <strong>A2P 10DLC verified</strong>.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Clinic Location</th>
+                        <th>AI Agent Name</th>
+                        <th>AI Inbound Number</th>
+                        <th>Forwarding Source</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Logan MRI Clinic / North Logan CT Clinic</td>
+                        <td>Ethan AI</td>
+                        <td><strong>+1 (435) 292-5652</strong></td>
+                        <td>(435) 258-9598</td>
+                    </tr>
+                    <tr>
+                        <td>Sandy (Wasatch Imaging)</td>
+                        <td>Marcus AI</td>
+                        <td><strong>+1 (385) 458-4168</strong></td>
+                        <td>(801) 576-1290</td>
+                    </tr>
+                    <tr>
+                        <td>Tooele Valley Imaging</td>
+                        <td>Leo AI</td>
+                        <td><strong>+1 (435) 557-4243</strong></td>
+                        <td>(435) 882-1674</td>
+                    </tr>
+                    <tr>
+                        <td>St. George</td>
+                        <td>Luke AI</td>
+                        <td><strong>+1 (435) 241-1182</strong></td>
+                        <td>TBD (new location)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="note">
+                <strong>Note:</strong> Logan MRI Clinic and North Logan CT Clinic share the same main line — <strong>(435) 258-9598</strong>. Ethan AI handles calls for both locations.
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section>
+            <h2>3. Caller Greeting Format</h2>
+            <p>All AI Voice Agents will greet callers with the following standardized opening:</p>
+            <div class="greeting-example">
+                "Hi, thank you for calling First Choice Imaging in [Clinic Location]. This is [AI Voice Agent Name]. I am generative artificial intelligence and not a human. How can I help you today?"
+            </div>
+            <h3>Examples by Location</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Location</th>
+                        <th>Greeting</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Logan / North Logan</td>
+                        <td><em>"Hi, thank you for calling First Choice Imaging in Logan. This is Ethan. I am generative artificial intelligence and not a human. How can I help you today?"</em></td>
+                    </tr>
+                    <tr>
+                        <td>Sandy</td>
+                        <td><em>"Hi, thank you for calling First Choice Imaging in Sandy. This is Marcus. I am generative artificial intelligence and not a human. How can I help you today?"</em></td>
+                    </tr>
+                    <tr>
+                        <td>Tooele</td>
+                        <td><em>"Hi, thank you for calling First Choice Imaging in Tooele. This is Leo. I am generative artificial intelligence and not a human. How can I help you today?"</em></td>
+                    </tr>
+                    <tr>
+                        <td>St. George</td>
+                        <td><em>"Hi, thank you for calling First Choice Imaging in Saint George. This is Jeff. I am generative artificial intelligence and not a human. How can I help you today?"</em></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 4 -->
+        <section>
+            <h2>4. New DID Lines Required</h2>
+            <p>Each clinic must provision <strong>two (2) new 10DLC DID phone lines</strong> for transfer destinations. These lines receive calls transferred by the AI agent and must be staffed or routed to the appropriate personnel.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Line Purpose</th>
+                        <th>Description</th>
+                        <th>Staffing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Scheduling Line</strong></td>
+                        <td>Receives transferred calls for booking, rescheduling, or canceling appointments</td>
+                        <td>Scheduling staff</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Miscellaneous Line</strong></td>
+                        <td>Receives transferred calls for live operator requests, complaints, vendor calls, and other inquiries the AI cannot resolve</td>
+                        <td>Front desk / receptionist</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>DID Line Provisioning Checklist</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Clinic</th>
+                        <th>Scheduling DID</th>
+                        <th>Miscellaneous DID</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Logan / North Logan</td>
+                        <td>_________________</td>
+                        <td>_________________</td>
+                        <td><span class="badge badge-pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>Sandy (Wasatch Imaging)</td>
+                        <td>_________________</td>
+                        <td>_________________</td>
+                        <td><span class="badge badge-pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>Tooele Valley Imaging</td>
+                        <td>_________________</td>
+                        <td>_________________</td>
+                        <td><span class="badge badge-pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>St. George</td>
+                        <td>_________________</td>
+                        <td>_________________</td>
+                        <td><span class="badge badge-pending">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="note">
+                <strong>Action Required:</strong> Once provisioned, provide the new DID numbers to Brian Randall at <strong>brandall@auragentics.ai</strong> so they can be configured as transfer destinations in the AI Voice Agent system.
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section>
+            <h2>5. Call Forwarding Instructions</h2>
+            <p>Forward each clinic's main phone line to the corresponding AI Voice Agent inbound number. Two forwarding methods are available depending on your preferred call handling approach.</p>
+
+            <h3>Option A: Standard Call Forwarding (Immediate)</h3>
+            <p>All inbound calls are forwarded directly to the AI agent with no delay. The clinic phone does not ring.</p>
+            <p><strong>Generic Steps (most phone systems):</strong></p>
+            <ol>
+                <li>Access your phone system admin panel or pick up the clinic handset</li>
+                <li>Activate <strong>Unconditional Call Forwarding</strong> (also called "Forward All Calls")</li>
+                <li>Enter the AI agent's inbound number for your location (see Section 2)</li>
+                <li>Confirm the forwarding is active by calling the clinic's main number from an external line</li>
+                <li>Verify the AI agent answers with the correct greeting</li>
+            </ol>
+            <p><strong>Common Activation Codes (landline/PBX):</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Code</th>
+                        <th>Example (Logan)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Activate forwarding</td>
+                        <td><code>*72</code> + AI number</td>
+                        <td><code>*72 4352925652</code></td>
+                    </tr>
+                    <tr>
+                        <td>Deactivate forwarding</td>
+                        <td><code>*73</code></td>
+                        <td><code>*73</code></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="note">
+                <strong>Note:</strong> Activation codes vary by carrier and phone system. Consult your phone provider's documentation if <code>*72</code>/<code>*73</code> do not work. VoIP systems (e.g., RingCentral, 8x8, Vonage) typically use a web portal or admin app to configure forwarding rules.
+            </div>
+
+            <h3>Option B: Time-Delay Forwarding (Delayed / No-Answer)</h3>
+            <p>The clinic phone rings for a set number of seconds before forwarding to the AI agent. This allows staff to answer calls during business hours while the AI handles overflow and after-hours calls.</p>
+            <p><strong>Generic Steps:</strong></p>
+            <ol>
+                <li>Access your phone system admin panel</li>
+                <li>Activate <strong>No-Answer Call Forwarding</strong> (also called "Forward on No Answer" or "Delayed Forwarding")</li>
+                <li>Enter the AI agent's inbound number for your location</li>
+                <li>Set the <strong>ring delay</strong> (recommended: 15–20 seconds, typically 3–4 rings)</li>
+                <li>Confirm by calling the main line, letting it ring past the delay, and verifying the AI agent picks up</li>
+            </ol>
+            <p><strong>Common Activation Codes (landline/PBX):</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Code</th>
+                        <th>Example (Logan)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Activate no-answer forwarding</td>
+                        <td><code>*92</code> + AI number</td>
+                        <td><code>*92 4352925652</code></td>
+                    </tr>
+                    <tr>
+                        <td>Deactivate no-answer forwarding</td>
+                        <td><code>*93</code></td>
+                        <td><code>*93</code></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="note">
+                <strong>Note:</strong> The ring delay duration is typically configured in your phone system's admin settings, not via star codes. Contact your phone provider to set the specific delay duration if needed.
+            </div>
+
+            <h3>Option C: Combined Forwarding (Busy + No-Answer)</h3>
+            <p>For maximum coverage, enable both <strong>Busy Forwarding</strong> and <strong>No-Answer Forwarding</strong> so the AI agent catches calls when lines are occupied or unanswered.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Condition</th>
+                        <th>Code</th>
+                        <th>Deactivate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Forward on Busy</td>
+                        <td><code>*90</code> + AI number</td>
+                        <td><code>*91</code></td>
+                    </tr>
+                    <tr>
+                        <td>Forward on No Answer</td>
+                        <td><code>*92</code> + AI number</td>
+                        <td><code>*93</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>VoIP / Cloud PBX Systems</h3>
+            <p>If your clinic uses a VoIP or cloud-based phone system, forwarding is typically configured through the provider's web admin portal:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Provider</th>
+                        <th>Navigation Path</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>RingCentral</td><td>Admin Portal &gt; Phone System &gt; Call Handling &gt; Forwarding Rules</td></tr>
+                    <tr><td>8x8</td><td>Admin Console &gt; Users &gt; Call Forwarding</td></tr>
+                    <tr><td>Vonage</td><td>Admin Portal &gt; Extensions &gt; Call Routing</td></tr>
+                    <tr><td>Nextiva</td><td>Admin &gt; Users &gt; Call Flow &gt; Forwarding</td></tr>
+                    <tr><td>Generic SIP/PBX</td><td>PBX admin panel &gt; Inbound Routes &gt; Destination</td></tr>
+                </tbody>
+            </table>
+            <div class="tip">
+                <strong>Tip:</strong> For VoIP systems, set the forwarding destination as a standard phone number (e.g., <code>14352925652</code>), not a SIP URI.
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section>
+            <h2>6. SMS Configuration</h2>
+
+            <h3>Outbound SMS</h3>
+            <p>All outbound SMS messages sent by the AI system (confirmation texts, status updates, form links) will originate from:</p>
+            <div class="greeting-example" style="font-style: normal;">
+                <strong>+1 (888) 610-1566</strong> (A2P 10DLC Verified)
+            </div>
+            <p>Or from another number in the verified number pool. Callers who opt in to SMS during their call will receive messages from this number.</p>
+
+            <h3>SMS Consent</h3>
+            <p>SMS messages are only sent to callers who provide verbal consent during their call. The AI agent asks:</p>
+            <div class="greeting-example">
+                "Would you like to receive status updates via text to this number? Standard message and data rates may apply."
+            </div>
+            <p>Callers may opt out at any time by replying <strong>STOP</strong> to any message.</p>
+
+            <h3>A2P 10DLC Verification Status</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Type</th>
+                        <th>A2P Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>+1 (435) 292-5652</td>
+                        <td>AI Inbound (Logan)</td>
+                        <td><span class="badge badge-verified">Verified</span></td>
+                    </tr>
+                    <tr>
+                        <td>+1 (385) 458-4168</td>
+                        <td>AI Inbound (Sandy)</td>
+                        <td><span class="badge badge-verified">Verified</span></td>
+                    </tr>
+                    <tr>
+                        <td>+1 (435) 557-4243</td>
+                        <td>AI Inbound (Tooele)</td>
+                        <td><span class="badge badge-verified">Verified</span></td>
+                    </tr>
+                    <tr>
+                        <td>+1 (435) 241-1182</td>
+                        <td>AI Inbound (St. George)</td>
+                        <td><span class="badge badge-verified">Verified</span></td>
+                    </tr>
+                    <tr>
+                        <td>+1 (888) 610-1566</td>
+                        <td>Outbound SMS</td>
+                        <td><span class="badge badge-verified">Verified</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 7 -->
+        <section>
+            <h2>7. Call Flow Summary</h2>
+            <div class="flow-diagram">
+                <div class="flow-box">Caller dials clinic main number</div>
+                <div class="flow-arrow">&#9660;</div>
+                <div class="flow-box">Call Forwarding Active<br><small>(Immediate or Delayed)</small></div>
+                <div class="flow-arrow">&#9660;</div>
+                <div class="flow-box highlight">AI Voice Agent<br><small>Answers &amp; Greets &bull; Collects Name &amp; Phone &bull; Handles Inquiry</small></div>
+                <div class="flow-arrow">&#9660;</div>
+                <div class="flow-branches">
+                    <div class="flow-branch">
+                        <div class="flow-box">Resolved by AI</div>
+                        <div class="flow-arrow">&#9660;</div>
+                        <div class="flow-box" style="opacity:0.7;">[End Call]</div>
+                    </div>
+                    <div class="flow-branch">
+                        <div class="flow-box">Transfer to Scheduling</div>
+                        <div class="flow-arrow">&#9660;</div>
+                        <div class="flow-box">Scheduling DID Line</div>
+                    </div>
+                    <div class="flow-branch">
+                        <div class="flow-box">Transfer to Misc (Live Op)</div>
+                        <div class="flow-arrow">&#9660;</div>
+                        <div class="flow-box">Miscellaneous DID Line</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8 -->
+        <section>
+            <h2>8. Go-Live Checklist</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Task</th>
+                        <th>Owner</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Provision 2 new DID lines per clinic (Scheduling + Miscellaneous)</td>
+                        <td>FCI Telecom</td>
+                        <td><span class="checklist-status"></span></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Provide new DID numbers to Brian Randall (brandall@auragentics.ai)</td>
+                        <td>FCI Telecom</td>
+                        <td><span class="checklist-status"></span></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Configure AI transfer destinations with new DID numbers</td>
+                        <td>Auragentics</td>
+                        <td><span class="checklist-status"></span></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Activate call forwarding on clinic main line(s) to AI inbound number</td>
+                        <td>FCI Telecom</td>
+                        <td><span class="checklist-status"></span></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Test: Call main line &rarr; verify AI agent answers with correct greeting</td>
+                        <td>FCI / Auragentics</td>
+                        <td><span class="checklist-status"></span></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Test: Request scheduling &rarr; verify transfer reaches Scheduling DID</td>
+                        <td>FCI / Auragentics</td>
+                        <td><span class="checklist-status"></span></td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Test: Request live operator &rarr; verify transfer reaches Miscellaneous DID</td>
+                        <td>FCI / Auragentics</td>
+                        <td><span class="checklist-status"></span></td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Test: Opt in to SMS &rarr; verify confirmation text received from (888) 610-1566</td>
+                        <td>FCI / Auragentics</td>
+                        <td><span class="checklist-status"></span></td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Confirm after-hours behavior (if using time-delay forwarding)</td>
+                        <td>FCI Telecom</td>
+                        <td><span class="checklist-status"></span></td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Staff training: inform team about new Scheduling &amp; Misc DID lines</td>
+                        <td>FCI Management</td>
+                        <td><span class="checklist-status"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 9 -->
+        <section>
+            <h2>9. Troubleshooting</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Issue</th>
+                        <th>Possible Cause</th>
+                        <th>Resolution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>AI agent doesn't answer</td>
+                        <td>Call forwarding not active</td>
+                        <td>Verify forwarding is enabled; redial <code>*72</code> + AI number</td>
+                    </tr>
+                    <tr>
+                        <td>Caller hears clinic voicemail instead of AI</td>
+                        <td>Voicemail picks up before forwarding triggers</td>
+                        <td>Increase voicemail ring count or switch to immediate forwarding</td>
+                    </tr>
+                    <tr>
+                        <td>Transfers don't connect</td>
+                        <td>DID lines not provisioned or not configured in AI system</td>
+                        <td>Confirm DID numbers were provided to Auragentics</td>
+                    </tr>
+                    <tr>
+                        <td>No SMS received after opt-in</td>
+                        <td>Number not in verified pool or carrier filtering</td>
+                        <td>Contact brandall@auragentics.ai</td>
+                    </tr>
+                    <tr>
+                        <td>Wrong AI agent greeting</td>
+                        <td>Forwarding pointed to wrong AI number</td>
+                        <td>Verify the AI inbound number matches your location (Section 2)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <div class="contact-bar">
+            <strong>Questions or Changes?</strong> Contact <strong>Brian Randall</strong> &mdash; <a href="mailto:brandall@auragentics.ai">brandall@auragentics.ai</a>
+        </div>
+
+        <div class="footer">
+            Document Version: 1.0 &bull; Last Updated: March 10, 2026
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "caller_name": "John Smith",
+  "caller_phone": "435-555-9999",
+  "caller_email": "john@example.com",
+  "intents_handled": "records,billing",
+  "sms_consent": "YES",
+  "records_caller_type": "provider",
+  "records_request_type": "radiology_report",
+  "billing_patient_name": "John Smith",
+  "billing_patient_dob": "1975-05-12",
+  "billing_reason": "Question about bill amount"
+}

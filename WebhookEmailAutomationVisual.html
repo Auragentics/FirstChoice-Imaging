@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhook Email Automation Workflow</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e6e6e6;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #0f3460, #16213e);
+            padding: 30px 40px;
+            text-align: center;
+            border-bottom: 3px solid #00d9ff;
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: #00d9ff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+
+        .header p {
+            color: #a0a0a0;
+            font-size: 1rem;
+        }
+
+        .nav {
+            background: rgba(15, 52, 96, 0.8);
+            padding: 15px 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 217, 255, 0.3);
+        }
+
+        .nav a {
+            color: #00d9ff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav a:hover {
+            background: rgba(0, 217, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .diagram-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .diagram-section h2 {
+            color: #00d9ff;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0, 217, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .diagram-section h2 .icon {
+            font-size: 1.5rem;
+        }
+
+        .mermaid {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(0, 217, 255, 0.05));
+            border-left: 4px solid #00d9ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box h3 {
+            color: #00d9ff;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            padding-left: 20px;
+        }
+
+        .info-box li {
+            margin: 8px 0;
+            color: #c0c0c0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.2), rgba(255, 193, 7, 0.1));
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .warning-box h3 {
+            color: #ffc107;
+            margin-bottom: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.2), rgba(40, 167, 69, 0.1));
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .success-box h3 {
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(0, 217, 255, 0.2);
+            color: #00d9ff;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(0, 217, 255, 0.05);
+        }
+
+        code {
+            background: rgba(0, 217, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            color: #00d9ff;
+        }
+
+        .email-template {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+        }
+
+        .email-template .subject {
+            color: #ffc107;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #00d9ff, #0099cc);
+            color: #1a1a2e;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.5);
+        }
+
+        .scenario-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+        }
+
+        .scenario-card h4 {
+            color: #00d9ff;
+            margin-bottom: 10px;
+        }
+
+        .scenario-card .result {
+            color: #28a745;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .nav,
+            .print-btn {
+                display: none;
+            }
+
+            .diagram-section {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>📧 Webhook Email Automation Workflow</h1>
+        <p>First Choice Imaging — Post-Call Email Routing System</p>
+    </div>
+
+    <nav class="nav">
+        <a href="#overview">Overview</a>
+        <a href="#master-flow">Master Flow</a>
+        <a href="#routing">Intent Routing</a>
+        <a href="#emails">Email Templates</a>
+        <a href="#variables">Variables</a>
+        <a href="#scenarios">Scenarios</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Overview -->
+        <section id="overview" class="diagram-section">
+            <h2><span class="icon">🎯</span> Overview: Option B Multi-Intent Approach</h2>
+
+            <div class="info-box">
+                <h3>How It Works:</h3>
+                <ul>
+                    <li>Voice agent handles multiple intents in a single call (Records, Billing, Lien)</li>
+                    <li>Each intent uses <strong>prefixed variables</strong> to prevent overwrites</li>
+                    <li><code>{{intents_handled}}</code> tracks which workflows were completed</li>
+                    <li>Webhook automation parses <code>{{intents_handled}}</code> to determine which emails to send
+                    </li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <h3>Key Variable: <code>{{intents_handled}}</code></h3>
+                <ul>
+                    <li>Comma-separated string of completed workflows</li>
+                    <li>Possible values: <code>"records"</code>, <code>"billing"</code>, <code>"lien"</code></li>
+                    <li>Example: <code>"records,billing"</code> = caller addressed both intents</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Master Flow -->
+        <section id="master-flow" class="diagram-section">
+            <h2><span class="icon">🔄</span> Master Automation Flow</h2>
+            <div class="mermaid">
+                flowchart TD
+                subgraph TRIGGER["📞 CALL ENDS"]
+                A[/"Voice Agent Call Ends"/] --> B["Webhook Triggered"]
+                end
+
+                subgraph PAYLOAD["📦 WEBHOOK PAYLOAD"]
+                B --> C["Receive All Variables"]
+                C --> C1["Universal: caller_name, caller_phone, caller_email"]
+                C --> C2["Tracking: intents_handled"]
+                C --> C3["Intent Variables: records_*, billing_*, lien_*"]
+                end
+
+                subgraph PARSE["🔍 PARSE INTENTS"]
+                C2 --> D["Parse intents_handled"]
+                D --> D1{"Contains 'records'?"}
+                D --> D2{"Contains 'billing'?"}
+                D --> D3{"Contains 'lien'?"}
+
+                end
+
+                subgraph EMAILS["📧 SEND EMAILS"]
+                D1 -->|Yes| E1["Send Medical Records Email"]
+                D2 -->|Yes| E2["Send Billing Email"]
+                D3 -->|Yes| E3["Send Lien Email"]
+
+                end
+
+                subgraph CONFIRM["✅ CONFIRM"]
+                E1 --> F["Send SMS Confirmation"]
+                E2 --> F
+                E3 --> F
+
+                F --> G[/"Automation Complete"/]
+                end
+            </div>
+
+            <div class="success-box">
+                <h3>Result:</h3>
+                <ul>
+                    <li>1-3 emails sent based on <code>{{intents_handled}}</code> (records, billing, lien)</li>
+                    <li>Each email uses the corresponding prefixed variables</li>
+                    <li>SMS confirmation sent to caller</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Intent Routing -->
+        <section id="routing" class="diagram-section">
+            <h2><span class="icon">🔀</span> Intent Routing Logic</h2>
+            <div class="mermaid">
+                flowchart LR
+                subgraph INPUT["📥 INPUT"]
+                A["intents_handled"]
+                end
+
+                subgraph EXAMPLES["📋 EXAMPLE VALUES"]
+                A --> B1["'records'"]
+                A --> B2["'billing'"]
+                A --> B3["'lien'"]
+                A --> B4["'records,billing'"]
+
+                end
+
+                subgraph OUTPUT["📤 EMAILS SENT"]
+                B1 --> C1["1 Email: Records"]
+                B2 --> C2["1 Email: Billing"]
+                B3 --> C3["1 Email: Lien"]
+                B4 --> C4["2 Emails: Records + Billing"]
+                end
+            </div>
+
+            <div class="info-box">
+                <h3>Routing Rules:</h3>
+                <table>
+                    <tr>
+                        <th>If <code>intents_handled</code> contains...</th>
+                        <th>Send Email</th>
+                        <th>Use Variables</th>
+                    </tr>
+                    <tr>
+                        <td><code>records</code></td>
+                        <td>[RECORDS] Medical Record Request</td>
+                        <td><code>records_*</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>billing</code></td>
+                        <td>[BILLING] Billing Inquiry</td>
+                        <td><code>billing_*</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>lien</code></td>
+                        <td>[LIEN] Lien Request</td>
+                        <td><code>lien_*</code></td>
+                    </tr>
+
+                </table>
+            </div>
+        </section>
+
+        <!-- Email Templates -->
+        <section id="emails" class="diagram-section">
+            <h2><span class="icon">📧</span> Email Templates</h2>
+
+            <h3 style="color: #00d9ff; margin: 20px 0 10px;">📁 Medical Record Request Email</h3>
+            <div class="email-template">
+                <span class="subject">Subject: MED RECORDS TRANSFER | {{caller_name}} (or RADIOLOGY REPORT | {{caller_name}})</span>
+
+                MEDICAL RECORD REQUEST
+
+                Caller Information:
+                - Name: {{caller_name}}
+                - Phone: {{caller_phone}}
+                - Email: {{caller_email}}
+
+                Request Details:
+                - Caller Type: {{records_caller_type}}
+                - Request Type: {{records_request_type}}
+
+                ---
+                Call Summary and Transcription attached.
+            </div>
+
+            <h3 style="color: #00d9ff; margin: 20px 0 10px;">💳 Billing Inquiry Email</h3>
+            <div class="email-template">
+                <span class="subject">Subject: [BILLING] {{billing_patient_name}} - Billing Inquiry</span>
+
+                BILLING INQUIRY
+
+                Caller Information:
+                - Name: {{caller_name}}
+                - Phone: {{caller_phone}}
+                - Email: {{caller_email}}
+
+                Patient Information:
+                - Patient Name: {{billing_patient_name}}
+                - Date of Birth: {{billing_patient_dob}}
+
+                Inquiry Details:
+                - Reason: {{billing_reason}}
+
+                ---
+                Call Summary and Transcription attached.
+            </div>
+
+            <h3 style="color: #00d9ff; margin: 20px 0 10px;">⚖️ Lien Request Email</h3>
+            <div class="email-template">
+                <span class="subject">Subject: [LIEN] LIEN REQUEST | {{lien_patient_name}}</span>
+
+                ATTORNEY LIEN REQUEST
+
+                Caller Information:
+                - Name: {{caller_name}}
+                - Phone: {{caller_phone}}
+                - Email: {{caller_email}}
+
+                Lien Details:
+                - Patient Name: {{lien_patient_name}}
+                - Patient DOB: {{lien_patient_dob}}
+                - Law Firm: {{lien_firm_name}}
+                - Paralegal/Contact: {{lien_paralegal_name}}
+                - Callback Phone: {{lien_callback_phone}}
+                - Clinic Location: {{lien_clinic_location}}
+
+                ---
+                Call Summary and Transcription attached.
+            </div>
+
+
+        </section>
+
+        <!-- Variables -->
+        <section id="variables" class="diagram-section">
+            <h2><span class="icon">📊</span> Variable Reference</h2>
+
+            <h3 style="color: #00d9ff; margin: 20px 0 10px;">Universal Variables (Always Present)</h3>
+            <table>
+                <tr>
+                    <th>Variable</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>{{caller_name}}</code></td>
+                    <td>Caller's full name</td>
+                </tr>
+                <tr>
+                    <td><code>{{caller_phone}}</code></td>
+                    <td>Caller's phone number</td>
+                </tr>
+                <tr>
+                    <td><code>{{caller_email}}</code></td>
+                    <td>Caller's email address</td>
+                </tr>
+                <tr>
+                    <td style="color: #ffc107;"><code>{{intents_handled}}</code></td>
+                    <td style="color: #ffc107;">Comma-separated list of completed workflows (KEY ROUTING VARIABLE)</td>
+                </tr>
+            </table>
+
+            <h3 style="color: #00d9ff; margin: 30px 0 10px;">Medical Records Variables (records_* prefix)</h3>
+            <table>
+                <tr>
+                    <th>Variable</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>{{records_caller_type}}</code></td>
+                    <td>"patient", "provider", or "attorney"</td>
+                </tr>
+                <tr>
+                    <td><code>{{records_request_type}}</code></td>
+                    <td>"medical_records" or "radiology_report"</td>
+                </tr>
+            </table>
+
+            <h3 style="color: #00d9ff; margin: 30px 0 10px;">Billing Variables (billing_* prefix)</h3>
+            <table>
+                <tr>
+                    <th>Variable</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>{{billing_patient_name}}</code></td>
+                    <td>Patient's full name</td>
+                </tr>
+                <tr>
+                    <td><code>{{billing_patient_dob}}</code></td>
+                    <td>Patient's date of birth</td>
+                </tr>
+                <tr>
+                    <td><code>{{billing_reason}}</code></td>
+                    <td>Reason for billing inquiry</td>
+                </tr>
+            </table>
+
+            <h3 style="color: #00d9ff; margin: 30px 0 10px;">Lien Variables (lien_* prefix)</h3>
+            <table>
+                <tr><th>Variable</th><th>Description</th></tr>
+                <tr><td><code>{{lien_patient_name}}</code></td><td>Client/patient's full name</td></tr>
+                <tr><td><code>{{lien_patient_dob}}</code></td><td>Client/patient's date of birth</td></tr>
+                <tr><td><code>{{lien_firm_name}}</code></td><td>Name of the law firm</td></tr>
+                <tr><td><code>{{lien_paralegal_name}}</code></td><td>Paralegal or point of contact</td></tr>
+                <tr><td><code>{{lien_callback_phone}}</code></td><td>Best callback number for the firm</td></tr>
+                <tr><td><code>{{lien_clinic_location}}</code></td><td>Clinic where patient was seen</td></tr>
+            </table>
+
+
+        </section>
+
+        <!-- Scenarios -->
+        <section id="scenarios" class="diagram-section">
+            <h2><span class="icon">🎬</span> Example Scenarios</h2>
+
+            <div class="scenario-card">
+                <h4>Scenario 1: Single Intent (Medical Records Only)</h4>
+                <p><code>intents_handled = "records"</code></p>
+                <p class="result">Result: 1 email sent (Medical Records Request)</p>
+            </div>
+
+            <div class="scenario-card">
+                <h4>Scenario 2: Two Intents (Records + Billing)</h4>
+                <p><code>intents_handled = "records,billing"</code></p>
+                <p class="result">Result: 2 emails sent (Medical Records + Billing Inquiry)</p>
+            </div>
+
+            <div class="scenario-card">
+                <h4>Scenario 3: Single Intent (Lien Only)</h4>
+                <p><code>intents_handled = "lien"</code></p>
+                <p class="result">Result: 1 email sent (Lien Request)</p>
+            </div>
+
+
+
+            <div class="info-box">
+                <h3>GHL Implementation:</h3>
+                <ul>
+                    <li><strong>Trigger:</strong> Webhook received from voice agent</li>
+                    <li><strong>Branch 1:</strong> If <code>{{intents_handled}}</code> contains "records" → Send
+                        Records Email</li>
+                    <li><strong>Branch 2:</strong> If <code>{{intents_handled}}</code> contains "billing" → Send Billing
+                        Email</li>
+                    <li><strong>Branch 3:</strong> If <code>{{intents_handled}}</code> contains "lien" → Send Lien Email</li>
+                    <li><strong>Final:</strong> Send SMS confirmation to <code>{{caller_phone}}</code></li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <button class="print-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#00d9ff',
+                primaryTextColor: '#1a1a2e',
+                primaryBorderColor: '#0099cc',
+                lineColor: '#0099cc',
+                secondaryColor: '#16213e',
+                tertiaryColor: '#0f3460',
+                background: '#ffffff',
+                mainBkg: '#e8f4f8',
+                nodeBorder: '#0099cc',
+                clusterBkg: '#f0f8ff',
+                clusterBorder: '#00d9ff',
+                titleColor: '#1a1a2e',
+                edgeLabelBackground: '#ffffff'
+            },
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+{
+  "caller_name": "John Smith",
+  "caller_phone": "435-555-5678",
+  "caller_email": "john@example.com",
+  "intents_handled": "billing",
+  "sms_consent": "YES",
+  "billing_patient_name": "John Smith",
+  "billing_patient_dob": "1985-03-15",
+  "billing_reason": "Received bill but insurance should have covered it"
+}

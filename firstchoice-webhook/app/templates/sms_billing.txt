@@ -1,0 +1,1 @@
+Hi {{ first_name }}, thank you for your billing inquiry with First Choice Imaging. Our billing team has received your information and will follow up shortly. Questions? Call (435) 258-9598.

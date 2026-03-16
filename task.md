@@ -1,0 +1,28 @@
+# Tasks
+
+- [x] Create `FirstChoice-Imaging` directory
+- [x] Analyze website structure
+- [x] Create crawling script (Failed due to env issues)
+- [x] Crawl pages manually:
+    - [x] https://firstchoice-imaging.com (Home)
+    - [x] https://firstchoice-imaging.com/providers/
+    - [x] https://firstchoice-imaging.com/patients/
+    - [x] https://firstchoice-imaging.com/attorneys/
+    - [x] https://firstchoice-imaging.com/services/
+    - [x] https://firstchoice-imaging.com/the-process/
+    - [x] https://firstchoice-imaging.com/self-referral-2/
+    - [x] https://firstchoice-imaging.com/payment-options/
+    - [x] https://firstchoice-imaging.com/mri-preparation/
+    - [x] https://firstchoice-imaging.com/preparing-for-a-ct/
+    - [x] https://firstchoice-imaging.com/about/
+    - [x] https://firstchoice-imaging.com/faq/
+    - [x] https://firstchoice-imaging.com/reviews/
+    - [x] https://firstchoice-imaging.com/locations/
+    - [x] https://firstchoice-imaging.com/locations/tooele/
+    - [x] https://firstchoice-imaging.com/locations/logan/
+    - [x] https://firstchoice-imaging.com/locations/st-george/
+    - [x] https://firstchoice-imaging.com/locations/salt-lake-city/
+    - [x] https://firstchoice-imaging.com/contact/
+    - [x] https://firstchoice-imaging.com/order/
+    - [x] https://firstchoice-imaging.com/payment/
+- [x] Review extracted data

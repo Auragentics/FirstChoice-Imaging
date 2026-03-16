@@ -1,0 +1,1 @@
+Hi {{ first_name }}, thank you for contacting First Choice Imaging. Your lien request has been received and our team will follow up with your office shortly. Questions? Call (435) 258-9598.

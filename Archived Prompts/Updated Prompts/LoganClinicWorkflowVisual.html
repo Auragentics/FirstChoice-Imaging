@@ -255,7 +255,7 @@
 <body>
     <div class="header">
         <h1>🏥 Logan Clinic AI Voice Agent Workflow</h1>
-        <p>First Choice Imaging — Inbound Call Handling System &bull; v5.0</p>
+        <p>First Choice Imaging — Inbound Call Handling System &bull; v3.8</p>
     </div>
 
     <nav class="nav">
@@ -304,13 +304,12 @@
                 L -->|"Records"| O["Med Records Workflow"]
                 L -->|"Billing"| P["Billing Workflow"]
                 L -->|"Lien"| Q["Lien Workflow"]
-                L -->|"Solicitation"| SOL["🚫 Decline — No Transfer"]
                 L -->|"Other/Unclear"| R["3-Step Gatekeeper"]
                 end
 
                 subgraph MULTIINTENT["🔄 MULTI-INTENT LOOP"]
                 M --> M1["Answer from KB"]
-                O --> O1["Identify Caller Type → Ask: Records Transfer or Radiology Report?"]
+                O --> O1["Collect records_*"]
                 P --> P1["Collect billing_*"]
                 Q --> Q1["Collect lien_*"]
                 M1 --> LOOP["'Anything else?'"]
@@ -394,7 +393,7 @@
                 </div>
                 <div class="legend-item">
                     <span class="emoji">⚖️</span>
-                    <div class="text"><strong>Attorney</strong>Dual path: medical records or lien workflow</div>
+                    <div class="text"><strong>Attorney</strong>Dual path: medical records (release required) or lien workflow</div>
                 </div>
                 <div class="legend-item">
                     <span class="emoji">👥</span>
@@ -407,9 +406,9 @@
         <section id="medical-records" class="diagram-section">
             <h2><span class="icon">📁</span> Medical Records Workflow (records_* prefix)</h2>
 
-            <div class="success-box">
-                <h3>📋 Caller Type &amp; Request Type</h3>
-                <p><strong>Providers</strong> are asked electronic vs disc records, given the appropriate URL/portal info, then transferred to front desk. <strong>Patients</strong> are asked records transfer vs radiology report, informed of the web form, and offered a text link. <strong>Attorneys</strong> get verbal URL only — no SMS (desk phones).</p>
+            <div class="warning-box">
+                <h3>🔒 CRITICAL: Privacy Screening Required</h3>
+                <p>Caller type must be identified BEFORE collecting any patient information. This is a legal requirement.</p>
             </div>
 
             <div class="mermaid">
@@ -418,64 +417,62 @@
                 A[/"Medical Records Inquiry"/] --> A0{"name & phone collected?"}
                 A0 -->|"No"| A0A["Collect FIRST"]
                 A0A --> A0
-                A0 -->|"Yes"| B{"Attorney or law firm?"}
+                A0 -->|"Yes"| B{"Step 1: Caller Type?"}
                 end
 
-                subgraph ATTORNEY["⚖️ ATTORNEY CHECK"]
-                B -->|"Yes"| C{"Records or Lien?"}
-                C -->|"Records"| D2["records_caller_type = 'attorney'<br/>records_request_type = 'medical_records'"]
-                D2 --> D3["Verbal URL: firstchoice-imaging.com/attorneys<br/>sms_consent = 'NO'"]
-                C -->|"Lien"| E["→ Lien Workflow"]
-                B -->|"No"| CT["Step 2: Caller Type"]
+                subgraph CALLER_TYPE["🔒 PRIVACY SCREENING"]
+                B -->|"Patient"| CT1["caller_type = patient<br/>release = NO"]
+                B -->|"Parent/Guardian"| CT2["caller_type = parent_guardian<br/>release = NO"]
+                B -->|"Ordering Provider"| CT3["caller_type = ordering_provider<br/>release = NO"]
+                B -->|"Non-Ordering"| CT4["caller_type = non_ordering<br/>release = YES<br/>Inform: HIPAA release needed"]
+                B -->|"Attorney"| CT5{"Records or Lien?"}
+                CT5 -->|"Records"| CT5A["caller_type = attorney<br/>release = YES<br/>Inform: HIPAA release needed"]
+                CT5 -->|"Lien"| CT5B["→ Lien Workflow"]
+                B -->|"3rd Party"| CT6["caller_type = third_party<br/>release = YES<br/>Inform: HIPAA release needed"]
                 end
 
-                subgraph CALLERTYPE["👥 CALLER TYPE"]
-                CT --> CT1{"'Patient, on behalf of someone, or provider?'"}
-                CT1 -->|"Patient / representative"| CT2["records_caller_type = 'patient'"]
-                CT1 -->|"Healthcare provider"| CT3["records_caller_type = 'provider'"]
+                subgraph PAT_PATH["👤 PATIENT / GUARDIAN PATH"]
+                CT1 --> PP1["patient_name = caller_name"]
+                CT2 --> PP2["Ask patient name"]
+                PP1 --> PP3{"Transfer to provider<br/>or radiology report?"}
+                PP2 --> PP3
+                PP3 --> PP4["Store request_type"]
                 end
 
-                subgraph PROVIDER["🏥 PROVIDER REDIRECT"]
-                CT3 --> PR1{"'Electronic records or records on a disc?'"}
-                PR1 -->|"Electronic"| PR2["Remind: PACS or providers portal"]
-                PR1 -->|"Disc"| PR3["URL: medical-records-request"]
-                PR2 --> PR4["Transfer to Front Desk"]
-                PR3 --> PR4
+                subgraph PROV_PATH["🏥 PROVIDER / ATTORNEY / 3RD PARTY"]
+                CT3 --> PV1["Ask patient name + DOB"]
+                CT4 --> PV1
+                CT5A --> PV1
+                CT6 --> PV1
+                PV1 --> PV2["Store patient_name + patient_dob"]
                 end
 
-                subgraph REQTYPE["📋 REQUEST TYPE (Patients)"]
-                CT2 --> RT1{"'Records transfer or radiology report?'"}
-                RT1 -->|"Medical records"| RT2["records_request_type = 'medical_records'"]
-                RT1 -->|"Radiology report"| RT3["records_request_type = 'radiology_report'"]
-                end
-
-                subgraph FORMLINK["📱 FORM & SMS LINK (Patients)"]
-                RT2 --> PF1["'Submitted through a form on our website'"]
-                RT3 --> PF1
-                PF1 --> PF2{"'Text you a direct link?'"}
-                PF2 -->|"Yes"| PF3["sms_consent = 'YES'"]
-                PF2 -->|"No"| PF4["sms_consent = 'NO'<br/>Verbal: firstchoice-imaging.com/patients"]
+                subgraph WEB_FORM["📋 STEP 3: WEB FORM"]
+                PP4 --> WF1["Direct to web form"]
+                PV2 --> WF1
+                WF1 --> WF2{"Text SMS link?"}
+                WF2 -->|"Yes"| WF3["Send link → sms_link_sent = YES"]
+                WF2 -->|"No"| WF4["sms_link_sent = NO"]
                 end
 
                 subgraph DONE["✅ COMPLETE"]
-                D3 --> MI1["Add 'records' to intents_handled"]
-                PF3 --> MI1
-                PF4 --> MI1
-                MI1 --> MI3["'Anything else?'"]
-                MI3 -->|"Yes"| MI4["Return to Intent Routing"]
-                MI3 -->|"No"| MI5["Pre-Close → Confirm → Close"]
+                WF3 --> MI1["Add 'medical_records' to intents_handled"]
+                WF4 --> MI1
+                MI1 --> MI2["'Anything else?'"]
+                MI2 -->|"Yes"| MI3["Return to Intent Routing"]
+                MI2 -->|"No"| MI4["Pre-Close → Confirm → SMS Consent → Close"]
                 end
             </div>
 
             <div class="info-box">
-                <h3>📝 Medical Records Variables:</h3>
+                <h3>📝 Medical Records Variables (records_* prefix):</h3>
                 <ul>
-                    <li><code>records_caller_type</code> — "patient", "provider", or "attorney" (always collected)</li>
-                    <li><code>records_request_type</code> — "medical_records" or "radiology_report" (patients and attorneys)</li>
-                    <li><strong>Attorneys:</strong> auto-set to "attorney" / "medical_records", verbal URL only, sms_consent = "NO"</li>
-                    <li><strong>Providers:</strong> redirected with electronic/disc options, transferred to front desk</li>
-                    <li><strong>Patients:</strong> offered web form link via SMS or verbal URL</li>
-                    <li>If caller is an attorney requesting a lien, redirected to full Lien workflow</li>
+                    <li><code>{{records_caller_type}}</code> — "patient", "parent_guardian", "ordering_provider", "non_ordering_provider", "attorney", "third_party"</li>
+                    <li><code>{{records_release_required}}</code> — "YES" or "NO" (auto-set based on caller_type)</li>
+                    <li><code>{{records_patient_name}}</code> — Patient's full name (= caller_name if patient)</li>
+                    <li><code>{{records_request_type}}</code> — "transfer_to_provider" or "radiology_report" (patient/guardian only)</li>
+                    <li><code>{{records_patient_dob}}</code> — Patient DOB (provider/attorney/3rd party only)</li>
+                    <li style="color: #2ed573;"><code>{{records_sms_link_sent}}</code> — "YES" or "NO" — web form link texted?</li>
                 </ul>
             </div>
         </section>
@@ -530,16 +527,6 @@
                 <p>Caller is routed here from the Attorney branch in Medical Records Step 1 when they indicate they want to establish a <strong>direct lien</strong> (not request medical records).</p>
             </div>
 
-            <div class="warning-box">
-                <h3>⚖️ Key Lien Rules:</h3>
-                <ul>
-                    <li>Liens are established <strong>before</strong> the patient is seen (future tense)</li>
-                    <li>Collect both attorney name AND best point of contact (caller may be either)</li>
-                    <li>Attorneys/paralegals do NOT receive SMS — verbal URLs only, sms_consent = "NO"</li>
-                    <li>Verbal: For future lien requests, visit FirstChoice-Imaging.com/attorneys</li>
-                </ul>
-            </div>
-
             <div class="mermaid">
                 flowchart TD
                 subgraph PREREQ["⚖️ PREREQUISITE CHECK"]
@@ -556,27 +543,22 @@
                 C1 --> C2["Store lien_patient_dob"]
                 C2 --> D1["Step 3: Law firm name"]
                 D1 --> D2["Store lien_firm_name"]
-                D2 --> D3["Step 4: Attorney on the case"]
-                D3 --> D4["Store lien_attorney_name"]
-                D4 --> E1["Step 5: Best point of contact"]
+                D2 --> E1["Step 4: Paralegal/contact"]
                 E1 --> E2["Store lien_paralegal_name"]
-                E2 --> F1["Step 6: Ask email → lien_caller_email"]
-                F1 --> G1["Step 7: Confirm clinic location"]
-                G1 --> G2{"'Will the patient be seen<br/>at our Logan clinic?'"}
-                G2 -->|"Yes"| G3["lien_clinic_location = 'Logan'"]
+                E2 --> F1["Step 5: Callback phone"]
+                F1 --> F2["Store lien_callback_phone"]
+                F2 --> G1["Step 6: Confirm clinic location"]
+                G1 --> G2{"Seen at Logan?"}
+                G2 -->|"Yes"| G3["lien_clinic_location = Logan"]
                 G2 -->|"No"| G4["Ask which location"]
                 end
 
                 subgraph DONE["✅ COMPLETE"]
-                G3 --> AUTO["Step 8: Auto-set lien_callback_phone"]
-                G4 --> AUTO
-                AUTO --> NOTIFY["'Staff have been notified'"]
-                NOTIFY --> URL["Verbal: FirstChoice-Imaging.com/attorneys"]
-                URL --> SMS_NO["sms_consent = 'NO'"]
-                SMS_NO --> MI1["Add 'lien' to intents_handled"]
+                G3 --> MI1["Add 'lien' to intents_handled"]
+                G4 --> MI1
                 MI1 --> MI2["'Anything else?'"]
                 MI2 -->|"Yes"| MI3["Return to Intent Routing"]
-                MI2 -->|"No"| MI4["Pre-Close → Confirm → Close"]
+                MI2 -->|"No"| MI4["Pre-Close → Confirm → SMS Consent → Close"]
                 end
             </div>
 
@@ -586,11 +568,9 @@
                     <li><code>{{lien_patient_name}}</code> — Client/patient's full name</li>
                     <li><code>{{lien_patient_dob}}</code> — Client/patient's DOB (YYYY-MM-DD)</li>
                     <li><code>{{lien_firm_name}}</code> — Name of the law firm</li>
-                    <li><code>{{lien_attorney_name}}</code> — Attorney's full name on the case</li>
-                    <li><code>{{lien_paralegal_name}}</code> — Best point of contact at the firm</li>
-                    <li><code>{{lien_caller_email}}</code> — Caller's email address</li>
-                    <li><code>{{lien_callback_phone}}</code> — Auto-set from caller_phone (not asked separately)</li>
-                    <li><code>{{lien_clinic_location}}</code> — Clinic where patient will be seen</li>
+                    <li><code>{{lien_paralegal_name}}</code> — Paralegal or point of contact</li>
+                    <li><code>{{lien_callback_phone}}</code> — Best callback number for the firm</li>
+                    <li><code>{{lien_clinic_location}}</code> — Clinic where patient was seen</li>
                 </ul>
             </div>
         </section>
@@ -650,9 +630,9 @@
                 <p style="margin-bottom: 10px;">Agent silently verifies ALL required variables before closing:</p>
                 <ul>
                     <li><strong>Universal:</strong> caller_name, caller_phone, sms_consent</li>
-                    <li><strong>If records:</strong> records_caller_type ("patient", "provider", or "attorney"), records_request_type ("medical_records" or "radiology_report")</li>
+                    <li><strong>If medical_records:</strong> records_caller_type, records_patient_name, records_sms_link_sent, + conditional (records_request_type OR records_patient_dob)</li>
                     <li><strong>If billing:</strong> billing_patient_name, billing_patient_dob, billing_reason</li>
-                    <li><strong>If lien:</strong> lien_patient_name, lien_patient_dob, lien_firm_name, lien_attorney_name, lien_paralegal_name, lien_caller_email, lien_callback_phone (auto-set from caller_phone), lien_clinic_location</li>
+                    <li><strong>If lien:</strong> lien_patient_name, lien_patient_dob, lien_firm_name, lien_paralegal_name, lien_callback_phone, lien_clinic_location</li>
                 </ul>
             </div>
 
@@ -669,61 +649,43 @@
 
         <!-- Post-Call Actions -->
         <section id="post-call" class="diagram-section">
-            <h2><span class="icon">📤</span> Post-Call Actions (Two-Workflow GHL Architecture)</h2>
-
-            <div class="info-box">
-                <h3>📌 Architecture Overview:</h3>
-                <p>Post-call processing is split into <strong>two independent GHL workflows</strong> that run in parallel after each call.</p>
-            </div>
-
-            <h3 style="color: #00d9ff; margin: 20px 0 15px;">Workflow 1: Contact Database Update</h3>
-            <p style="color: #a0a0a0; margin-bottom: 15px;"><strong>Trigger:</strong> Inbound Webhook (Retell AI Post-Call Webhook) &bull; <strong>Total Actions:</strong> 3</p>
+            <h2><span class="icon">📤</span> Post-Call Actions Summary</h2>
             <div class="mermaid">
                 flowchart LR
-                A["📞 Call Ends"] --> B["Retell AI\nPost-Call Webhook"]
-                B --> C["WF1: Inbound\nWebhook Trigger"]
-                C --> D["Create/Update Contact\n(16 field mappings)"]
-                D --> E["Add Tag:\nai-call-processed"]
-            </div>
+                subgraph TRIGGERS["🎯 TRIGGERS"]
+                T1["Medical Records"]
+                T2["Billing"]
+                T3["Lien"]
+                T4["Scheduling"]
+                end
 
-            <div class="success-box">
-                <h3>WF1 Purpose:</h3>
-                <p>Receives the webhook POST from Retell AI, creates or updates the GHL contact with all extracted variables (caller info + intent-specific data). Maps all 16 fields regardless of intent — empty fields remain blank.</p>
-            </div>
+                subgraph ACTIONS["📤 AUTOMATED"]
+                A1["📝 Summary"]
+                A2["📄 Transcription"]
+                A3["📧 Webhook Email"]
+                A4["📱 SMS to Caller"]
+                end
 
-            <h3 style="color: #00d9ff; margin: 20px 0 15px;">Workflow 2: Post-Transcript Actions (Email &amp; SMS Routing)</h3>
-            <p style="color: #a0a0a0; margin-bottom: 15px;"><strong>Trigger:</strong> Generate Transcript &bull; <strong>Total Actions:</strong> ~25 (nested If/Else tree)</p>
-            <div class="mermaid">
-                flowchart TD
-                A["📄 Generate Transcript"] --> B{"intents_handled\nis not empty?"}
-                B -->|"No"| C["END"]
-                B -->|"Yes"| D{"contains\n'records'?"}
-                D -->|"Yes"| E["Records Email"]
-                D -->|"No"| F{"contains\n'billing'?"}
-                E --> F
-                F -->|"Yes"| G["Billing Email"]
-                F -->|"No"| H{"contains\n'lien'?"}
-                G --> H
-                H -->|"Yes"| I["Lien Email"]
-                H -->|"No"| J{"sms_consent\n= YES?"}
-                I --> J
-                J -->|"Yes"| K["📱 Send SMS"]
-                J -->|"No"| L["END"]
-                K --> L
-            </div>
+                subgraph EMAIL["📬 EMAIL DELIVERY"]
+                E1["Intent-Specific Subject"]
+                E2["Collected Variables"]
+                E3["Call Summary Attached"]
+                end
 
-            <div class="success-box">
-                <h3>WF2 Purpose:</h3>
-                <p>Routes intent-specific email notifications and sends SMS to the caller (if opted in). Each intent branch sends a separate email. The Records branch includes nested If/Else for caller type and request type to determine the correct SMS form link (5 variants).</p>
+                T1 --> A1
+                T2 --> A1
+                T3 --> A1
+                T4 --> A1
+                A1 --> A2 --> A3 --> A4
+                A3 --> E1 --> E2 --> E3
             </div>
 
             <div class="warning-box">
                 <h3>📧 Email Subject Patterns:</h3>
                 <ul>
-                    <li><strong>MED RECORDS TRANSFER</strong> | {{caller_name}}</li>
-                    <li><strong>RADIOLOGY REPORT</strong> | {{caller_name}}</li>
-                    <li><strong>BILLING INQUIRY</strong> | {{billing_patient_name}}</li>
-                    <li><strong>LIEN REQUEST</strong> | {{lien_patient_name}}</li>
+                    <li><strong>[RECORDS]</strong> Patient: {{records_patient_name}}</li>
+                    <li><strong>[BILLING]</strong> Patient: {{billing_patient_name}}</li>
+                    <li><strong>[LIEN]</strong> Patient: {{lien_patient_name}}</li>
                 </ul>
             </div>
 
@@ -821,22 +783,22 @@
                 <tr>
                     <td>North Logan CT Clinic</td>
                     <td>(435) 258-9598</td>
-                    <td>CT Scans, Cardiac Calcium Scoring</td>
+                    <td>CT Scans, Lung Cancer Screening</td>
                 </tr>
                 <tr>
                     <td>Tooele Valley Imaging</td>
                     <td>(435) 882-1674</td>
-                    <td>MRI, CT, Cardiac Calcium Scoring, X-Ray, DEXA, BMI, Ultrasound</td>
+                    <td>MRI, CT</td>
                 </tr>
                 <tr>
                     <td>Sandy (Wasatch Imaging)</td>
                     <td>(801) 576-1290</td>
-                    <td>MRI, Arthrograms</td>
+                    <td>MRI, CT</td>
                 </tr>
                 <tr>
                     <td>St. George</td>
-                    <td>TBD</td>
-                    <td>Open MRI, Arthrograms, X-Ray <em>(Opening Soon)</em></td>
+                    <td>—</td>
+                    <td>MRI, CT</td>
                 </tr>
             </table>
 
@@ -890,7 +852,7 @@
             <div class="info-box">
                 <h3>Scenario: Caller needs medical records AND has a billing question</h3>
                 <ol style="padding-left: 20px; margin-top: 15px;">
-                    <li style="margin: 10px 0;"><strong>Records Workflow:</strong> Agent identifies caller type → stores <code>records_caller_type</code>, then asks "medical records transfer or radiology report?" → stores <code>records_request_type</code></li>
+                    <li style="margin: 10px 0;"><strong>Records Workflow:</strong> Agent identifies caller type (privacy screening), collects <code>records_*</code> variables, directs to web form</li>
                     <li style="margin: 10px 0;">Agent asks: <em>"Anything else I can help with?"</em></li>
                     <li style="margin: 10px 0;">Caller mentions billing question</li>
                     <li style="margin: 10px 0;"><strong>Billing Workflow:</strong> Agent collects <code>billing_*</code> variables</li>
@@ -903,7 +865,7 @@
                 </ol>
             </div>
             <div class="warning-box">
-                <h3>Final <code>{{intents_handled}}</code>: <span style="color: #00d9ff;">"records,billing"</span></h3>
+                <h3>Final <code>{{intents_handled}}</code>: <span style="color: #00d9ff;">"medical_records,billing"</span></h3>
                 <p style="margin-top: 10px;">This allows downstream webhooks to route notifications based on which intents were handled.</p>
             </div>
         </section>
@@ -938,10 +900,16 @@
                     <td>Best contact number (Step 2)</td>
                 </tr>
                 <tr>
+                    <td><code>{{caller_email}}</code></td>
+                    <td>Caller Email</td>
+                    <td>string</td>
+                    <td>Collected before closing</td>
+                </tr>
+                <tr>
                     <td style="color: #00d9ff;"><code>{{intents_handled}}</code></td>
                     <td style="color: #00d9ff;">Intents Handled</td>
                     <td style="color: #00d9ff;">string (comma-separated)</td>
-                    <td style="color: #00d9ff;">e.g., "records,billing" — tracks completed workflows</td>
+                    <td style="color: #00d9ff;">e.g., "medical_records,billing" — tracks completed workflows</td>
                 </tr>
                 <tr>
                     <td style="color: #2ed573;"><code>{{sms_consent}}</code></td>
@@ -975,16 +943,40 @@
                     <th>Notes</th>
                 </tr>
                 <tr>
-                    <td><code>records_caller_type</code></td>
+                    <td><code>{{records_caller_type}}</code></td>
                     <td>Caller Type</td>
                     <td>enum</td>
-                    <td>"patient" (includes parent/guardian, third party), "provider", or "attorney"</td>
+                    <td>"patient", "parent_guardian", "ordering_provider", "non_ordering_provider", "attorney", "third_party"</td>
                 </tr>
                 <tr>
-                    <td><code>records_request_type</code></td>
+                    <td style="color: #ff6b6b;"><code>{{records_release_required}}</code></td>
+                    <td style="color: #ff6b6b;">Release Required</td>
+                    <td style="color: #ff6b6b;">string</td>
+                    <td style="color: #ff6b6b;">"YES" or "NO" — Auto-set based on caller_type</td>
+                </tr>
+                <tr>
+                    <td><code>{{records_patient_name}}</code></td>
+                    <td>Patient Name</td>
+                    <td>string</td>
+                    <td>= caller_name if patient; asked otherwise</td>
+                </tr>
+                <tr>
+                    <td><code>{{records_request_type}}</code></td>
                     <td>Request Type</td>
                     <td>enum</td>
-                    <td>"medical_records" or "radiology_report". Attorneys default to "medical_records".</td>
+                    <td>Patient/Guardian only: "transfer_to_provider" or "radiology_report"</td>
+                </tr>
+                <tr>
+                    <td><code>{{records_patient_dob}}</code></td>
+                    <td>Patient DOB</td>
+                    <td>string (YYYY-MM-DD)</td>
+                    <td>Provider/Attorney/3rd Party only</td>
+                </tr>
+                <tr>
+                    <td style="color: #2ed573;"><code>{{records_sms_link_sent}}</code></td>
+                    <td style="color: #2ed573;">SMS Link Sent</td>
+                    <td style="color: #2ed573;">string</td>
+                    <td style="color: #2ed573;">"YES" or "NO" — web form link texted?</td>
                 </tr>
             </table>
 
@@ -1043,28 +1035,22 @@
                     <td>Name of the law firm</td>
                 </tr>
                 <tr>
-                    <td><code>{{lien_attorney_name}}</code></td>
-                    <td>Attorney Name</td>
-                    <td>string</td>
-                    <td>Attorney's full name on the case</td>
-                </tr>
-                <tr>
                     <td><code>{{lien_paralegal_name}}</code></td>
                     <td>Contact Name</td>
                     <td>string</td>
-                    <td>Best point of contact at the firm</td>
+                    <td>Paralegal or point of contact</td>
                 </tr>
                 <tr>
                     <td><code>{{lien_callback_phone}}</code></td>
                     <td>Callback Phone</td>
                     <td>string</td>
-                    <td>Auto-set from caller_phone (not asked separately)</td>
+                    <td>Best callback number for the firm</td>
                 </tr>
                 <tr>
                     <td><code>{{lien_clinic_location}}</code></td>
                     <td>Clinic Location</td>
                     <td>string</td>
-                    <td>Clinic where patient will be seen</td>
+                    <td>Where patient was seen</td>
                 </tr>
             </table>
         </section>

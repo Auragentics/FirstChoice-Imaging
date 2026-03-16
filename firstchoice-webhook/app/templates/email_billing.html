@@ -1,0 +1,32 @@
+<html>
+<body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+<h2 style="color: #cc6600; border-bottom: 2px solid #cc6600; padding-bottom: 8px;">Billing Inquiry</h2>
+<p style="color: #666; font-size: 0.9em;">Submitted via AI Voice Agent &bull; {{ timestamp }}</p>
+
+<h3 style="color: #444; margin-top: 20px;">Caller Information</h3>
+<table style="border-collapse: collapse; width: 100%; max-width: 600px;">
+  <tr><td style="padding: 6px 12px; font-weight: bold; width: 200px;">Caller Name:</td><td style="padding: 6px 12px;">{{ caller_name }}</td></tr>
+  <tr style="background: #f9f9f9;"><td style="padding: 6px 12px; font-weight: bold;">Phone:</td><td style="padding: 6px 12px;">{{ caller_phone }}</td></tr>
+  <tr><td style="padding: 6px 12px; font-weight: bold;">Email:</td><td style="padding: 6px 12px;">{{ caller_email or "Not provided" }}</td></tr>
+</table>
+
+<h3 style="color: #444; margin-top: 20px;">Patient Information</h3>
+<table style="border-collapse: collapse; width: 100%; max-width: 600px;">
+  <tr><td style="padding: 6px 12px; font-weight: bold; width: 200px;">Patient Name:</td><td style="padding: 6px 12px;">{{ billing_patient_name }}</td></tr>
+  <tr style="background: #f9f9f9;"><td style="padding: 6px 12px; font-weight: bold;">Patient DOB:</td><td style="padding: 6px 12px;">{{ billing_patient_dob }}</td></tr>
+</table>
+
+<h3 style="color: #444; margin-top: 20px;">Billing Details</h3>
+<table style="border-collapse: collapse; width: 100%; max-width: 600px;">
+  <tr><td style="padding: 6px 12px; font-weight: bold; width: 200px;">Reason:</td><td style="padding: 6px 12px;">{{ billing_reason }}</td></tr>
+</table>
+
+{% if call_summary %}
+<h3 style="color: #444; margin-top: 20px;">Call Summary</h3>
+<p style="background: #f5f5f5; padding: 12px; border-radius: 4px;">{{ call_summary }}</p>
+{% endif %}
+
+<hr style="margin-top: 30px; border: none; border-top: 1px solid #ddd;">
+<p style="color: #999; font-size: 0.8em;">This notification was generated automatically by the First Choice Imaging voice agent system.</p>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<html>
+<body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+<h2 style="color: #0066cc; border-bottom: 2px solid #0066cc; padding-bottom: 8px;">Medical Records Request</h2>
+<p style="color: #666; font-size: 0.9em;">Submitted via AI Voice Agent &bull; {{ timestamp }}</p>
+
+<h3 style="color: #444; margin-top: 20px;">Caller Information</h3>
+<table style="border-collapse: collapse; width: 100%; max-width: 600px;">
+  <tr><td style="padding: 6px 12px; font-weight: bold; width: 200px;">Caller Name:</td><td style="padding: 6px 12px;">{{ caller_name }}</td></tr>
+  <tr style="background: #f9f9f9;"><td style="padding: 6px 12px; font-weight: bold;">Phone:</td><td style="padding: 6px 12px;">{{ caller_phone }}</td></tr>
+  <tr><td style="padding: 6px 12px; font-weight: bold;">Email:</td><td style="padding: 6px 12px;">{{ caller_email or "Not provided" }}</td></tr>
+  {% if caller_id_name %}
+  <tr style="background: #f9f9f9;"><td style="padding: 6px 12px; font-weight: bold;">Caller ID:</td><td style="padding: 6px 12px;">{{ caller_id_name }}</td></tr>
+  {% endif %}
+</table>
+
+<h3 style="color: #444; margin-top: 20px;">Request Details</h3>
+<table style="border-collapse: collapse; width: 100%; max-width: 600px;">
+  <tr><td style="padding: 6px 12px; font-weight: bold; width: 200px;">Caller Type:</td><td style="padding: 6px 12px;">{% if records_caller_type == "attorney" %}Attorney / Law Firm{% elif records_caller_type == "provider" %}Healthcare Provider{% else %}Patient / Representative{% endif %}</td></tr>
+  <tr style="background: #f9f9f9;"><td style="padding: 6px 12px; font-weight: bold;">Request Type:</td><td style="padding: 6px 12px;">{% if records_request_type == "radiology_report" %}Radiology Report{% else %}Medical Records Transfer{% endif %}</td></tr>
+</table>
+
+<p style="background: #fffbe6; padding: 12px; border-left: 4px solid #f0c000; border-radius: 4px; margin-top: 20px;">
+  <strong>Action Required:</strong> This caller requested {% if records_request_type == "radiology_report" %}a radiology report{% else %}a medical records transfer{% endif %}. Please follow up directly.
+</p>
+
+{% if call_summary or call_duration %}
+<h3 style="color: #444; margin-top: 20px;">Call Details</h3>
+<table style="border-collapse: collapse; width: 100%; max-width: 600px;">
+  {% if call_duration %}
+  <tr><td style="padding: 6px 12px; font-weight: bold; width: 200px;">Call Duration:</td><td style="padding: 6px 12px;">{{ call_duration }}</td></tr>
+  {% endif %}
+</table>
+{% if call_summary %}
+<p style="background: #f5f5f5; padding: 12px; border-radius: 4px; margin-top: 8px;"><strong>Summary:</strong> {{ call_summary }}</p>
+{% endif %}
+{% endif %}
+
+{% if call_transcript %}
+<details style="margin-top: 16px;">
+<summary style="cursor: pointer; color: #0066cc; font-weight: bold;">View Full Transcript</summary>
+<pre style="background: #f5f5f5; padding: 12px; border-radius: 4px; white-space: pre-wrap; font-size: 0.85em; margin-top: 8px;">{{ call_transcript }}</pre>
+</details>
+{% endif %}
+
+<hr style="margin-top: 30px; border: none; border-top: 1px solid #ddd;">
+<p style="color: #999; font-size: 0.8em;">This notification was generated automatically by the First Choice Imaging voice agent system.</p>
+</body>
+</html>

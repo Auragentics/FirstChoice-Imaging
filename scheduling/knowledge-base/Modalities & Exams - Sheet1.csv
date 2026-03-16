@@ -1,0 +1,91 @@
+Modality,Exam,Available in Logan,Available in Tewilla,Available in Sandy,Available in Saint George
+MRI with and without contrast,Brain,Yes,Yes,Yes,Yes
+MRI with and without contrast,Orbits,Yes,Yes,Yes,Yes
+MRI with and without contrast,IAC,Yes,Yes,Yes,Yes
+MRI with and without contrast,MS Protocol Multiple Sclerosis,Yes,Yes,Yes,Yes
+MRI with and without contrast,Pituitary,Yes,Yes,Yes,Yes
+MRI with and without contrast,MRA Head,Yes,Yes,Yes,Yes
+MRI with and without contrast,MRA Neck,Yes,Yes,Yes,Yes
+MRI with and without contrast,Soft Tissue Neck,Yes,Yes,Yes,Yes
+MRI with and without contrast,Brachial Plexus,Yes,Yes,Yes,Yes
+MRI with and without contrast,Trigeminal Nerve,Yes,Yes,Yes,Yes
+MRI with and without contrast,Shoulder,Yes,Yes,Yes,Yes
+MRI with and without contrast,Humerus,Yes,Yes,Yes,Yes
+MRI with and without contrast,Elbow,Yes,Yes,Yes,Yes
+MRI with and without contrast,Forearm,Yes,Yes,Yes,Yes
+MRI with and without contrast,Wrist,Yes,Yes,Yes,Yes
+MRI with and without contrast,Hand,Yes,Yes,Yes,Yes
+MRI with and without contrast,Hip,Yes,Yes,Yes,Yes
+MRI with and without contrast,Thigh/Femur,Yes,Yes,Yes,Yes
+MRI with and without contrast,Knee,Yes,Yes,Yes,Yes
+MRI with and without contrast,Tibia/Fibula,Yes,Yes,Yes,Yes
+MRI with and without contrast,Ankle,Yes,Yes,Yes,Yes
+MRI with and without contrast,Foot,Yes,Yes,Yes,Yes
+MRI with and without contrast,Chest,Yes,Yes,Yes,Yes
+MRI with and without contrast,Scapula,Yes,Yes,Yes,Yes
+MRI with and without contrast,Abdomen,Yes,Yes,Yes,Yes
+MRI with and without contrast,MRCP,Yes,Yes,Yes,Yes
+MRI with and without contrast,Pelvis,Yes,Yes,Yes,Yes
+MRI with and without contrast,Female Pelvis,Yes,Yes,Yes,Yes
+MRI with and without contrast,Prostate,Yes,No,Yes,Yes
+MRI with and without contrast,Cervical Spine,Yes,Yes,Yes,Yes
+MRI with and without contrast,Thoracic Spine,Yes,Yes,Yes,Yes
+MRI with and without contrast,Lumbar Spine,Yes,Yes,Yes,Yes
+MRI with and without contrast,Sacrum/Coccyx,Yes,Yes,Yes,Yes
+MRI with and without contrast,Breast MRI,No,No,No,No
+MRI with and without contrast,DTI exams,No,No,No,Yes
+MRI with and without contrast,full body MRI,No,No,No,No
+MRI with and without contrast,Open MRI,No,No,No,Yes
+Arthrograms,Shoulder,Yes,No,Yes,Yes
+Arthrograms,Elbow,Yes,No,Yes,Yes
+Arthrograms,Wrist,Yes,No,Yes,Yes
+Arthrograms,Hip,Yes,No,Yes,Yes
+Arthrograms,Knee,Yes,No,Yes,Yes
+CT or computed tomography with and without contrast,Head/Brain,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Sinus,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Temporal Bones,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Chest,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,High Resolution Chest,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,LDCT,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Low dose cancer screening,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Cardiac Calcium Score,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Abdomen,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Abdomen and Pelvis,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Shoulder,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Humerus,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Elbow,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Forearm,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Wrist,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Hand,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Bony Pelvis,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Hip,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Thigh/Femur,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Knee,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Tiba/Fibula,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Ankle,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Foot,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Mako Knee,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Mako Hip,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Surgical Shoulder,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Cervical Spine,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Thoracic Spine,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Lumbar Spine,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Soft Tissue Neck,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Liver,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Pancreas,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Renal Mass,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Adrenal Study,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Kidney Stone,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Urogram,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Chest/Abdomen/Pelvis or CAP,Yes,Yes,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,CT runoffs,No,No,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,PE or Pulmonary Embolism,No,No,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Stroke Protocol,No,No,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Enterography,No,No,CT not offered in Sandy,CT not offered in Saint George
+CT or computed tomography with and without contrast,Surgical Sinus,No,No,CT not offered in Sandy,CT not offered in Saint George
+Xrays,all,No,Yes,No,Yes
+Ultrasound,all,No,Yes,No,No
+Mammogram,all,No,No,No,No
+Dexa,all,No,Yes,No,No
+BMI,all,No,Yes,No,No
+Open MRI,all,No,No,No,Yes

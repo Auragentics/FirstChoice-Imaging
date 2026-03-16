@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>First Choice Imaging — AI Voice Agent Executive Summary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --navy: #0d1f3c;
+            --blue: #1a56a0;
+            --sky: #2e86de;
+            --accent: #00b4d8;
+            --green: #1b8a5a;
+            --red: #c0392b;
+            --light: #f4f7fb;
+            --border: #d4dde8;
+            --text: #1e293b;
+            --muted: #64748b;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: var(--text);
+            background: var(--light);
+            line-height: 1.7;
+        }
+
+        /* ── COVER HEADER ── */
+        .cover {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+            color: var(--white);
+            padding: 52px 64px 44px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover::after {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .cover-eyebrow {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .cover h1 {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+
+        .cover h2 {
+            font-size: 17px;
+            font-weight: 300;
+            opacity: 0.85;
+            margin-bottom: 32px;
+        }
+
+        .cover-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px 32px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 24px;
+            font-size: 13px;
+        }
+
+        .cover-meta-item strong {
+            display: block;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 180, 216, 0.18);
+            border: 1px solid rgba(0, 180, 216, 0.5);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #7ee8fa;
+        }
+
+        /* ── PAGE LAYOUT ── */
+        .page {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 40px 32px 80px;
+        }
+
+        /* ── SECTION HEADERS ── */
+        h2.section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 48px 0 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2.section-title .icon {
+            width: 28px;
+            height: 28px;
+            background: var(--blue);
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        h3.sub-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--blue);
+            margin: 28px 0 10px;
+        }
+
+        p {
+            margin-bottom: 12px;
+        }
+
+        /* ── CARDS ── */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        /* ── FLOW BOX ── */
+        .flow-box {
+            background: var(--navy);
+            color: #e2ecf8;
+            border-radius: 8px;
+            padding: 16px 22px;
+            font-family: 'Inter', monospace;
+            font-size: 13px;
+            margin: 14px 0;
+            line-height: 1.8;
+        }
+
+        .flow-box span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ── TABLES ── */
+        .tbl-wrap {
+            overflow-x: auto;
+            margin: 12px 0 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead tr {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        thead th {
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        tbody td {
+            padding: 9px 14px;
+            vertical-align: top;
+        }
+
+        .check {
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .badge-complete {
+            background: #d1fae5;
+            color: #065f46;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge-covered {
+            background: #dbeafe;
+            color: #1e40af;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-ready {
+            background: #d1fae5;
+            color: #065f46;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            background: #eef2f7;
+            color: var(--navy);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        /* ── LISTS ── */
+        ul.styled {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 16px;
+        }
+
+        ul.styled li {
+            padding: 5px 0 5px 20px;
+            position: relative;
+            border-bottom: 1px solid #f0f4f8;
+        }
+
+        ul.styled li:last-child {
+            border-bottom: none;
+        }
+
+        ul.styled li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--sky);
+            font-weight: 700;
+        }
+
+        ol.styled {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        ol.styled li {
+            padding: 4px 0;
+        }
+
+        /* ── ALERT BOX ── */
+        .alert {
+            border-left: 4px solid var(--sky);
+            background: #eff8ff;
+            border-radius: 0 8px 8px 0;
+            padding: 14px 18px;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+
+        .alert.warning {
+            border-color: #e67e22;
+            background: #fef9f0;
+        }
+
+        .alert.critical {
+            border-color: var(--red);
+            background: #fdf2f2;
+        }
+
+        .alert strong {
+            color: var(--navy);
+        }
+
+        /* ── REMAINING ACTION ── */
+        .action-block {
+            border: 2px solid var(--red);
+            border-radius: 10px;
+            padding: 22px 28px;
+            background: #fff8f8;
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+        }
+
+        .action-icon {
+            font-size: 28px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .action-block h3 {
+            font-size: 15px;
+            color: var(--red);
+            margin-bottom: 6px;
+        }
+
+        .action-block p {
+            margin: 0;
+            font-size: 13px;
+        }
+
+        /* ── TIMELINE ── */
+        .timeline {
+            margin: 12px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-date {
+            color: var(--muted);
+            min-width: 160px;
+            font-weight: 500;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            margin-top: 60px;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+            font-size: 12px;
+            color: var(--muted);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .cover {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .page {
+                padding: 20px 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ══ COVER ══ -->
+    <div class="cover">
+        <div class="cover-eyebrow">Confidential — Executive Document</div>
+        <h1>First Choice Imaging</h1>
+        <h2>AI Voice Agent Project — Executive Summary</h2>
+        <div class="cover-meta">
+            <div class="cover-meta-item">
+                <strong>Prepared For</strong>
+                David Carter, CEO &amp; Jeremy Bennett, COO<br>First Choice Imaging
+            </div>
+            <div class="cover-meta-item">
+                <strong>Prepared By</strong>
+                Brian Randall<br>Auragentics LLC
+            </div>
+            <div class="cover-meta-item">
+                <strong>Date</strong>
+                March 10, 2026
+            </div>
+            <div class="cover-meta-item">
+                <strong>Project Status</strong>
+                <span class="status-badge">✅ Systems Go — Pending BAA</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="page">
+
+        <!-- ══ PROJECT OVERVIEW ══ -->
+        <h2 class="section-title"><span class="icon">📋</span> Project Overview</h2>
+        <div class="card">
+            <p>First Choice Imaging has engaged Auragentics LLC to design and deploy an AI-powered voice agent system
+                across its clinic network. The system replaces a traditional phone tree and receptionist intake workflow
+                with a conversational AI that handles inbound patient calls 24/7. The AI answers patient questions,
+                collects structured intake data, routes calls to the appropriate department, and automatically triggers
+                follow-up communications — all without manual staff intervention.</p>
+            <p>The project spans five clinic locations, a centralized data pipeline, compliant SMS communication
+                infrastructure, and HIPAA-aware architecture decisions throughout.</p>
+        </div>
+
+        <!-- ══ WHAT WAS BUILT ══ -->
+        <h2 class="section-title"><span class="icon">🔨</span> What Was Built</h2>
+        <p>The project is organized across four functional areas:</p>
+
+        <!-- 1. Voice AI -->
+        <h3 class="sub-title">1 — Voice AI &amp; Prompt Engineering</h3>
+        <div class="card">
+            <div class="card-label">Overview</div>
+            <p>Each clinic location has a dedicated AI voice agent with a custom "personality" — its own clinic
+                knowledge, services, hours, and call handling rules. The agents were built using Retell AI and
+                configured with detailed natural-language instructions (prompts) that govern exactly how the AI behaves
+                on every call.</p>
+
+            <div class="tbl-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Clinic Location</th>
+                            <th>AI Agent Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Logan MRI Clinic / North Logan CT Clinic</td>
+                            <td>Ethan AI</td>
+                            <td><span class="badge-ready">✅ Ready</span></td>
+                        </tr>
+                        <tr>
+                            <td>Tooele Valley Imaging</td>
+                            <td>Leo AI</td>
+                            <td><span class="badge-ready">✅ Ready</span></td>
+                        </tr>
+                        <tr>
+                            <td>Sandy — Wasatch Imaging</td>
+                            <td>Marcus AI</td>
+                            <td><span class="badge-ready">✅ Ready</span></td>
+                        </tr>
+                        <tr>
+                            <td>St. George</td>
+                            <td>Luke AI</td>
+                            <td><span class="badge-ready">✅ Ready</span></td>
+                        </tr>
+                        <tr>
+                            <td>Central Hub (Multi-location routing)</td>
+                            <td>—</td>
+                            <td><span class="badge-covered">🔄 In Progress</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-label" style="margin-top:16px;">Agent Capabilities</div>
+            <ul class="styled">
+                <li>Answer questions about services, FAQs, general information, hours, and locations</li>
+                <li>Collect caller name, phone number, and email on every call</li>
+                <li>Handle medical records requests (with caller type identification and records transfer vs. radiology report routing), billing inquiries, and attorney lien requests — collecting all
+                    required intake data verbally</li>
+                <li>Route callers by intent to Scheduling, perform inter-clinic transfers, and employ live operator
+                    transfer gatekeeping techniques</li>
+                <li>Offer SMS opt-in for follow-up communications (compliant verbal consent)</li>
+            </ul>
+
+            <div class="card-label" style="margin-top:16px;">Deliverables (12 files + archives)</div>
+            <ul class="styled">
+                <li>6 location-specific agent prompt files (Logan, North Logan, Tooele, Sandy, St. George, Central Hub)
+                </li>
+                <li>Agent variable definitions, call flow diagram, and interactive workflow visualization</li>
+                <li>AI rollout architecture and location phasing plan</li>
+                <li>Compiled patient FAQ knowledge base</li>
+                <li>22-version archived prompt revision history</li>
+            </ul>
+        </div>
+
+        <!-- 2. Webhook -->
+        <h3 class="sub-title">2 — Webhook Automation</h3>
+        <div class="card">
+            <div class="card-label">Overview</div>
+            <p>When a call ends, Retell AI analyzes the call transcript and automatically extracts all collected
+                information into structured data fields. That data is fired as a webhook directly into GHL, where it
+                creates or updates a contact record and triggers automated workflows.</p>
+
+            <div class="alert">
+                <strong>GHL Configuration Completed:</strong> All inter-clinic call transfer functions, custom webhook
+                integration, and contact information update triggers and workflows were built and configured directly
+                within GHL — no external server required.
+            </div>
+
+            <div class="flow-box">
+                <span>Call Ends</span> → Retell Analyzes Transcript → <span>Webhook Fires</span> → GHL Receives Data<br>
+                → Contact Created/Updated → <span>Email(s) Sent to Staff</span> → SMS Sent to Caller
+            </div>
+
+            <p style="margin-top:14px;"><strong>Key capability — Intent Routing:</strong> A routing variable tells the
+                system which workflows the caller completed (e.g., <code>records,billing</code>). GHL uses this
+                to fire multiple emails simultaneously if a caller addressed more than one topic.</p>
+
+            <div class="card-label" style="margin-top:16px;">Deliverables (5 files)</div>
+            <ul class="styled">
+                <li>Full automation logic, payload structure, and routing rules document</li>
+                <li>Visual diagram of the automation workflow</li>
+                <li>Configuration guide for all 16 AI-extracted data fields in Retell</li>
+                <li>Step-by-step GHL setup guide: custom fields, workflow logic, webhook mapping</li>
+                <li>Visual diagram of the GHL workflow</li>
+            </ul>
+        </div>
+
+        <!-- 3. Email & SMS -->
+        <h3 class="sub-title">3 — Email &amp; SMS Automation</h3>
+        <div class="card">
+            <div class="card-label">Staff Email Notifications</div>
+            <p>After each call, structured intake emails are automatically sent to the appropriate First Choice Imaging
+                staff inbox. Every email is pre-populated with the caller and patient data the AI collected during the
+                call — no manual transcription required.</p>
+
+            <div class="tbl-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Intent</th>
+                            <th>Email Sent To</th>
+                            <th>Subject Line Format</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Billing Inquiry</td>
+                            <td>billing@firstchoice-imaging.com</td>
+                            <td><code>BILLING INQUIRY | [Patient]</code></td>
+                        </tr>
+                        <tr>
+                            <td>Attorney Lien Request</td>
+                            <td>orders@firstchoice-imaging.com</td>
+                            <td><code>LIEN REQUEST | [Patient]</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>Each email includes caller name, phone number, patient details (for billing and lien), and a link to the call recording and transcript.</p>
+
+            <div class="card-label" style="margin-top:16px;">SMS Messages Sent to Callers</div>
+            <p>When a caller consents to SMS, the system sends a targeted text message based on the caller type and intent. Medical records and report requests are handled entirely via SMS — directing callers to the appropriate online form or portal.</p>
+
+            <div class="tbl-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Caller Type / Intent</th>
+                            <th>SMS Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Attorney</strong> — Records Request</td>
+                            <td>First Choice Imaging: Thank you for contacting us. Please visit https://firstchoiceimaging.com/attorneys/# select "Request Medical Records" and submit the completed form. Reply STOP to unsubscribe.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Patient</strong> — Radiology Report</td>
+                            <td>First Choice Imaging: Thank you for contacting us. Please visit https://firstchoice-imaging.com/patients/ select "Radiology Report" and submit completed form or email us directly at medicalrecords@firstchoice-imaging.com Reply STOP to unsubscribe.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Patient</strong> — Medical Records</td>
+                            <td>First Choice Imaging: Thank you for contacting us. Please visit https://firstchoice-imaging.com/patients/# select "Medical Records Request" and submit the completed form or email us directly at medicalrecords@firstchoice-imaging.com Reply STOP to unsubscribe.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Provider</strong> — Records/Reports</td>
+                            <td>First Choice Imaging: Thank you for contacting us. Please visit https://firstchoice-imaging.com/provider/ sign up or log into the portal to request records or email us directly at medicalrecords@firstchoice-imaging.com Reply STOP to unsubscribe.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Attorney</strong> — Lien Request</td>
+                            <td>First Choice Imaging: Thank you for contacting us. Your Lien request has been received by our staff and is currently being processed. Visit https://firstchoice-imaging.com/attorneys/ for portal access, records, direct liens, or funding requests. Reply STOP to unsubscribe.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Billing</strong> — Inquiry Confirmation</td>
+                            <td>First Choice Imaging: Thank you for contacting us. Your billing inquiry has been received by our billing support team. We will contact you with an answer soon. Reply STOP to unsubscribe.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 4. A2P -->
+        <h3 class="sub-title">4 — A2P 10DLC SMS Registration</h3>
+        <div class="card">
+            <div class="card-label">What It Is</div>
+            <p>A2P 10DLC ("Application-to-Person, 10-Digit Long Code") is the federal regulatory registration required
+                for any business sending SMS messages at scale in the United States. Without this registration, carrier
+                networks (AT&amp;T, Verizon, T-Mobile) will block or filter messages. This is not optional.</p>
+
+            <div class="tbl-wrap" style="margin-top:14px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Completed Step</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Brand Registration details compiled (EIN, business info, contacts)</td>
+                            <td><span class="badge-complete">✅ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td>Campaign use case defined — <code>customer-care</code></td>
+                            <td><span class="badge-complete">✅ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td>Campaign description written and compliance-reviewed</td>
+                            <td><span class="badge-complete">✅ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td>Opt-in language for voice agent finalized</td>
+                            <td><span class="badge-complete">✅ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td>Sample SMS messages written and analyzed</td>
+                            <td><span class="badge-complete">✅ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td>STOP / HELP / START keyword auto-responses written</td>
+                            <td><span class="badge-complete">✅ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td>Privacy Policy and SMS Terms gap analysis completed</td>
+                            <td><span class="badge-complete">✅ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td>Estimated registration costs documented</td>
+                            <td><span class="badge-complete">✅ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td>Submission process documented step-by-step</td>
+                            <td><span class="badge-complete">✅ Complete</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert" style="margin-top:14px;">
+                <strong>Client-Side Actions — All Complete:</strong>
+                <ol class="styled" style="margin-top:8px;">
+                    <li><s>Update <code>/sms-terms</code> page on firstchoice-imaging.com with opt-out language</s> — <span class="badge-complete">✅ Done</span></li>
+                    <li><s>Update <code>/privacy</code> page to add SMS section</s> — <span class="badge-complete">✅ Done</span></li>
+                    <li><s>Configure STOP/HELP/START auto-responses in GHL</s> — <span class="badge-complete">✅ Done</span></li>
+                    <li><s>Submit brand and campaign registration through GHL Trust Center</s> — <span class="badge-complete">✅ Done</span></li>
+                </ol>
+            </div>
+            <p><strong>Registration costs:</strong> ~$59 (brand + vetting + campaign fees) +
+                $10/month ongoing</p>
+        </div>
+
+        <!-- ══ HIPAA ══ -->
+        <h2 class="section-title"><span class="icon">🔒</span> HIPAA Compliance &amp; BAA Status</h2>
+        <div class="card">
+            <div class="card-label">Platform Stack — HIPAA Compliance Complete</div>
+            <div class="tbl-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Platform</th>
+                            <th>Role</th>
+                            <th>BAA Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>GHL</strong></td>
+                            <td>CRM, webhook integration, email automation, SMS</td>
+                            <td><span class="badge-complete">✅ Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Retell AI</strong></td>
+                            <td>Voice agent platform, call recording &amp; transcription</td>
+                            <td><span class="badge-covered">✅ Covered under GHL HIPAA package</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Twilio</strong> (via GHL)</td>
+                            <td>SMS delivery infrastructure</td>
+                            <td><span class="badge-covered">✅ Covered under GHL HIPAA package</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-label" style="margin-top:16px;">AI Voice Agent HIPAA Guardrails (built into all prompts)
+            </div>
+            <ul class="styled">
+                <li>Agents never provide medical diagnoses, treatment advice, or read back test results</li>
+                <li>Agents defer all clinical questions to the patient's referring physician</li>
+                <li>SMS messages are intentionally generic — no PHI transmitted via text</li>
+                <li>Call recordings and transcripts are retained by Retell AI under their data retention policies</li>
+            </ul>
+        </div>
+
+        <!-- ══ INFRASTRUCTURE ══ -->
+        <h2 class="section-title"><span class="icon">⚙️</span> Supporting Infrastructure</h2>
+        <div class="tbl-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>compile_data.py / crawler.js</code></td>
+                        <td>Scripts used to crawl firstchoice-imaging.com and compile clinic-specific knowledge for
+                            agent training</td>
+                    </tr>
+                    <tr>
+                        <td><code>FirstChoice_Data_Compiled.html</code></td>
+                        <td>Compiled website data used as the knowledge base source</td>
+                    </tr>
+                    <tr>
+                        <td><code>First Choice Imaging - Deep Crawl Data.pdf</code></td>
+                        <td>Full website data export</td>
+                    </tr>
+                    <tr>
+                        <td><code>First Choice Imaging FAQs_.pdf</code></td>
+                        <td>Printable FAQ document</td>
+                    </tr>
+                    <tr>
+                        <td>AI Voice Agent Implementation Plan (PDF/HTML)</td>
+                        <td>Formatted deliverable versions of the implementation plan</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ══ FILE INVENTORY ══ -->
+        <h2 class="section-title"><span class="icon">📁</span> Complete File Inventory</h2>
+        <div class="tbl-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>File / Folder</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><code>AI_Voice_Agent_Implementation_Plan.md</code></td>
+                        <td>Voice AI — Architecture</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><code>LoganVoiceAgentPrompt.md</code></td>
+                        <td>Voice AI — Prompt</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><code>NorthLoganVoiceAgentPrompt.md</code></td>
+                        <td>Voice AI — Prompt</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><code>TooeleVoiceAgentPrompt.md</code></td>
+                        <td>Voice AI — Prompt</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><code>SandyVoiceAgentPrompt.md</code></td>
+                        <td>Voice AI — Prompt</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td><code>StGeorgeVoiceAgentPrompt.md</code></td>
+                        <td>Voice AI — Prompt</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td><code>CentralHubVoiceAgentPrompt.md</code></td>
+                        <td>Voice AI — Prompt (Hub)</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td><code>LoganVoiceAgentVariables.md</code></td>
+                        <td>Voice AI — Configuration</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td><code>LoganClinicWorkflowDiagram.md</code></td>
+                        <td>Voice AI — Call Flow</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td><code>LoganClinicWorkflowVisual.html</code></td>
+                        <td>Voice AI — Visual</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td><code>First Choice Imaging FAQs.md</code></td>
+                        <td>Voice AI — Knowledge Base</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td><code>Archived Prompts/</code> (22 files)</td>
+                        <td>Voice AI — Revision History</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td><code>WebhookEmailAutomation.md</code></td>
+                        <td>Webhook — Logic</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td><code>WebhookEmailAutomationVisual.html</code></td>
+                        <td>Webhook — Visual</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td><code>RetellPostCallAnalysisFields.md</code></td>
+                        <td>Webhook — Retell Config</td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td><code>GHL_VoiceAgent_Integration_Guide.md</code></td>
+                        <td>Email — GHL Setup</td>
+                    </tr>
+                    <tr>
+                        <td>17</td>
+                        <td><code>GHL_WorkflowVisual.html</code></td>
+                        <td>Email — Visual</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td><code>A2P-10DLC-Registration-Plan.md</code></td>
+                        <td>SMS — Registration</td>
+                    </tr>
+                    <tr>
+                        <td>19</td>
+                        <td><code>PhoneSystem_Integration_Spec.md</code></td>
+                        <td>Phone System — Integration Spec</td>
+                    </tr>
+                    <tr>
+                        <td>20</td>
+                        <td><code>PhoneSystem_Integration_Spec.html</code></td>
+                        <td>Phone System — Visual</td>
+                    </tr>
+                    <tr>
+                        <td>21</td>
+                        <td><code>compile_data.py / crawler.js</code></td>
+                        <td>Infrastructure — Data Tools</td>
+                    </tr>
+                    <tr>
+                        <td>22</td>
+                        <td><code>FirstChoice_Data_Compiled.html</code></td>
+                        <td>Data — Knowledge Base Source</td>
+                    </tr>
+                    <tr>
+                        <td>23</td>
+                        <td><code>First Choice Imaging - Deep Crawl Data.pdf</code></td>
+                        <td>Data — Website Export</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="font-size:13px; color:var(--muted); margin-top:8px;"><strong>Total: 23 primary deliverables</strong> +
+            22 archived prompt versions</p>
+
+        <!-- ══ TIMELINE ══ -->
+        <h2 class="section-title"><span class="icon">📅</span> Project Timeline</h2>
+        <div class="card">
+            <div class="timeline">
+                <div class="timeline-item"><span class="timeline-date">January 18, 2026</span><span>Initial AI Voice
+                        Agent implementation plan</span></div>
+                <div class="timeline-item"><span class="timeline-date">February 5, 2026</span><span>Webhook email
+                        automation workflow designed</span></div>
+                <div class="timeline-item"><span class="timeline-date">February 11, 2026</span><span>GHL integration
+                        guide completed</span></div>
+                <div class="timeline-item"><span class="timeline-date">February 27, 2026</span><span>Retell Post-Call
+                        Analysis fields finalized</span></div>
+                <div class="timeline-item"><span class="timeline-date">March 2026</span><span>A2P 10DLC registration
+                        plan and compliance review</span></div>
+                <div class="timeline-item"><span class="timeline-date">March 2026</span><span>All 5 location agent
+                        prompts finalized</span></div>
+                <div class="timeline-item"><span class="timeline-date">March 2026</span><span>Phone System Integration
+                        Spec completed</span></div>
+            </div>
+        </div>
+
+        <!-- ══ REMAINING ACTIONS ══ -->
+        <h2 class="section-title"><span class="icon">⚠️</span> Summary of Remaining Actions</h2>
+        <p style="margin-bottom:16px;">All technical systems are configured and operational. The remaining actions
+            before full go-live are:</p>
+        <div class="action-block">
+            <div class="action-icon">📄</div>
+            <div>
+                <h3>Execute HIPAA Business Associate Agreement (BAA)</h3>
+                <p><strong>Between:</strong> Auragentics LLC (AI/technology provider) &amp; First Choice Imaging
+                    (covered entity)</p>
+                <p style="margin-top:6px; color:var(--muted);">All vendor-level BAAs (GHL, Retell AI, Twilio) are in
+                    place. This final agreement formalizes the business relationship between Auragentics and First
+                    Choice Imaging under HIPAA requirements. <strong>Required before go-live.</strong></p>
+            </div>
+        </div>
+
+        <div class="action-block" style="margin-top:16px;">
+            <div class="action-icon">📞</div>
+            <div>
+                <h3>Provision Dedicated Forwarding Phone Numbers (10DLC DIDs)</h3>
+                <p>Two dedicated 10DLC phone numbers are required as transfer destinations from the AI voice agents:</p>
+                <ol class="styled" style="margin-top:8px;">
+                    <li><strong>Scheduling DID</strong> — Forwarding destination for all scheduling-related transfers (book, reschedule, cancel appointments)</li>
+                    <li><strong>Front Desk DID</strong> — Forwarding destination for calls that require a live receptionist (complaints, vendor inquiries, complex issues)</li>
+                </ol>
+                <p style="margin-top:8px; color:var(--muted);">These numbers can be provisioned per clinic or shared across all clinics, depending on the inbound call structure for existing scheduling and front desk staff/departments. Numbers must be configured in the phone system before call transfers can go live. <strong>Required before go-live.</strong></p>
+            </div>
+        </div>
+
+        <!-- ══ FOOTER ══ -->
+        <footer>
+            <span>First Choice Imaging — AI Voice Agent Executive Summary</span>
+            <span>Prepared by Brian Randall, Auragentics LLC &nbsp;|&nbsp; March 10, 2026</span>
+        </footer>
+
+    </div>
+</body>
+
+</html>

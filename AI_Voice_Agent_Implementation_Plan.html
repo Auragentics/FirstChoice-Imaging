@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>AI Voice Agent Implementation Plan_ Infrastructure & Routing</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<h1 id="ai-voice-agent-implementation-plan-infrastructure-routing">AI
+Voice Agent Implementation Plan: Infrastructure &amp; Routing</h1>
+<h2
+id="client-first-choice-imaging-prepared-by-auragentics-llc-subject-resolving-the-extension-bottleneck-for-ai-routing">Client:
+First Choice Imaging Prepared By: Auragentics LLC Subject: Resolving the
+“Extension Bottleneck” for AI Routing</h2>
+<h2 id="executive-summary">1. Executive Summary</h2>
+<p>First Choice Imaging currently utilizes a legacy-style VoIP
+configuration: one main number per location with internal extensions. To
+implement high-performance AI Voice Agents that can route calls to
+specific departments (Scheduling, Billing, Records), the underlying
+telephony infrastructure must be modernized.<br />
+The Current Pain Point: The current IVR system (“Press 1 for Scheduling,
+Press 2 for Records…”) is causing significant friction. High call
+volumes combined with rigid menu structures lead to caller backlogs,
+frequent hang-ups, and “redial loops”—exacerbating the very problem the
+IVR was meant to solve.<br />
+The Solution: By deploying an AI Voice Agent as a “Smart Switch,” we can
+eliminate the “Press X” menu entirely. The AI engages callers naturally,
+handles basic FAQs immediately, and routes technical requests directly
+to departmental DIDs, relieving the backlog and improving patient
+satisfaction.<br />
+—</p>
+<h2 id="resolving-the-extension-bottleneck">2. Resolving the “Extension
+Bottleneck”</h2>
+<p>Modern AI Voice Agents process handoffs as peer-to-peer transfers.
+They are designed to “flash hook” or “blind transfer” to a standard
+10-digit phone number (DID).</p>
+<h3 id="the-problem">The Problem</h3>
+<p>AI agents cannot reliably dial a main number, wait for an IVR, and
+then enter an extension (e.g., 555-0101 -&gt; Wait -&gt; “2” for
+Billing). This leads to dropped calls, “dead air,” or failure to connect
+to the right desk.</p>
+<h3 id="the-requirement-internal-voip-upgrade-dids">The Requirement:
+Internal VoIP Upgrade (DIDs)</h3>
+<p>To modernize the setup while keeping your current provider:</p>
+<ul>
+<li>Action: Your current VoIP provider must assign a unique 10-digit
+number (Direct Inward Dial) to every department or “ring group.”<br />
+</li>
+<li>How it Works: The AI agent perceives “Billing” as a direct number
+(e.g., 555-0200) rather than an extension.<br />
+</li>
+<li>Pros: Minimal change to existing hardware/contracts.<br />
+</li>
+<li>Cons: Requires manual technical coordination with your current phone
+vendor; potentially higher monthly costs per DID.</li>
+</ul>
+<hr />
+<h2 id="architecture-local-personalities-model">3. Architecture: Local
+Personalities Model</h2>
+<p>Each location has its own dedicated AI voice agent, customized for
+that specific clinic.</p>
+<ul>
+<li><strong>How it works:</strong> Each location stays 100% independent.
+Sandy’s AI only knows Sandy; Tooele’s AI only knows Tooele; etc.</li>
+<li><strong>Pros:</strong> Highest level of local personalization; no
+location switching risk; each agent verifies caller reached the correct
+location.</li>
+<li><strong>Cons:</strong> Requires maintaining separate prompts per
+location (mitigated by consistent structure across all prompts).</li>
+</ul>
+<h3 id="initial-rollout-locations">Initial Rollout Locations</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Location</th>
+<th style="text-align: left;">Agent Prompt</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Logan MRI Clinic</td>
+<td style="text-align: left;">LoganVoiceAgentPrompt.md</td>
+<td style="text-align: left;">Ready</td>
+</tr>
+<tr>
+<td style="text-align: left;">North Logan CT Clinic</td>
+<td style="text-align: left;">NorthLoganVoiceAgentPrompt.md</td>
+<td style="text-align: left;">Ready</td>
+</tr>
+<tr>
+<td style="text-align: left;">Tooele Valley Imaging</td>
+<td style="text-align: left;">TooeleVoiceAgentPrompt.md</td>
+<td style="text-align: left;">Ready</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sandy (Wasatch Imaging)</td>
+<td style="text-align: left;">SandyVoiceAgentPrompt.md</td>
+<td style="text-align: left;">Ready</td>
+</tr>
+<tr>
+<td style="text-align: left;">St. George</td>
+<td style="text-align: left;">StGeorgeVoiceAgentPrompt.md</td>
+<td style="text-align: left;">Coming Soon</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="hipaa-phi-compliance">3. HIPAA &amp; PHI Compliance</h2>
+<p>Auragentics LLC implements and maintains full HIPAA compliance to
+protect Protected Health Information (PHI). As the AI agent will be
+accepting inbound calls and interacting with patients, Auragentics
+operates under a Business Associate relationship with First Choice
+Imaging (the Covered Entity).<br />
+Compliance Highlights:</p>
+<ul>
+<li>Infrastructure Isolation: Compliance is maintained by isolating the
+call processing and data storage within a dedicated, HIPAA-compliant
+secure environment.<br />
+</li>
+<li>Encryption: All data, including voice streams and transcripts, are
+encrypted in transit and at rest using industry-standard
+protocols.<br />
+</li>
+<li>Contractual Security: Auragentics will execute a Business Associate
+Agreement (BAA) with First Choice Imaging to formalize these security
+and privacy obligations.</li>
+</ul>
+<hr />
+<h2 id="universal-routing-logic">4. Universal Routing Logic</h2>
+<p>The AI will utilize the following triggers to route calls directly to
+the departmental DIDs:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Destination</th>
+<th style="text-align: left;">Trigger Keywords</th>
+<th style="text-align: left;">Operational Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Scheduling</td>
+<td style="text-align: left;">“appt,” “book,” “MRI,” “X-ray”</td>
+<td style="text-align: left;">Dedicated DID (No Extension)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Records</td>
+<td style="text-align: left;">“results,” “CD,” “medical records”</td>
+<td style="text-align: left;">Dedicated DID (No Extension)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Billing</td>
+<td style="text-align: left;">“cost,” “invoice,” “pay my bill”</td>
+<td style="text-align: left;">Dedicated DID (No Extension)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Gen Info</td>
+<td style="text-align: left;">“hours,” “fax,” “address”</td>
+<td style="text-align: left;">AI Answers Directly</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="implementation-roadmap">5. Implementation Roadmap</h2>
+<h3 id="phase-1-initial-launch-4-locations">Phase 1: Initial Launch (4
+Locations)</h3>
+<ol type="1">
+<li><strong>DID Provisioning:</strong> Secure dedicated 10-digit numbers
+for Scheduling, Records, Billing, and Insurance for Logan, North Logan,
+Tooele, and Sandy.</li>
+<li><strong>Forwarding Logic:</strong> Configure call forwarding from
+each location’s main line to its dedicated AI agent.</li>
+<li><strong>AI Training:</strong> Load location-specific data (address,
+hours, services, pricing) into each agent’s knowledge base.</li>
+<li><strong>Testing:</strong> Pilot test at each location before going
+live.</li>
+<li><strong>Go Live:</strong> Launch AI agents at all 4 locations.</li>
+</ol>
+<h3 id="phase-2-st.-george-coming-soon">Phase 2: St. George (Coming
+Soon)</h3>
+<ol start="6" type="1">
+<li><strong>St. George Launch:</strong> Deploy AI agent when location
+opens, following the same process.</li>
+</ol>
+<hr />
+<h2 id="next-steps">6. Next Steps</h2>
+<ul>
+<li><strong>Action Item:</strong> Provide current VoIP contract details
+and initiate DID provisioning with your provider for all 4 launch
+locations.</li>
+<li><strong>Action Item:</strong> Confirm department DIDs (Scheduling,
+Records, Billing, Insurance) for Logan, North Logan, Tooele, and
+Sandy.</li>
+<li><strong>Action Item:</strong> Schedule pilot testing window for each
+location.</li>
+</ul>
+</body>
+</html>

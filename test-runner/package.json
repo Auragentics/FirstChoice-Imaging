@@ -1,0 +1,15 @@
+{
+  "name": "fci-voice-agent-tester",
+  "version": "1.0.0",
+  "description": "Automated test runner for First Choice Imaging voice agents",
+  "type": "module",
+  "scripts": {
+    "test": "node run-tests.js",
+    "test:dry": "node run-tests.js --dry-run",
+    "test:single": "node run-tests.js --scenario",
+    "results": "node view-results.js"
+  },
+  "dependencies": {
+    "retell-sdk": "^4.0.0"
+  }
+}

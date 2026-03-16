@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHL Automation Buildout Guide — First Choice Imaging</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e6e6e6;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #0f3460, #16213e);
+            padding: 30px 40px;
+            text-align: center;
+            border-bottom: 3px solid #00d9ff;
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: #00d9ff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+
+        .header p {
+            color: #a0a0a0;
+            font-size: 1rem;
+        }
+
+        .header .contact {
+            color: #ffa500;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        .nav {
+            background: rgba(15, 52, 96, 0.8);
+            padding: 15px 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 217, 255, 0.3);
+        }
+
+        .nav a {
+            color: #00d9ff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav a:hover {
+            background: rgba(0, 217, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h2 {
+            color: #00d9ff;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0, 217, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.4rem;
+        }
+
+        .section h3 {
+            color: #ffa500;
+            margin: 25px 0 15px;
+            font-size: 1.1rem;
+        }
+
+        .section h4 {
+            color: #00d9ff;
+            margin: 20px 0 10px;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .section p {
+            color: #c0c0c0;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .workflow-label {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .wf1 {
+            background: rgba(0, 217, 255, 0.2);
+            color: #00d9ff;
+            border: 1px solid #00d9ff;
+        }
+
+        .wf2 {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+            border: 1px solid #ffa500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        th {
+            background: rgba(0, 217, 255, 0.15);
+            color: #00d9ff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            color: #c0c0c0;
+            font-size: 0.9rem;
+        }
+
+        tr:hover {
+            background: rgba(0, 217, 255, 0.05);
+        }
+
+        code {
+            background: rgba(0, 217, 255, 0.1);
+            color: #00d9ff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(0, 217, 255, 0.05));
+            border-left: 4px solid #00d9ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box h4 {
+            color: #00d9ff;
+            margin: 0 0 10px 0;
+        }
+
+        .info-box p, .info-box li {
+            color: #c0c0c0;
+        }
+
+        .info-box ul, .info-box ol {
+            padding-left: 20px;
+        }
+
+        .info-box li {
+            margin: 6px 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 107, 107, 0.08));
+            border-left: 4px solid #ff6b6b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .warning-box h4 {
+            color: #ff6b6b;
+            margin: 0 0 10px 0;
+        }
+
+        .warning-box p, .warning-box li {
+            color: #c0c0c0;
+        }
+
+        .warning-box ul {
+            padding-left: 20px;
+        }
+
+        .warning-box li {
+            margin: 6px 0;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 255, 136, 0.08));
+            border-left: 4px solid #00ff88;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .success-box h4 {
+            color: #00ff88;
+            margin: 0 0 10px 0;
+        }
+
+        .success-box p, .success-box li {
+            color: #c0c0c0;
+        }
+
+        .success-box ul {
+            padding-left: 20px;
+        }
+
+        .success-box li {
+            margin: 6px 0;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+
+        .step-card .step-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .step-card .step-number {
+            background: linear-gradient(135deg, #00d9ff, #0099cc);
+            color: #1a1a2e;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .step-card .step-number.wf2-num {
+            background: linear-gradient(135deg, #ffa500, #cc8400);
+        }
+
+        .step-card .step-title {
+            color: #e6e6e6;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .step-card .action-type {
+            display: inline-block;
+            background: rgba(255, 165, 0, 0.15);
+            color: #ffa500;
+            padding: 3px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            margin-bottom: 12px;
+        }
+
+        .logic-tree {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #c0c0c0;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .logic-tree .keyword {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .logic-tree .value {
+            color: #00ff88;
+        }
+
+        .logic-tree .field {
+            color: #00d9ff;
+        }
+
+        .logic-tree .operator {
+            color: #ffa500;
+        }
+
+        .sms-template {
+            background: rgba(46, 213, 115, 0.08);
+            border: 1px solid rgba(46, 213, 115, 0.25);
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin: 12px 0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #b0d0b0;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .email-template {
+            background: rgba(0, 217, 255, 0.06);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin: 12px 0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #a0c8d8;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .nesting-tree {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 217, 255, 0.25);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.82rem;
+            color: #c0c0c0;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.7;
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px solid rgba(0, 217, 255, 0.12);
+            margin: 30px 0;
+        }
+
+        .nested-indent {
+            padding-left: 25px;
+            border-left: 2px solid rgba(255, 165, 0, 0.2);
+            margin-left: 18px;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #00d9ff, #0099cc);
+            color: #1a1a2e;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+            transition: all 0.3s ease;
+            z-index: 200;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.5);
+        }
+
+        @media print {
+            body { background: white; color: black; }
+            .nav, .print-btn { display: none; }
+            .section { break-inside: avoid; page-break-inside: avoid; border-color: #ccc; box-shadow: none; }
+            .header { background: white; border-bottom-color: #333; }
+            .header h1 { color: #333; text-shadow: none; }
+            th { background: #eee; color: #333; }
+            td, p, li { color: #333; }
+            h2, h3, h4, code { color: #333; }
+            .info-box, .warning-box, .success-box { border-left-color: #999; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>GHL Automation Buildout Guide</h1>
+        <p>First Choice Imaging &mdash; Step-by-Step GHL Workflow Configuration &bull; v1.0 &bull; March 4, 2026</p>
+        <p class="contact">Change Requests: Brian Randall &mdash; brandall@auragentics.ai</p>
+    </div>
+
+    <nav class="nav">
+        <a href="#prerequisites">Prerequisites</a>
+        <a href="#wf1">WF1: Contact Update</a>
+        <a href="#wf2-trigger">WF2: Trigger &amp; Gate</a>
+        <a href="#wf2-records">WF2: Records Branch</a>
+        <a href="#wf2-billing">WF2: Billing Branch</a>
+        <a href="#wf2-lien">WF2: Lien Branch</a>
+        <a href="#nesting">Full Nesting Tree</a>
+        <a href="#ifelse-ref">If/Else Reference</a>
+        <a href="#rules">Design Rules</a>
+        <a href="#testing">Testing</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- ========== PREREQUISITES ========== -->
+        <section id="prerequisites" class="section">
+            <h2>Prerequisites: Custom Contact Fields</h2>
+            <p>Before building either workflow, create the following <strong>13 custom contact fields</strong> in GHL:</p>
+            <p><code>Settings &gt; Custom Fields &gt; Contacts &gt; Add Field</code></p>
+
+            <table>
+                <tr><th>#</th><th>Field Name</th><th>Field Type</th><th>Options (if dropdown)</th></tr>
+                <tr><td>1</td><td>Intents Handled</td><td>Text</td><td>&mdash;</td></tr>
+                <tr><td>2</td><td>SMS Consent</td><td>Dropdown</td><td>YES, NO</td></tr>
+                <tr><td>3</td><td>Records Caller Type</td><td>Dropdown</td><td>patient, provider, attorney</td></tr>
+                <tr><td>4</td><td>Records Request Type</td><td>Dropdown</td><td>medical_records, radiology_report</td></tr>
+                <tr><td>5</td><td>Billing Patient Name</td><td>Text</td><td>&mdash;</td></tr>
+                <tr><td>6</td><td>Billing Patient DOB</td><td>Text</td><td>&mdash;</td></tr>
+                <tr><td>7</td><td>Billing Reason</td><td>Text (multiline)</td><td>&mdash;</td></tr>
+                <tr><td>8</td><td>Lien Patient Name</td><td>Text</td><td>&mdash;</td></tr>
+                <tr><td>9</td><td>Lien Patient DOB</td><td>Text</td><td>&mdash;</td></tr>
+                <tr><td>10</td><td>Lien Firm Name</td><td>Text</td><td>&mdash;</td></tr>
+                <tr><td>11</td><td>Lien Paralegal Name</td><td>Text</td><td>&mdash;</td></tr>
+                <tr><td>12</td><td>Lien Callback Phone</td><td>Phone</td><td>&mdash;</td></tr>
+                <tr><td>13</td><td>Lien Clinic Location</td><td>Text</td><td>&mdash;</td></tr>
+            </table>
+
+            <div class="warning-box">
+                <h4>Required Before Building</h4>
+                <p>These fields must exist before building either workflow, or field mapping will fail. Create them all first, even if some won't be used immediately.</p>
+            </div>
+        </section>
+
+        <!-- ========== WORKFLOW 1 ========== -->
+        <section id="wf1" class="section">
+            <h2>Workflow 1: Contact Database Update <span class="workflow-label wf1">WEBHOOK TRIGGER</span></h2>
+            <p><strong>Purpose:</strong> Receives the webhook POST from Retell AI when a call ends, creates or updates the contact in GHL with all extracted variables.</p>
+            <p><strong>Total actions: 3</strong></p>
+
+            <hr class="divider">
+
+            <!-- WF1 Step 1 -->
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Trigger: Inbound Webhook</div>
+                </div>
+                <div class="action-type">Inbound Webhook</div>
+                <table>
+                    <tr><th>Setting</th><th>Value</th></tr>
+                    <tr><td>Trigger Name</td><td>Retell AI Post-Call Webhook</td></tr>
+                    <tr><td>Webhook URL</td><td><em>(auto-generated by GHL &mdash; copy this URL)</em></td></tr>
+                </table>
+                <div class="info-box">
+                    <h4>After Adding the Trigger</h4>
+                    <ol>
+                        <li>Copy the GHL-generated webhook URL</li>
+                        <li>Paste it into Retell AI's Post-Call Webhook configuration</li>
+                        <li>Fire a test call from Retell so GHL detects the incoming fields</li>
+                        <li>GHL will display the payload fields for mapping in subsequent actions</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- WF1 Step 2 -->
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Create/Update Contact</div>
+                </div>
+                <div class="action-type">Create or Update Contact</div>
+                <table>
+                    <tr><th>Setting</th><th>Value</th></tr>
+                    <tr><td>Action Name</td><td>Create/Update Contact from AI Call</td></tr>
+                    <tr><td>Lookup By</td><td>Phone Number</td></tr>
+                    <tr><td>Lookup Value</td><td><code>{{trigger.contact.caller_phone}}</code></td></tr>
+                    <tr><td>If Not Found</td><td>Create New Contact</td></tr>
+                    <tr><td>If Found</td><td>Update Existing Contact</td></tr>
+                </table>
+
+                <h4>Field Mapping (16 fields)</h4>
+                <table>
+                    <tr><th>GHL Field</th><th>Webhook Value</th></tr>
+                    <tr><td><strong>First Name</strong></td><td><code>{{trigger.contact.caller_name}}</code></td></tr>
+                    <tr><td><strong>Phone</strong></td><td><code>{{trigger.contact.caller_phone}}</code></td></tr>
+                    <tr><td><strong>Email</strong></td><td><code>{{trigger.contact.caller_email}}</code></td></tr>
+                    <tr><td><strong>Intents Handled</strong> (custom)</td><td><code>{{trigger.contact.intents_handled}}</code></td></tr>
+                    <tr><td><strong>SMS Consent</strong> (custom)</td><td><code>{{trigger.contact.sms_consent}}</code></td></tr>
+                    <tr><td><strong>Records Caller Type</strong> (custom)</td><td><code>{{trigger.contact.records_caller_type}}</code></td></tr>
+                    <tr><td><strong>Records Request Type</strong> (custom)</td><td><code>{{trigger.contact.records_request_type}}</code></td></tr>
+                    <tr><td><strong>Billing Patient Name</strong> (custom)</td><td><code>{{trigger.contact.billing_patient_name}}</code></td></tr>
+                    <tr><td><strong>Billing Patient DOB</strong> (custom)</td><td><code>{{trigger.contact.billing_patient_dob}}</code></td></tr>
+                    <tr><td><strong>Billing Reason</strong> (custom)</td><td><code>{{trigger.contact.billing_reason}}</code></td></tr>
+                    <tr><td><strong>Lien Patient Name</strong> (custom)</td><td><code>{{trigger.contact.lien_patient_name}}</code></td></tr>
+                    <tr><td><strong>Lien Patient DOB</strong> (custom)</td><td><code>{{trigger.contact.lien_patient_dob}}</code></td></tr>
+                    <tr><td><strong>Lien Firm Name</strong> (custom)</td><td><code>{{trigger.contact.lien_firm_name}}</code></td></tr>
+                    <tr><td><strong>Lien Paralegal Name</strong> (custom)</td><td><code>{{trigger.contact.lien_paralegal_name}}</code></td></tr>
+                    <tr><td><strong>Lien Callback Phone</strong> (custom)</td><td><code>{{trigger.contact.lien_callback_phone}}</code></td></tr>
+                    <tr><td><strong>Lien Clinic Location</strong> (custom)</td><td><code>{{trigger.contact.lien_clinic_location}}</code></td></tr>
+                </table>
+                <div class="info-box">
+                    <h4>Map All Fields</h4>
+                    <p>Map ALL 16 fields regardless of intent. Empty fields remain blank &mdash; no harm done. This avoids needing If/Else logic in Workflow 1.</p>
+                </div>
+            </div>
+
+            <!-- WF1 Step 3 -->
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Add Tag</div>
+                </div>
+                <div class="action-type">Add Tag</div>
+                <table>
+                    <tr><th>Setting</th><th>Value</th></tr>
+                    <tr><td>Action Name</td><td>Tag: AI Voice Agent Inquiry</td></tr>
+                    <tr><td>Tag</td><td><code>AI Voice Agent Inquiry</code></td></tr>
+                </table>
+            </div>
+
+            <div class="success-box">
+                <h4>Workflow 1 Complete</h4>
+                <p>Toggle to <strong>Published</strong>. No If/Else logic needed &mdash; every call gets the same treatment.</p>
+            </div>
+        </section>
+
+        <!-- ========== WORKFLOW 2: TRIGGER & GATE ========== -->
+        <section id="wf2-trigger" class="section">
+            <h2>Workflow 2: Post-Transcript Actions <span class="workflow-label wf2">TRANSCRIPT TRIGGER</span></h2>
+            <p><strong>Purpose:</strong> After the transcript is generated, routes SMS and email notifications based on <code>intents_handled</code>, <code>records_caller_type</code>, <code>records_request_type</code>, and <code>sms_consent</code>.</p>
+            <p><strong>Total actions: ~25</strong> (1 trigger + 1 gate + 3 intent branches with nested logic)</p>
+
+            <hr class="divider">
+
+            <!-- WF2 Step 1 -->
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number wf2-num">1</div>
+                    <div class="step-title">Trigger: Generate Transcript</div>
+                </div>
+                <div class="action-type">Generate Transcript</div>
+                <table>
+                    <tr><th>Setting</th><th>Value</th></tr>
+                    <tr><td>Trigger Name</td><td>Post-Transcript Actions</td></tr>
+                </table>
+                <div class="info-box">
+                    <h4>Why Generate Transcript?</h4>
+                    <p>This ensures the call transcript is available for staff emails. The trigger fires after transcript generation completes.</p>
+                </div>
+            </div>
+
+            <!-- WF2 Step 2 -->
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number wf2-num">2</div>
+                    <div class="step-title">Gate Check: intents_handled is not empty</div>
+                </div>
+                <div class="action-type">If/Else</div>
+                <table>
+                    <tr><th>Setting</th><th>Value</th></tr>
+                    <tr><td>Action Name</td><td>Gate: Has Intents?</td></tr>
+                    <tr><td>Condition</td><td><code>Contact &gt; Intents Handled</code> <strong>is not empty</strong></td></tr>
+                </table>
+                <div class="logic-tree"><span class="keyword">IF</span>  <span class="field">intents_handled</span>  <span class="operator">IS NOT EMPTY</span>
+├── <span class="value">YES</span> → Continue to Step 3 (intent branches)
+└── <span class="value">NO</span>  → STOP (no further actions &mdash; scheduling/FAQ call)</div>
+                <div class="info-box">
+                    <h4>Why This Gate?</h4>
+                    <p>Scheduling calls and general FAQ calls produce <code>intents_handled = ""</code>. Without this gate, the workflow would evaluate all If/Else branches on every call and find nothing to do. The gate exits early.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== WORKFLOW 2: RECORDS BRANCH ========== -->
+        <section id="wf2-records" class="section">
+            <h2>WF2 &mdash; Branch 1: Records <span class="workflow-label wf2">STEPS 3&ndash;10</span></h2>
+            <p><em>All steps in this branch are placed inside the YES path of Step 2 (Gate).</em></p>
+
+            <hr class="divider">
+
+            <!-- Step 3 -->
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number wf2-num">3</div>
+                    <div class="step-title">Branch 1: Records?</div>
+                </div>
+                <div class="action-type">If/Else</div>
+                <table>
+                    <tr><th>Setting</th><th>Value</th></tr>
+                    <tr><td>Action Name</td><td>Branch 1: Records?</td></tr>
+                    <tr><td>Condition</td><td><code>Contact &gt; Intents Handled</code> <strong>contains</strong> <code>records</code></td></tr>
+                </table>
+                <div class="logic-tree"><span class="keyword">IF</span>  <span class="field">intents_handled</span>  <span class="operator">CONTAINS</span>  <span class="value">"records"</span>
+├── <span class="value">YES</span> → Continue to Step 4 (Records Email)
+└── <span class="value">NO</span>  → Skip to Step 11 (Branch 2: Billing)</div>
+                <div class="warning-box">
+                    <h4>CRITICAL: Use "contains", not "equals"</h4>
+                    <p>Multi-intent calls produce values like <code>"records,billing"</code> &mdash; using "equals" would miss this.</p>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="nested-indent">
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number wf2-num">4</div>
+                        <div class="step-title">Records: Email Subject Router</div>
+                    </div>
+                    <div class="action-type">If/Else</div>
+                    <table>
+                        <tr><th>Setting</th><th>Value</th></tr>
+                        <tr><td>Action Name</td><td>Records: Request Type?</td></tr>
+                        <tr><td>Condition</td><td><code>Contact &gt; Records Request Type</code> <strong>equals</strong> <code>radiology_report</code></td></tr>
+                    </table>
+                    <div class="logic-tree"><span class="keyword">IF</span>  <span class="field">records_request_type</span>  <span class="operator">EQUALS</span>  <span class="value">"radiology_report"</span>
+├── <span class="value">YES</span> → Step 5a (Radiology Report Email)
+└── <span class="value">NO</span>  → Step 5b (Med Records Transfer Email)</div>
+                </div>
+
+                <!-- Step 5a -->
+                <div class="nested-indent">
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number wf2-num">5a</div>
+                            <div class="step-title">Send Email &mdash; Radiology Report</div>
+                        </div>
+                        <div class="action-type">Send Email</div>
+                        <table>
+                            <tr><th>Setting</th><th>Value</th></tr>
+                            <tr><td>Action Name</td><td>Email Staff: Radiology Report</td></tr>
+                            <tr><td>To</td><td><code>orders@firstchoice-imaging.com</code></td></tr>
+                            <tr><td>Subject</td><td><code>RADIOLOGY REPORT | {{contact.caller_name}}</code></td></tr>
+                        </table>
+                        <div class="email-template">MEDICAL RECORDS REQUEST &mdash; RADIOLOGY REPORT
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+Caller Name:     {{contact.caller_name}}
+Caller Phone:    {{contact.caller_phone}}
+Caller Email:    {{contact.caller_email}}
+
+Caller Type:     {{contact.records_caller_type}}
+Request Type:    {{contact.records_request_type}}
+
+SMS Consent:     {{contact.sms_consent}}
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number wf2-num">5b</div>
+                            <div class="step-title">Send Email &mdash; Medical Records Transfer</div>
+                        </div>
+                        <div class="action-type">Send Email</div>
+                        <table>
+                            <tr><th>Setting</th><th>Value</th></tr>
+                            <tr><td>Action Name</td><td>Email Staff: Med Records Transfer</td></tr>
+                            <tr><td>To</td><td><code>orders@firstchoice-imaging.com</code></td></tr>
+                            <tr><td>Subject</td><td><code>MED RECORDS TRANSFER | {{contact.caller_name}}</code></td></tr>
+                            <tr><td>Body</td><td><em>Same body template as Step 5a &mdash; only subject differs</em></td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number wf2-num">6</div>
+                        <div class="step-title">Records: SMS Consent Check</div>
+                    </div>
+                    <div class="action-type">If/Else</div>
+                    <table>
+                        <tr><th>Setting</th><th>Value</th></tr>
+                        <tr><td>Action Name</td><td>Records: SMS Consent?</td></tr>
+                        <tr><td>Condition</td><td><code>Contact &gt; SMS Consent</code> <strong>equals</strong> <code>YES</code></td></tr>
+                    </table>
+                    <div class="logic-tree"><span class="keyword">IF</span>  <span class="field">sms_consent</span>  <span class="operator">EQUALS</span>  <span class="value">"YES"</span>
+├── <span class="value">YES</span> → Step 7 (Records SMS Routing)
+└── <span class="value">NO</span>  → Skip SMS, continue to Branch 2</div>
+                </div>
+
+                <!-- Step 7 -->
+                <div class="nested-indent">
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number wf2-num">7</div>
+                            <div class="step-title">Records SMS: Caller Type Router</div>
+                        </div>
+                        <div class="action-type">If/Else</div>
+                        <table>
+                            <tr><th>Setting</th><th>Value</th></tr>
+                            <tr><td>Action Name</td><td>Records SMS: Caller Type?</td></tr>
+                            <tr><td>Condition</td><td><code>Contact &gt; Records Caller Type</code> <strong>equals</strong> <code>attorney</code></td></tr>
+                        </table>
+                        <div class="logic-tree"><span class="keyword">IF</span>  <span class="field">records_caller_type</span>  <span class="operator">EQUALS</span>  <span class="value">"attorney"</span>
+├── <span class="value">YES</span> → Step 8 (Attorney SMS &mdash; confirmation only)
+└── <span class="value">NO</span>  → Step 9 (Patient/Provider SMS routing)</div>
+                    </div>
+
+                    <!-- Step 8 -->
+                    <div class="nested-indent">
+                        <div class="step-card">
+                            <div class="step-header">
+                                <div class="step-number wf2-num">8</div>
+                                <div class="step-title">Send SMS &mdash; Attorney Records Confirmation</div>
+                            </div>
+                            <div class="action-type">Send SMS</div>
+                            <table>
+                                <tr><th>Setting</th><th>Value</th></tr>
+                                <tr><td>Action Name</td><td>SMS: Attorney Records Confirmation</td></tr>
+                                <tr><td>To</td><td><code>{{contact.caller_phone}}</code></td></tr>
+                                <tr><td>From</td><td>Pool number (or +1 888-610-1566)</td></tr>
+                            </table>
+                            <div class="sms-template">Hi {{contact.caller_name}}, thank you for contacting First Choice Imaging regarding a medical records request. Our records team has been notified and will follow up with your office shortly.
+
+Reply STOP to opt out.</div>
+                            <div class="info-box">
+                                <h4>No Form Link</h4>
+                                <p>Attorneys don't self-serve &mdash; staff handles the records release directly.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 9 -->
+                    <div class="nested-indent">
+                        <div class="step-card">
+                            <div class="step-header">
+                                <div class="step-number wf2-num">9</div>
+                                <div class="step-title">Records SMS: Patient vs Provider</div>
+                            </div>
+                            <div class="action-type">If/Else</div>
+                            <table>
+                                <tr><th>Setting</th><th>Value</th></tr>
+                                <tr><td>Action Name</td><td>Records SMS: Patient or Provider?</td></tr>
+                                <tr><td>Condition</td><td><code>Contact &gt; Records Caller Type</code> <strong>equals</strong> <code>provider</code></td></tr>
+                            </table>
+                            <div class="logic-tree"><span class="keyword">IF</span>  <span class="field">records_caller_type</span>  <span class="operator">EQUALS</span>  <span class="value">"provider"</span>
+├── <span class="value">YES</span> → Step 9B (Provider SMS routing)
+└── <span class="value">NO</span>  → Step 9A (Patient SMS routing)</div>
+                        </div>
+
+                        <!-- Step 9A: Patient -->
+                        <div class="nested-indent">
+                            <h4>Step 9A: Patient SMS &mdash; Request Type</h4>
+                            <div class="step-card">
+                                <div class="action-type">If/Else</div>
+                                <table>
+                                    <tr><th>Setting</th><th>Value</th></tr>
+                                    <tr><td>Action Name</td><td>Patient SMS: Request Type?</td></tr>
+                                    <tr><td>Condition</td><td><code>Contact &gt; Records Request Type</code> <strong>equals</strong> <code>radiology_report</code></td></tr>
+                                </table>
+
+                                <h4>YES &mdash; Patient Radiology Report</h4>
+                                <div class="action-type">Send SMS</div>
+                                <table>
+                                    <tr><th>Setting</th><th>Value</th></tr>
+                                    <tr><td>Action Name</td><td>SMS: Patient Radiology Report Form</td></tr>
+                                </table>
+                                <div class="sms-template">Hi {{contact.caller_name}}, thank you for contacting First Choice Imaging about your radiology report request. To get started, please complete our Radiology Report Request Form here: [RADIOLOGY_REPORT_FORM_LINK]
+
+Our team will follow up once your request is processed.
+Reply STOP to opt out.</div>
+
+                                <h4>NO &mdash; Patient Medical Records</h4>
+                                <div class="action-type">Send SMS</div>
+                                <table>
+                                    <tr><th>Setting</th><th>Value</th></tr>
+                                    <tr><td>Action Name</td><td>SMS: Patient Med Records Form</td></tr>
+                                </table>
+                                <div class="sms-template">Hi {{contact.caller_name}}, thank you for contacting First Choice Imaging about your medical records request. To get started, please complete our Medical Records Release Form here: [MEDICAL_RECORDS_FORM_LINK]
+
+Our team will follow up once your request is processed.
+Reply STOP to opt out.</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 9B: Provider -->
+                        <div class="nested-indent">
+                            <h4>Step 9B: Provider SMS &mdash; Request Type</h4>
+                            <div class="step-card">
+                                <div class="action-type">If/Else</div>
+                                <table>
+                                    <tr><th>Setting</th><th>Value</th></tr>
+                                    <tr><td>Action Name</td><td>Provider SMS: Request Type?</td></tr>
+                                    <tr><td>Condition</td><td><code>Contact &gt; Records Request Type</code> <strong>equals</strong> <code>radiology_report</code></td></tr>
+                                </table>
+
+                                <h4>YES &mdash; Provider Radiology Report</h4>
+                                <div class="action-type">Send SMS</div>
+                                <table>
+                                    <tr><th>Setting</th><th>Value</th></tr>
+                                    <tr><td>Action Name</td><td>SMS: Provider Radiology Form</td></tr>
+                                </table>
+                                <div class="sms-template">Hi {{contact.caller_name}}, thank you for contacting First Choice Imaging. To request a radiology report, please have your office complete the Provider Report Request Form here: [PROVIDER_RADIOLOGY_FORM_LINK]
+
+Our records team will process your request promptly.
+Reply STOP to opt out.</div>
+
+                                <h4>NO &mdash; Provider Medical Records</h4>
+                                <div class="action-type">Send SMS</div>
+                                <table>
+                                    <tr><th>Setting</th><th>Value</th></tr>
+                                    <tr><td>Action Name</td><td>SMS: Provider Records Form</td></tr>
+                                </table>
+                                <div class="sms-template">Hi {{contact.caller_name}}, thank you for contacting First Choice Imaging. To request a medical records transfer, please have your office complete the Provider Records Request Form here: [PROVIDER_RECORDS_FORM_LINK]
+
+Our records team will process your request promptly.
+Reply STOP to opt out.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <h4>Branch 1 (Records) Complete</h4>
+                <p>The flow continues to Branch 2 regardless of what happened in Branch 1. All three branches are evaluated independently.</p>
+            </div>
+        </section>
+
+        <!-- ========== WORKFLOW 2: BILLING BRANCH ========== -->
+        <section id="wf2-billing" class="section">
+            <h2>WF2 &mdash; Branch 2: Billing <span class="workflow-label wf2">STEPS 11&ndash;14</span></h2>
+            <p><em>Back at the same nesting level as Step 3. This is a sibling branch, NOT inside Branch 1.</em></p>
+
+            <hr class="divider">
+
+            <!-- Step 11 -->
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number wf2-num">11</div>
+                    <div class="step-title">Branch 2: Billing?</div>
+                </div>
+                <div class="action-type">If/Else</div>
+                <table>
+                    <tr><th>Setting</th><th>Value</th></tr>
+                    <tr><td>Action Name</td><td>Branch 2: Billing?</td></tr>
+                    <tr><td>Condition</td><td><code>Contact &gt; Intents Handled</code> <strong>contains</strong> <code>billing</code></td></tr>
+                </table>
+                <div class="logic-tree"><span class="keyword">IF</span>  <span class="field">intents_handled</span>  <span class="operator">CONTAINS</span>  <span class="value">"billing"</span>
+├── <span class="value">YES</span> → Step 12 (Billing Email)
+└── <span class="value">NO</span>  → Skip to Step 15 (Branch 3: Lien)</div>
+            </div>
+
+            <div class="nested-indent">
+                <!-- Step 12 -->
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number wf2-num">12</div>
+                        <div class="step-title">Send Email &mdash; Billing</div>
+                    </div>
+                    <div class="action-type">Send Email</div>
+                    <table>
+                        <tr><th>Setting</th><th>Value</th></tr>
+                        <tr><td>Action Name</td><td>Email Staff: Billing Inquiry</td></tr>
+                        <tr><td>To</td><td><code>billing@firstchoice-imaging.com</code></td></tr>
+                        <tr><td>Subject</td><td><code>BILLING INQUIRY | {{contact.billing_patient_name}}</code></td></tr>
+                    </table>
+                    <div class="email-template">BILLING INQUIRY
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+Caller Name:     {{contact.caller_name}}
+Caller Phone:    {{contact.caller_phone}}
+Caller Email:    {{contact.caller_email}}
+
+Patient Name:    {{contact.billing_patient_name}}
+Patient DOB:     {{contact.billing_patient_dob}}
+Reason:          {{contact.billing_reason}}
+
+SMS Consent:     {{contact.sms_consent}}
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</div>
+                </div>
+
+                <!-- Step 13 -->
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number wf2-num">13</div>
+                        <div class="step-title">Billing: SMS Consent Check</div>
+                    </div>
+                    <div class="action-type">If/Else</div>
+                    <table>
+                        <tr><th>Setting</th><th>Value</th></tr>
+                        <tr><td>Action Name</td><td>Billing: SMS Consent?</td></tr>
+                        <tr><td>Condition</td><td><code>Contact &gt; SMS Consent</code> <strong>equals</strong> <code>YES</code></td></tr>
+                    </table>
+                    <div class="logic-tree"><span class="keyword">IF</span>  <span class="field">sms_consent</span>  <span class="operator">EQUALS</span>  <span class="value">"YES"</span>
+├── <span class="value">YES</span> → Step 14 (Send Billing SMS)
+└── <span class="value">NO</span>  → Skip SMS, continue to Branch 3</div>
+                </div>
+
+                <!-- Step 14 -->
+                <div class="nested-indent">
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number wf2-num">14</div>
+                            <div class="step-title">Send SMS &mdash; Billing Confirmation</div>
+                        </div>
+                        <div class="action-type">Send SMS</div>
+                        <table>
+                            <tr><th>Setting</th><th>Value</th></tr>
+                            <tr><td>Action Name</td><td>SMS: Billing Confirmation</td></tr>
+                            <tr><td>To</td><td><code>{{contact.caller_phone}}</code></td></tr>
+                        </table>
+                        <div class="sms-template">Hi {{contact.caller_name}}, thank you for contacting First Choice Imaging about your billing inquiry. Our billing team has been notified and will follow up with you shortly regarding {{contact.billing_patient_name}}'s account.
+
+Reply STOP to opt out.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== WORKFLOW 2: LIEN BRANCH ========== -->
+        <section id="wf2-lien" class="section">
+            <h2>WF2 &mdash; Branch 3: Lien <span class="workflow-label wf2">STEPS 15&ndash;18</span></h2>
+            <p><em>Back at the same nesting level as Steps 3 and 11. Sibling branch.</em></p>
+
+            <hr class="divider">
+
+            <!-- Step 15 -->
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number wf2-num">15</div>
+                    <div class="step-title">Branch 3: Lien?</div>
+                </div>
+                <div class="action-type">If/Else</div>
+                <table>
+                    <tr><th>Setting</th><th>Value</th></tr>
+                    <tr><td>Action Name</td><td>Branch 3: Lien?</td></tr>
+                    <tr><td>Condition</td><td><code>Contact &gt; Intents Handled</code> <strong>contains</strong> <code>lien</code></td></tr>
+                </table>
+                <div class="logic-tree"><span class="keyword">IF</span>  <span class="field">intents_handled</span>  <span class="operator">CONTAINS</span>  <span class="value">"lien"</span>
+├── <span class="value">YES</span> → Step 16 (Lien Email)
+└── <span class="value">NO</span>  → STOP (workflow complete)</div>
+            </div>
+
+            <div class="nested-indent">
+                <!-- Step 16 -->
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number wf2-num">16</div>
+                        <div class="step-title">Send Email &mdash; Lien</div>
+                    </div>
+                    <div class="action-type">Send Email</div>
+                    <table>
+                        <tr><th>Setting</th><th>Value</th></tr>
+                        <tr><td>Action Name</td><td>Email Staff: Lien Request</td></tr>
+                        <tr><td>To</td><td><code>orders@firstchoice-imaging.com</code></td></tr>
+                        <tr><td>Subject</td><td><code>LIEN REQUEST | {{contact.lien_patient_name}}</code></td></tr>
+                    </table>
+                    <div class="email-template">LIEN REQUEST
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+Caller Name:     {{contact.caller_name}}
+Caller Phone:    {{contact.caller_phone}}
+Caller Email:    {{contact.caller_email}}
+
+Patient Name:    {{contact.lien_patient_name}}
+Patient DOB:     {{contact.lien_patient_dob}}
+Law Firm:        {{contact.lien_firm_name}}
+Paralegal:       {{contact.lien_paralegal_name}}
+Callback Phone:  {{contact.lien_callback_phone}}
+Clinic Location: {{contact.lien_clinic_location}}
+
+SMS Consent:     {{contact.sms_consent}}
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</div>
+                </div>
+
+                <!-- Step 17 -->
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number wf2-num">17</div>
+                        <div class="step-title">Lien: SMS Consent Check</div>
+                    </div>
+                    <div class="action-type">If/Else</div>
+                    <table>
+                        <tr><th>Setting</th><th>Value</th></tr>
+                        <tr><td>Action Name</td><td>Lien: SMS Consent?</td></tr>
+                        <tr><td>Condition</td><td><code>Contact &gt; SMS Consent</code> <strong>equals</strong> <code>YES</code></td></tr>
+                    </table>
+                    <div class="logic-tree"><span class="keyword">IF</span>  <span class="field">sms_consent</span>  <span class="operator">EQUALS</span>  <span class="value">"YES"</span>
+├── <span class="value">YES</span> → Step 18 (Send Lien SMS)
+└── <span class="value">NO</span>  → STOP (workflow complete)</div>
+                </div>
+
+                <!-- Step 18 -->
+                <div class="nested-indent">
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number wf2-num">18</div>
+                            <div class="step-title">Send SMS &mdash; Lien Confirmation</div>
+                        </div>
+                        <div class="action-type">Send SMS</div>
+                        <table>
+                            <tr><th>Setting</th><th>Value</th></tr>
+                            <tr><td>Action Name</td><td>SMS: Lien Confirmation</td></tr>
+                            <tr><td>To</td><td><code>{{contact.caller_phone}}</code></td></tr>
+                        </table>
+                        <div class="sms-template">Hi {{contact.caller_name}}, thank you for contacting First Choice Imaging. Your lien request for {{contact.lien_patient_name}} has been received. Our team will follow up with your office shortly.
+
+Reply STOP to opt out.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <h4>Step 19: Publish</h4>
+                <p>Toggle Workflow 2 to <strong>Published</strong>. All branches are now active.</p>
+            </div>
+        </section>
+
+        <!-- ========== FULL NESTING TREE ========== -->
+        <section id="nesting" class="section">
+            <h2>Complete Nesting Structure</h2>
+            <p>Visual reference showing the full If/Else tree for Workflow 2:</p>
+
+            <div class="nesting-tree">WORKFLOW 2
+│
+├─ TRIGGER: Generate Transcript
+│
+├─ IF/ELSE: <span style="color:#00d9ff">intents_handled</span> <span style="color:#ffa500">IS NOT EMPTY</span>  ──── [Gate]
+│  │
+│  ├─ <span style="color:#ff6b6b">NO</span> → (stop)
+│  │
+│  └─ <span style="color:#00ff88">YES</span> ─┐
+│           │
+│           ├─ IF/ELSE: <span style="color:#00d9ff">intents_handled</span> <span style="color:#ffa500">CONTAINS</span> <span style="color:#00ff88">"records"</span>  ──── [Branch 1]
+│           │  │
+│           │  ├─ <span style="color:#ff6b6b">NO</span> → (skip to Branch 2)
+│           │  │
+│           │  └─ <span style="color:#00ff88">YES</span> ─┐
+│           │           │
+│           │           ├─ IF/ELSE: <span style="color:#00d9ff">records_request_type</span> = <span style="color:#00ff88">"radiology_report"</span>
+│           │           │  ├─ <span style="color:#00ff88">YES</span> → SEND EMAIL: "RADIOLOGY REPORT | {{caller_name}}"
+│           │           │  └─ <span style="color:#ff6b6b">NO</span>  → SEND EMAIL: "MED RECORDS TRANSFER | {{caller_name}}"
+│           │           │
+│           │           └─ IF/ELSE: <span style="color:#00d9ff">sms_consent</span> = <span style="color:#00ff88">"YES"</span>
+│           │              │
+│           │              ├─ <span style="color:#ff6b6b">NO</span> → (skip SMS)
+│           │              │
+│           │              └─ <span style="color:#00ff88">YES</span> ─┐
+│           │                      │
+│           │                      └─ IF/ELSE: <span style="color:#00d9ff">records_caller_type</span> = <span style="color:#00ff88">"attorney"</span>
+│           │                         │
+│           │                         ├─ <span style="color:#00ff88">YES</span> → SEND SMS: Attorney confirmation (no link)
+│           │                         │
+│           │                         └─ <span style="color:#ff6b6b">NO</span> ─┐
+│           │                                │
+│           │                                └─ IF/ELSE: <span style="color:#00d9ff">records_caller_type</span> = <span style="color:#00ff88">"provider"</span>
+│           │                                   │
+│           │                                   ├─ <span style="color:#00ff88">YES</span> ─┐ [Provider]
+│           │                                   │       └─ IF/ELSE: <span style="color:#00d9ff">records_request_type</span> = <span style="color:#00ff88">"radiology_report"</span>
+│           │                                   │          ├─ <span style="color:#00ff88">YES</span> → SEND SMS: Provider radiology form
+│           │                                   │          └─ <span style="color:#ff6b6b">NO</span>  → SEND SMS: Provider records form
+│           │                                   │
+│           │                                   └─ <span style="color:#ff6b6b">NO</span> ──┐ [Patient]
+│           │                                           └─ IF/ELSE: <span style="color:#00d9ff">records_request_type</span> = <span style="color:#00ff88">"radiology_report"</span>
+│           │                                              ├─ <span style="color:#00ff88">YES</span> → SEND SMS: Patient radiology form
+│           │                                              └─ <span style="color:#ff6b6b">NO</span>  → SEND SMS: Patient records form
+│           │
+│           ├─ IF/ELSE: <span style="color:#00d9ff">intents_handled</span> <span style="color:#ffa500">CONTAINS</span> <span style="color:#00ff88">"billing"</span>  ──── [Branch 2]
+│           │  │
+│           │  ├─ <span style="color:#ff6b6b">NO</span> → (skip to Branch 3)
+│           │  │
+│           │  └─ <span style="color:#00ff88">YES</span> ─┐
+│           │           │
+│           │           ├─ SEND EMAIL: "BILLING INQUIRY | {{billing_patient_name}}"
+│           │           │
+│           │           └─ IF/ELSE: <span style="color:#00d9ff">sms_consent</span> = <span style="color:#00ff88">"YES"</span>
+│           │              ├─ <span style="color:#00ff88">YES</span> → SEND SMS: Billing confirmation
+│           │              └─ <span style="color:#ff6b6b">NO</span>  → (skip SMS)
+│           │
+│           └─ IF/ELSE: <span style="color:#00d9ff">intents_handled</span> <span style="color:#ffa500">CONTAINS</span> <span style="color:#00ff88">"lien"</span>  ──── [Branch 3]
+│              │
+│              ├─ <span style="color:#ff6b6b">NO</span> → (stop)
+│              │
+│              └─ <span style="color:#00ff88">YES</span> ─┐
+│                       │
+│                       ├─ SEND EMAIL: "LIEN REQUEST | {{lien_patient_name}}"
+│                       │
+│                       └─ IF/ELSE: <span style="color:#00d9ff">sms_consent</span> = <span style="color:#00ff88">"YES"</span>
+│                          ├─ <span style="color:#00ff88">YES</span> → SEND SMS: Lien confirmation
+│                          └─ <span style="color:#ff6b6b">NO</span>  → (stop)</div>
+        </section>
+
+        <!-- ========== IF/ELSE REFERENCE ========== -->
+        <section id="ifelse-ref" class="section">
+            <h2>If/Else Conditions Quick Reference</h2>
+
+            <table>
+                <tr><th>Step</th><th>Action Name</th><th>Field</th><th>Operator</th><th>Value</th></tr>
+                <tr><td>2</td><td>Gate: Has Intents?</td><td>Intents Handled</td><td><strong>is not empty</strong></td><td>&mdash;</td></tr>
+                <tr><td>3</td><td>Branch 1: Records?</td><td>Intents Handled</td><td><strong>contains</strong></td><td><code>records</code></td></tr>
+                <tr><td>4</td><td>Records: Request Type?</td><td>Records Request Type</td><td><strong>equals</strong></td><td><code>radiology_report</code></td></tr>
+                <tr><td>6</td><td>Records: SMS Consent?</td><td>SMS Consent</td><td><strong>equals</strong></td><td><code>YES</code></td></tr>
+                <tr><td>7</td><td>Records SMS: Caller Type?</td><td>Records Caller Type</td><td><strong>equals</strong></td><td><code>attorney</code></td></tr>
+                <tr><td>9</td><td>Records SMS: Patient or Provider?</td><td>Records Caller Type</td><td><strong>equals</strong></td><td><code>provider</code></td></tr>
+                <tr><td>9A</td><td>Patient SMS: Request Type?</td><td>Records Request Type</td><td><strong>equals</strong></td><td><code>radiology_report</code></td></tr>
+                <tr><td>9B</td><td>Provider SMS: Request Type?</td><td>Records Request Type</td><td><strong>equals</strong></td><td><code>radiology_report</code></td></tr>
+                <tr><td>11</td><td>Branch 2: Billing?</td><td>Intents Handled</td><td><strong>contains</strong></td><td><code>billing</code></td></tr>
+                <tr><td>13</td><td>Billing: SMS Consent?</td><td>SMS Consent</td><td><strong>equals</strong></td><td><code>YES</code></td></tr>
+                <tr><td>15</td><td>Branch 3: Lien?</td><td>Intents Handled</td><td><strong>contains</strong></td><td><code>lien</code></td></tr>
+                <tr><td>17</td><td>Lien: SMS Consent?</td><td>SMS Consent</td><td><strong>equals</strong></td><td><code>YES</code></td></tr>
+            </table>
+        </section>
+
+        <!-- ========== DESIGN RULES ========== -->
+        <section id="rules" class="section">
+            <h2>Key Design Rules</h2>
+
+            <div class="warning-box">
+                <h4>1. Use CONTAINS for intents_handled</h4>
+                <p>Never use EQUALS. Multi-intent calls produce <code>"records,billing"</code>. Using "equals" would miss multi-intent matches.</p>
+            </div>
+
+            <div class="info-box">
+                <h4>2. Use EQUALS for all other fields</h4>
+                <p><code>sms_consent</code>, <code>records_caller_type</code>, and <code>records_request_type</code> are single-value enums &mdash; "equals" is correct.</p>
+            </div>
+
+            <div class="info-box">
+                <h4>3. All 3 intent branches are independent</h4>
+                <p>They are NOT if/else-if/else. Each branch is its own If/Else at the same nesting level. A call with <code>"records,billing"</code> fires both Branch 1 and Branch 2.</p>
+            </div>
+
+            <div class="info-box">
+                <h4>4. Staff emails ALWAYS send</h4>
+                <p>Emails are NOT gated by <code>sms_consent</code>. Only caller SMS is gated by consent.</p>
+            </div>
+
+            <div class="info-box">
+                <h4>5. SMS gate is per-branch</h4>
+                <p>Each branch has its own <code>sms_consent = YES</code> check rather than one global check. This keeps logic clean if branches are added or removed later.</p>
+            </div>
+
+            <div class="warning-box">
+                <h4>6. Every SMS includes "Reply STOP to opt out"</h4>
+                <p>Required for A2P 10DLC compliance. No exceptions.</p>
+            </div>
+
+            <div class="info-box">
+                <h4>7. Form link placeholders</h4>
+                <p>Replace <code>[MEDICAL_RECORDS_FORM_LINK]</code>, <code>[RADIOLOGY_REPORT_FORM_LINK]</code>, <code>[PROVIDER_RECORDS_FORM_LINK]</code>, and <code>[PROVIDER_RADIOLOGY_FORM_LINK]</code> with actual First Choice Imaging URLs when available.</p>
+            </div>
+        </section>
+
+        <!-- ========== TESTING ========== -->
+        <section id="testing" class="section">
+            <h2>Testing Scenarios</h2>
+
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th>Scenario</th>
+                    <th>intents_handled</th>
+                    <th>Expected Emails</th>
+                    <th>Expected SMS</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Patient requests med records, SMS YES</td>
+                    <td><code>records</code></td>
+                    <td>Records email (MED RECORDS TRANSFER)</td>
+                    <td>Patient med records form link</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Patient requests radiology report, SMS YES</td>
+                    <td><code>records</code></td>
+                    <td>Records email (RADIOLOGY REPORT)</td>
+                    <td>Patient radiology form link</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Provider requests med records, SMS YES</td>
+                    <td><code>records</code></td>
+                    <td>Records email (MED RECORDS TRANSFER)</td>
+                    <td>Provider records form link</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Provider requests radiology report, SMS YES</td>
+                    <td><code>records</code></td>
+                    <td>Records email (RADIOLOGY REPORT)</td>
+                    <td>Provider radiology form link</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Attorney requests records, SMS YES</td>
+                    <td><code>records</code></td>
+                    <td>Records email (MED RECORDS TRANSFER)</td>
+                    <td>Attorney confirmation (no link)</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Billing inquiry, SMS YES</td>
+                    <td><code>billing</code></td>
+                    <td>Billing email</td>
+                    <td>Billing confirmation</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Attorney lien request, SMS YES</td>
+                    <td><code>lien</code></td>
+                    <td>Lien email</td>
+                    <td>Lien confirmation</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>Patient records + billing, SMS YES</td>
+                    <td><code>records,billing</code></td>
+                    <td>Records email + Billing email</td>
+                    <td>Records form link + Billing confirmation</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>Any intent, SMS NO</td>
+                    <td><em>any</em></td>
+                    <td>Email(s) sent normally</td>
+                    <td style="color: #ff6b6b;">NO SMS sent</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>Scheduling only (no intents)</td>
+                    <td><em>(empty)</em></td>
+                    <td style="color: #ff6b6b;">None</td>
+                    <td style="color: #ff6b6b;">None</td>
+                </tr>
+            </table>
+        </section>
+
+    </div>
+
+    <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+</body>
+
+</html>
