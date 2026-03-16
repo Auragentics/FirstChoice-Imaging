@@ -6,3 +6,5 @@ FirstChoice-Imaging/
 .git/
 .claude/
 .env
+__pycache__/
+*.pyc
