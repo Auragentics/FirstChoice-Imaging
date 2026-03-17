@@ -10,7 +10,7 @@
 
 ## 1. System Overview
 
-Each First Choice Imaging clinic will forward its main phone line to an assigned AI Voice Agent. The AI agent answers inbound calls, handles caller inquiries, and transfers callers to the appropriate department when needed. Transfers to **Scheduling** and **Live Operator** are routed to new dedicated DID lines provisioned per clinic.
+Each First Choice Imaging clinic will forward its main phone line to an assigned AI Voice Agent. The AI agent answers inbound calls, handles caller inquiries, and transfers callers to the appropriate department when needed. Transfers to **Scheduling**, **Billing**, and **Front Desk** are routed to dedicated DID lines.
 
 ---
 
@@ -23,7 +23,7 @@ Each clinic is assigned a dedicated AI Voice Agent with a unique inbound phone n
 | Logan MRI Clinic / North Logan CT Clinic | Ethan AI | **+1 (435) 292-5652** | (435) 258-9598 |
 | Sandy (Wasatch Imaging) | Marcus AI | **+1 (385) 458-4168** | (801) 576-1290 |
 | Tooele Valley Imaging | Leo AI | **+1 (435) 557-4243** | (435) 882-1674 |
-| St. George | Luke AI | **+1 (435) 241-1182** | TBD |
+| St. George | Luke AI | **+1 (435) 241-1182** | (435) 275-6210 |
 
 > **Note:** Logan MRI Clinic and North Logan CT Clinic share the same main line — **(435) 258-9598**. Ethan AI handles calls for both locations.
 
@@ -42,29 +42,30 @@ All AI Voice Agents will greet callers with the following standardized opening:
 | Logan / North Logan | *"Hi, thank you for calling First Choice Imaging in Logan. This is Ethan. I am generative artificial intelligence and not a human. How can I help you today?"* |
 | Sandy | *"Hi, thank you for calling First Choice Imaging in Sandy. This is Marcus. I am generative artificial intelligence and not a human. How can I help you today?"* |
 | Tooele | *"Hi, thank you for calling First Choice Imaging in Tooele. This is Leo. I am generative artificial intelligence and not a human. How can I help you today?"* |
-| St. George | *"Hi, thank you for calling First Choice Imaging in Saint George. This is Jeff. I am generative artificial intelligence and not a human. How can I help you today?"* |
+| St. George | *"Hi, thank you for calling First Choice Imaging in Saint George. This is Luke. I am generative artificial intelligence and not a human. How can I help you today?"* |
 
 ---
 
 ## 4. New DID Lines Required
 
-Each clinic must provision **two (2) new 10DLC DID phone lines** for transfer destinations. These lines receive calls transferred by the AI agent and must be staffed or routed to the appropriate personnel.
+The AI agent transfers callers to **three (3) dedicated DID lines** based on the caller's need.
 
 | Line Purpose | Description | Staffing |
 |-------------|-------------|----------|
 | **Scheduling Line** | Receives transferred calls for booking, rescheduling, or canceling appointments | Scheduling staff |
-| **Miscellaneous Line** | Receives transferred calls for live operator requests, complaints, vendor calls, and other inquiries the AI cannot resolve | Front desk / receptionist |
+| **Billing Line** | Receives transferred calls for billing questions, payment inquiries, and invoice disputes | Billing staff |
+| **Front Desk Line** | Receives transferred calls for live operator requests, complaints, vendor calls, and other inquiries the AI cannot resolve | Front desk / receptionist |
 
-### DID Line Provisioning Checklist
+### DID Line Directory
 
-| Clinic | Scheduling DID | Miscellaneous DID | Status |
-|--------|---------------|-------------------|--------|
-| Logan / North Logan | _________________ | _________________ | Pending |
-| Sandy (Wasatch Imaging) | _________________ | _________________ | Pending |
-| Tooele Valley Imaging | _________________ | _________________ | Pending |
-| St. George | _________________ | _________________ | Pending |
+| Clinic | Scheduling DID | Billing DID | Front Desk DID | Status |
+|--------|---------------|-------------|----------------|--------|
+| Logan / North Logan | (435) 294-0891 | (435) 294-0892 | (435) 361-4312 | Provisioned |
+| Sandy (Wasatch Imaging) | (435) 294-0891 | (435) 294-0892 | (435) 361-4314 | Provisioned |
+| Tooele Valley Imaging | (435) 294-0891 | (435) 294-0892 | (435) 361-4313 | Provisioned |
+| St. George | (435) 294-0891 | (435) 294-0892 | (435) 361-4315 | Provisioned |
 
-> **Action Required:** Once provisioned, provide the new DID numbers to Brian Randall at **brandall@auragentics.ai** so they can be configured as transfer destinations in the AI Voice Agent system.
+> **Note:** Scheduling and Billing DID lines are shared across all locations. Front Desk DID lines are location-specific.
 
 ---
 
@@ -189,14 +190,14 @@ Caller dials clinic main number
 └───────────┬─────────────┘
             │
      ┌──────┼──────────┐
-     ▼      ▼          ▼
- Resolved  Transfer   Transfer
- by AI     to         to Misc
-           Scheduling  (Live Op)
-     │      │          │
-     ▼      ▼          ▼
-   [End]  Scheduling  Miscellaneous
-          DID Line    DID Line
+     ▼      ▼          ▼          ▼
+ Resolved  Transfer   Transfer   Transfer
+ by AI     to         to         to Front
+           Scheduling  Billing    Desk
+     │      │          │          │
+     ▼      ▼          ▼          ▼
+   [End]  Scheduling  Billing   Front Desk
+          DID Line    DID Line  DID Line
 ```
 
 ---
@@ -205,16 +206,17 @@ Caller dials clinic main number
 
 | # | Task | Owner | Status |
 |---|------|-------|--------|
-| 1 | Provision 2 new DID lines per clinic (Scheduling + Miscellaneous) | FCI Telecom | [ ] |
+| 1 | Provision DID lines (Scheduling + Billing + Front Desk per location) | FCI Telecom | [ ] |
 | 2 | Provide new DID numbers to Brian Randall (brandall@auragentics.ai) | FCI Telecom | [ ] |
 | 3 | Configure AI transfer destinations with new DID numbers | Auragentics | [ ] |
 | 4 | Activate call forwarding on clinic main line(s) to AI inbound number | FCI Telecom | [ ] |
 | 5 | Test: Call main line → verify AI agent answers with correct greeting | FCI / Auragentics | [ ] |
 | 6 | Test: Request scheduling → verify transfer reaches Scheduling DID | FCI / Auragentics | [ ] |
-| 7 | Test: Request live operator → verify transfer reaches Miscellaneous DID | FCI / Auragentics | [ ] |
-| 8 | Test: Opt in to SMS → verify confirmation text received from (888) 610-1566 | FCI / Auragentics | [ ] |
-| 9 | Confirm after-hours behavior (if using time-delay forwarding) | FCI Telecom | [ ] |
-| 10 | Staff training: inform team about new Scheduling & Misc DID lines | FCI Management | [ ] |
+| 7 | Test: Request billing → verify transfer reaches Billing DID | FCI / Auragentics | [ ] |
+| 8 | Test: Request live operator → verify transfer reaches Front Desk DID | FCI / Auragentics | [ ] |
+| 9 | Test: Opt in to SMS → verify confirmation text received from (888) 610-1566 | FCI / Auragentics | [ ] |
+| 10 | Confirm after-hours behavior (if using time-delay forwarding) | FCI Telecom | [ ] |
+| 11 | Staff training: inform team about Scheduling, Billing & Front Desk DID lines | FCI Management | [ ] |
 
 ---
 
@@ -234,5 +236,5 @@ Caller dials clinic main number
 
 ---
 
-*Document Version: 1.0*
-*Last Updated: March 4, 2026*
+*Document Version: 2.0*
+*Last Updated: March 16, 2026*

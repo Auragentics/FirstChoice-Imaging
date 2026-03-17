@@ -275,7 +275,7 @@
         <!-- Section 1 -->
         <section>
             <h2>1. System Overview</h2>
-            <p>Each First Choice Imaging clinic will forward its main phone line to an assigned AI Voice Agent. The AI agent answers inbound calls, handles caller inquiries, and transfers callers to the appropriate department when needed. Transfers to <strong>Scheduling</strong> and <strong>Live Operator</strong> are routed to new dedicated DID lines provisioned per clinic.</p>
+            <p>Each First Choice Imaging clinic will forward its main phone line to an assigned AI Voice Agent. The AI agent answers inbound calls, handles caller inquiries, and transfers callers to the appropriate department when needed. Transfers to <strong>Scheduling</strong>, <strong>Billing</strong>, and <strong>Front Desk</strong> are routed to dedicated DID lines.</p>
         </section>
 
         <!-- Section 2 -->
@@ -314,7 +314,7 @@
                         <td>St. George</td>
                         <td>Luke AI</td>
                         <td><strong>+1 (435) 241-1182</strong></td>
-                        <td>TBD (new location)</td>
+                        <td>(435) 275-6210</td>
                     </tr>
                 </tbody>
             </table>
@@ -353,7 +353,7 @@
                     </tr>
                     <tr>
                         <td>St. George</td>
-                        <td><em>"Hi, thank you for calling First Choice Imaging in Saint George. This is Jeff. I am generative artificial intelligence and not a human. How can I help you today?"</em></td>
+                        <td><em>"Hi, thank you for calling First Choice Imaging in Saint George. This is Luke. I am generative artificial intelligence and not a human. How can I help you today?"</em></td>
                     </tr>
                 </tbody>
             </table>
@@ -362,7 +362,7 @@
         <!-- Section 4 -->
         <section>
             <h2>4. New DID Lines Required</h2>
-            <p>Each clinic must provision <strong>two (2) new 10DLC DID phone lines</strong> for transfer destinations. These lines receive calls transferred by the AI agent and must be staffed or routed to the appropriate personnel.</p>
+            <p>The AI agent transfers callers to <strong>three (3) dedicated DID lines</strong> based on the caller's need.</p>
             <table>
                 <thead>
                     <tr>
@@ -378,52 +378,62 @@
                         <td>Scheduling staff</td>
                     </tr>
                     <tr>
-                        <td><strong>Miscellaneous Line</strong></td>
+                        <td><strong>Billing Line</strong></td>
+                        <td>Receives transferred calls for billing questions, payment inquiries, and invoice disputes</td>
+                        <td>Billing staff</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Front Desk Line</strong></td>
                         <td>Receives transferred calls for live operator requests, complaints, vendor calls, and other inquiries the AI cannot resolve</td>
                         <td>Front desk / receptionist</td>
                     </tr>
                 </tbody>
             </table>
 
-            <h3>DID Line Provisioning Checklist</h3>
+            <h3>DID Line Directory</h3>
             <table>
                 <thead>
                     <tr>
                         <th>Clinic</th>
                         <th>Scheduling DID</th>
-                        <th>Miscellaneous DID</th>
+                        <th>Billing DID</th>
+                        <th>Front Desk DID</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Logan / North Logan</td>
-                        <td>_________________</td>
-                        <td>_________________</td>
-                        <td><span class="badge badge-pending">Pending</span></td>
+                        <td>(435) 294-0891</td>
+                        <td>(435) 294-0892</td>
+                        <td>(435) 361-4312</td>
+                        <td><span class="badge badge-verified">Provisioned</span></td>
                     </tr>
                     <tr>
                         <td>Sandy (Wasatch Imaging)</td>
-                        <td>_________________</td>
-                        <td>_________________</td>
-                        <td><span class="badge badge-pending">Pending</span></td>
+                        <td>(435) 294-0891</td>
+                        <td>(435) 294-0892</td>
+                        <td>(435) 361-4314</td>
+                        <td><span class="badge badge-verified">Provisioned</span></td>
                     </tr>
                     <tr>
                         <td>Tooele Valley Imaging</td>
-                        <td>_________________</td>
-                        <td>_________________</td>
-                        <td><span class="badge badge-pending">Pending</span></td>
+                        <td>(435) 294-0891</td>
+                        <td>(435) 294-0892</td>
+                        <td>(435) 361-4313</td>
+                        <td><span class="badge badge-verified">Provisioned</span></td>
                     </tr>
                     <tr>
                         <td>St. George</td>
-                        <td>_________________</td>
-                        <td>_________________</td>
-                        <td><span class="badge badge-pending">Pending</span></td>
+                        <td>(435) 294-0891</td>
+                        <td>(435) 294-0892</td>
+                        <td>(435) 361-4315</td>
+                        <td><span class="badge badge-verified">Provisioned</span></td>
                     </tr>
                 </tbody>
             </table>
             <div class="note">
-                <strong>Action Required:</strong> Once provisioned, provide the new DID numbers to Brian Randall at <strong>brandall@auragentics.ai</strong> so they can be configured as transfer destinations in the AI Voice Agent system.
+                <strong>Note:</strong> Scheduling and Billing DID lines are shared across all locations. Front Desk DID lines are location-specific.
             </div>
         </section>
 
@@ -629,9 +639,14 @@
                         <div class="flow-box">Scheduling DID Line</div>
                     </div>
                     <div class="flow-branch">
-                        <div class="flow-box">Transfer to Misc (Live Op)</div>
+                        <div class="flow-box">Transfer to Billing</div>
                         <div class="flow-arrow">&#9660;</div>
-                        <div class="flow-box">Miscellaneous DID Line</div>
+                        <div class="flow-box">Billing DID Line</div>
+                    </div>
+                    <div class="flow-branch">
+                        <div class="flow-box">Transfer to Front Desk</div>
+                        <div class="flow-arrow">&#9660;</div>
+                        <div class="flow-box">Front Desk DID Line</div>
                     </div>
                 </div>
             </div>
@@ -652,7 +667,7 @@
                 <tbody>
                     <tr>
                         <td>1</td>
-                        <td>Provision 2 new DID lines per clinic (Scheduling + Miscellaneous)</td>
+                        <td>Provision DID lines (Scheduling + Billing + Front Desk per location)</td>
                         <td>FCI Telecom</td>
                         <td><span class="checklist-status"></span></td>
                     </tr>
@@ -688,25 +703,31 @@
                     </tr>
                     <tr>
                         <td>7</td>
-                        <td>Test: Request live operator &rarr; verify transfer reaches Miscellaneous DID</td>
+                        <td>Test: Request billing &rarr; verify transfer reaches Billing DID</td>
                         <td>FCI / Auragentics</td>
                         <td><span class="checklist-status"></span></td>
                     </tr>
                     <tr>
                         <td>8</td>
-                        <td>Test: Opt in to SMS &rarr; verify confirmation text received from (888) 610-1566</td>
+                        <td>Test: Request live operator &rarr; verify transfer reaches Front Desk DID</td>
                         <td>FCI / Auragentics</td>
                         <td><span class="checklist-status"></span></td>
                     </tr>
                     <tr>
                         <td>9</td>
+                        <td>Test: Opt in to SMS &rarr; verify confirmation text received from (888) 610-1566</td>
+                        <td>FCI / Auragentics</td>
+                        <td><span class="checklist-status"></span></td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
                         <td>Confirm after-hours behavior (if using time-delay forwarding)</td>
                         <td>FCI Telecom</td>
                         <td><span class="checklist-status"></span></td>
                     </tr>
                     <tr>
-                        <td>10</td>
-                        <td>Staff training: inform team about new Scheduling &amp; Misc DID lines</td>
+                        <td>11</td>
+                        <td>Staff training: inform team about Scheduling, Billing &amp; Front Desk DID lines</td>
                         <td>FCI Management</td>
                         <td><span class="checklist-status"></span></td>
                     </tr>
@@ -760,7 +781,7 @@
         </div>
 
         <div class="footer">
-            Document Version: 1.0 &bull; Last Updated: March 10, 2026
+            Document Version: 2.0 &bull; Last Updated: March 16, 2026
         </div>
 
     </div>
