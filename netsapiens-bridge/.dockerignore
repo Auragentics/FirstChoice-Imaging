@@ -1,0 +1,11 @@
+# Never bake secrets or cruft into the image / build context.
+.env
+.env.*
+node_modules
+.git
+test
+docs
+*.md
+Dockerfile
+.dockerignore
+npm-debug.log

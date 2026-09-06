@@ -1,0 +1,19 @@
+{
+  "name": "fci-netsapiens-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Bridge between the FCI voice AI (Retell/GHL) and the Net Sapiens API — detects repeat callers who already left a voicemail or callback.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "probe": "node src/probe.js",
+    "start": "node src/server.js",
+    "deploy-prompts": "node src/deploy-prompts.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "nodemailer": "^9.0.4"
+  }
+}
